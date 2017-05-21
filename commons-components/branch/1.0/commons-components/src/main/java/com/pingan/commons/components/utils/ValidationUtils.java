@@ -20,38 +20,76 @@ import com.pingan.commons.components.pojo.dto.ValidateResult;
  * @date 2017年1月5日
  */
 public class ValidationUtils {
-	
+
 	private static Validator validator;
-	private static final String ITEM_SEP = ";";
 	private static final String FIELD_SEP = ",";
-	
+	private static final String ITEM_SEP = " ~ ";
+
 	static {
 		validator = Validation.buildDefaultValidatorFactory().getValidator();
 	}
-	
+
 	public static ValidateResult validate(Object bean) {
-		if(bean == null) {
+		return validate(bean, false);
+	}
+
+	public static ValidateResult validate(Object bean, boolean isWithItemDetail) {
+		if (bean == null) {
 			return ValidateResult.DEFAULT;
 		}
-		
-		Set<ConstraintViolation<Object>> resultSet = validator.validate(bean, bean.getClass());
-		if(resultSet == null || resultSet.isEmpty()) {
+
+		Set<ConstraintViolation<Object>> conSet = validator.validate(bean);
+		if (conSet == null || conSet.isEmpty()) {
 			return ValidateResult.SUCCESS;
 		}
-		
-		Map<String, String> items = new HashMap<>();
+
 		ValidateResult result = new ValidateResult(false);
-		for (ConstraintViolation<Object> c : resultSet) {
-			String field = String.valueOf(c.getPropertyPath());
-			if(items.containsKey(field)) {
-				items.put(field, items.get(field) + ITEM_SEP + c.getMessage());
+		if (isWithItemDetail) {
+			Map<String, Map<String, String>> detailItems = new HashMap<>();
+			putItemDetail(conSet, detailItems);
+
+			result.setFailedDetailItems(detailItems);
+			result.setInvalidFields(StringUtils.join(detailItems.keySet(), FIELD_SEP));
+		} else {
+			Map<String, StringBuffer> items = new HashMap<>();
+			putItem(conSet, items);
+
+			result.setFailedItems(items);
+			result.setInvalidFields(StringUtils.join(items.keySet(), FIELD_SEP));
+		}
+
+		return result;
+	}
+
+	private static void putItem(Set<ConstraintViolation<Object>> conSet, Map<String, StringBuffer> items) {
+		String field;
+		StringBuffer desc;
+		for (ConstraintViolation<Object> c : conSet) {
+			field = String.valueOf(c.getPropertyPath());
+			if (items.containsKey(field)) {
+				items.put(field, items.get(field).append(ITEM_SEP).append(c.getMessage()));
 			} else {
-				items.put(field, c.getMessage());
+				desc = new StringBuffer(c.getMessage());
+				items.put(field, desc);
 			}
 		}
-		result.setFailedItems(items);
-		result.setInvalidFields(StringUtils.join(items.keySet(), FIELD_SEP));
-		return result;
+	}
+
+	private static void putItemDetail(Set<ConstraintViolation<Object>> conSet, Map<String, Map<String, String>> items) {
+		String field;
+		Map<String, String> vmap;
+		String vname;
+		for (ConstraintViolation<Object> c : conSet) {
+			field = String.valueOf(c.getPropertyPath());
+			vname = c.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName();
+			if (items.containsKey(field)) {
+				items.get(field).put(vname, c.getMessage());
+			} else {
+				vmap = new HashMap<String, String>(3);
+				vmap.put(vname, c.getMessage());
+				items.put(field, vmap);
+			}
+		}
 	}
 
 }

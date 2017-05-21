@@ -18,9 +18,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.pingan.commons.components.annotation.CDate;
-import com.pingan.commons.components.annotation.CMulti;
-import com.pingan.commons.components.annotation.CNum;
+import com.pingan.commons.components.annotation.convert.CDate;
+import com.pingan.commons.components.annotation.convert.CMulti;
+import com.pingan.commons.components.annotation.convert.CNum;
 import com.pingan.commons.components.exception.DataConvertException;
 
 /**
