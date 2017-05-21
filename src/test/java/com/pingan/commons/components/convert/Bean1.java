@@ -3,15 +3,30 @@
  */
 package com.pingan.commons.components.convert;
 
+import java.io.Serializable;
+
+import com.pingan.commons.components.annotation.validation.VDate;
 
 /**
  * @author Demon
  * @date 2016年12月12日
  */
-public class Bean1 {
+public class Bean1 implements Serializable {
+	/**  */
+	private static final long serialVersionUID = -444778988918263265L;
 	private Integer age;
 	private String money;
 	private String bitch;
+	@VDate(pattern="yyyy-MM-dd HH:mm:ss")
+	private String birth;
+
+	public String getBirth() {
+		return birth;
+	}
+
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
 
 	public Integer getAge() {
 		return age;

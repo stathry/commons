@@ -13,7 +13,8 @@ public class ValidateResult {
 
 	private boolean success;
 	private String invalidFields;
-	private Map<String, String> failedItems;
+	private Map<String, Map<String,String>> failedDetailItems;
+	private Map<String, StringBuffer> failedItems;
 	
 	public static final ValidateResult DEFAULT = new ValidateResult(false);
 	public static final ValidateResult SUCCESS = new ValidateResult(true);
@@ -51,12 +52,19 @@ public class ValidateResult {
 		this.invalidFields = invalidFields;
 	}
 
-	public Map<String, String> getFailedItems() {
+	public Map<String, Map<String, String>> getFailedDetailItems() {
+		return failedDetailItems;
+	}
+
+	public void setFailedDetailItems(Map<String, Map<String, String>> failedDetailItems) {
+		this.failedDetailItems = failedDetailItems;
+	}
+
+	public Map<String, StringBuffer> getFailedItems() {
 		return failedItems;
 	}
 
-	public void setFailedItems(Map<String, String> failedItems) {
+	public void setFailedItems(Map<String, StringBuffer> failedItems) {
 		this.failedItems = failedItems;
 	}
-
 }

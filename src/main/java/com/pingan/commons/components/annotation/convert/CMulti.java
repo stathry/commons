@@ -1,7 +1,7 @@
 /**
  * Copyright © PING AN INSURANCE (GROUP) COMPANY OF CHINA ，LTD. All Rights Reserved
  */
-package com.pingan.commons.components.annotation;
+package com.pingan.commons.components.annotation.convert;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,5 +15,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CNum {
+public @interface CMulti {
+	double multi() default 1;
+	int scale() default 2;
 }
