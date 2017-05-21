@@ -35,7 +35,6 @@ public class ExcelUtils {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExcelUtils.class);
 
 	public static Workbook export(String path, Map<String, Object> header, List<Map<String, Object>> data, ExcelParams params) {
-
 		Workbook workbook = null;
 		Sheet sheet = null;
 		
@@ -90,8 +89,8 @@ public class ExcelUtils {
 	
 	public static Workbook export(String path, List<String> header, List<List<String>> data, ExcelParams params) {
 		String[] header1 = new String[header.size()];
-		String[][] data1 = new String[data.size()][];
-		return export(path, header.toArray(header1), data.toArray(data1), params);
+		String[][] data1 = CollectionUtils.listsToArrays(data, String.class);
+		return export(path, header.toArray(header1), data1, params);
 	}
 	
 	public static Workbook export2(String path, List<String> header, List<List<String>> data, ExcelParams params) {
@@ -104,7 +103,7 @@ public class ExcelUtils {
 		Sheet sheet = null;
 		
 		if(data == null || data.length < 1 || data[0] == null || data[0].length < 1 || params == null) {
-			LOGGER.error("the exprot excel param invalid.");
+			LOGGER.warn("the exprot excel param invalid.");
 			return null;
 		}
 		
