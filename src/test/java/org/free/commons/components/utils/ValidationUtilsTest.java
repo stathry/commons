@@ -1,15 +1,14 @@
 /*
  * Copyright © PING AN INSURANCE (GROUP) COMPANY OF CHINA ，LTD. All Rights Reserved
  */
-package com.pingan.commons.components.utils;
+package org.free.commons.components.utils;
 
 import static org.junit.Assert.*;
 
+import org.free.commons.components.convert.Bean3;
 import org.free.commons.components.pojo.dto.ValidateResult;
 import org.free.commons.components.utils.ValidationUtils;
 import org.junit.Test;
-
-import com.pingan.commons.components.convert.Bean3;
 
 /**
  * @author dongdaiming911@pingan.com

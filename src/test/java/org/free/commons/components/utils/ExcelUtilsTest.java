@@ -1,7 +1,7 @@
 /*
  * Copyright © PING AN INSURANCE (GROUP) COMPANY OF CHINA ，LTD. All Rights Reserved
  */
-package com.pingan.commons.components.utils;
+package org.free.commons.components.utils;
 
 import java.util.ArrayList;
 import java.util.Date;
