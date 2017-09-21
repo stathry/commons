@@ -5,10 +5,11 @@ package com.pingan.commons.components.utils;
 
 import static org.junit.Assert.*;
 
+import org.free.commons.components.pojo.dto.ValidateResult;
+import org.free.commons.components.utils.ValidationUtils;
 import org.junit.Test;
 
 import com.pingan.commons.components.convert.Bean3;
-import com.pingan.commons.components.pojo.dto.ValidateResult;
 
 /**
  * @author dongdaiming911@pingan.com

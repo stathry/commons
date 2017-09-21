@@ -3,10 +3,9 @@
  */
 package com.pingan.commons.components.convert;
 
+import org.free.commons.components.annotation.validation.VDate;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-
-import com.pingan.commons.components.annotation.validation.VDate;
 
 /**
  * @author dongdaiming911@pingan.com

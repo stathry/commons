@@ -5,6 +5,7 @@ package com.pingan.commons.components.utils.codec;
 
 import static org.junit.Assert.*;
 
+import org.free.commons.components.utils.codec.Base64Utils;
 import org.junit.Test;
 
 /**

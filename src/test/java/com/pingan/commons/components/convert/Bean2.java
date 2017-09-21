@@ -3,7 +3,7 @@
  */
 package com.pingan.commons.components.convert;
 
-import com.pingan.commons.components.annotation.convert.CNum;
+import org.free.commons.components.annotation.convert.CNum;
 
 /**
  * @author Demon
