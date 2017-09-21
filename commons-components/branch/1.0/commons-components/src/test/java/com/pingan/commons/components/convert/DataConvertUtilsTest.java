@@ -3,9 +3,8 @@
  */
 package com.pingan.commons.components.convert;
 
+import org.free.commons.components.utils.DataConvertUtils;
 import org.junit.Test;
-
-import com.pingan.commons.components.utils.DataConvertUtils;
 
 
 /**

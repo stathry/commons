@@ -5,7 +5,7 @@ package com.pingan.commons.components.convert;
 
 import java.io.Serializable;
 
-import com.pingan.commons.components.annotation.validation.VDate;
+import org.free.commons.components.annotation.validation.VDate;
 
 /**
  * @author Demon
