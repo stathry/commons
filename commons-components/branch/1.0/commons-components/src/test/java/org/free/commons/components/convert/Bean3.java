@@ -1,7 +1,7 @@
 /*
  * Copyright © PING AN INSURANCE (GROUP) COMPANY OF CHINA ，LTD. All Rights Reserved
  */
-package com.pingan.commons.components.convert;
+package org.free.commons.components.convert;
 
 import org.free.commons.components.annotation.validation.VDate;
 import org.hibernate.validator.constraints.Email;
