@@ -1,13 +1,14 @@
 package org.free.commons.components.enums;
 
+import java.io.Serializable;
+
 /**
  * 数据状态枚举
  * @author dongdaiming911
  */
-public enum DataStateEnums {
+public enum DataStateEnums implements Serializable {
 
-	DELETED(-1, "已废弃"),
-	FROZEN(0, "已冻结"),
+	DELETED(0, "已废弃"),
 	NORMAL(1, "正常"),
 	;
 	
