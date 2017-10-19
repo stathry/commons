@@ -1,12 +1,12 @@
 /**
- * Copyright 2012-2016 Deppon Co., Ltd.
+ * Copyright 2012-2016 free Co., Ltd.
  */
 package org.free.commons.components.utils;
 
 import java.util.Date;
 
 /**
- * @author dongdaiming@deppon.com 2016年8月23日
+ * @author dongdaiming@free.com 2016年8月23日
  */
 public final class TextUtils {
 	

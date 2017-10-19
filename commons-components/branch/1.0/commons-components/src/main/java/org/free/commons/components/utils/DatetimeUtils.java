@@ -1,5 +1,5 @@
 /**
- * Copyright 2016-2100 Deppon Co., Ltd.
+ * Copyright 2016-2100 free Co., Ltd.
  */
 package org.free.commons.components.utils;
 
@@ -13,7 +13,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 /**
  * 
- * @author Demon@deppon.com
+ * @author Demon@free.com
  *
  * 2016年8月5日
  */
