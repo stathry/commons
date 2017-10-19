@@ -1,5 +1,5 @@
 /**
- * Copyright 2012-2016 Deppon Co., Ltd.
+ * Copyright 2012-2016 free Co., Ltd.
  */
 package org.free.commons.components.pojo.config;
 
@@ -7,7 +7,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 
 /**
- * @author dongdaiming@deppon.com
+ * @author dongdaiming@free.com
  *
  *         2016年8月22日
  */

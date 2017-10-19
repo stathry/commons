@@ -1,5 +1,5 @@
 /**
- * Copyright 2012-2016 Deppon Co., Ltd.
+ * Copyright 2012-2016 free Co., Ltd.
  */
 package org.free.commons.components.pojo.config;
 
@@ -8,7 +8,7 @@ import java.util.List;
 import org.free.commons.components.enums.ExcelTypeEnums;
 
 /**
- * @author dongdaiming@deppon.com
+ * @author dongdaiming@free.com
  *
  *         2016年8月22日
  */

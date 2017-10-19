@@ -1,5 +1,5 @@
 /**
- * Copyright 2012-2016 Deppon Co., Ltd.
+ * Copyright 2012-2016 free Co., Ltd.
  */
 package org.free.commons.components.utils;
 
@@ -11,7 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.free.commons.components.pojo.config.StyleParams;
 
 /**
- * @author dongdaiming@deppon.com
+ * @author dongdaiming@free.com
  *
  *         2016年8月22日
  */

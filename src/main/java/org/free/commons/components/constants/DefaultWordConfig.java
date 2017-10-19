@@ -1,10 +1,10 @@
 /**
- * Copyright 2016-2100 Deppon Co., Ltd.
+ * Copyright 2016-2100 free Co., Ltd.
  */
 package org.free.commons.components.constants;
 
 /**
- * @author dongdaiming@deppon.com
+ * @author dongdaiming@free.com
  *
  *         2016年8月20日
  */
@@ -19,7 +19,7 @@ public class DefaultWordConfig {
 	public static final String VAR_PREFIX = "${";
 	public static final String VAR_SUFFIX = "}";
 	public static final String CREATOR = "dongdaiming";
-	public static final String COMPANY = "Deppon";
+	public static final String COMPANY = "free";
 	public static final String FILE_TYPE_DOC = "doc";
 	public static final String FILE_TYPE_DOCX = "docx";
 	public static final String FILE_PATH = "/temp/word/";
