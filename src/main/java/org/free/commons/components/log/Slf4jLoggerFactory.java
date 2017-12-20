@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.DailyRollingFileAppender;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -84,7 +83,7 @@ public class Slf4jLoggerFactory {
 				log4jLogger = LogManager.getRootLogger();
 			} else {
 				log4jLogger = LogManager.getLogger(orgCode);
-				FileAppender appender = new DailyRollingFileAppender();
+				FileAppender appender = new DailyRollingFileAppenderX();
 				initFileAppender(orgCode, appender);
 				ConsoleAppender cAppender = new ConsoleAppender();
 				initConsoleAppender(orgCode, cAppender);
@@ -107,7 +106,7 @@ public class Slf4jLoggerFactory {
 				log4jLogger = LogManager.getRootLogger();
 			} else {
 				log4jLogger = LogManager.getLogger(name);
-				FileAppender appender = new DailyRollingFileAppender();
+				FileAppender appender = new DailyRollingFileAppenderX();
 				initFileAppender(orgCode, appender);
 				ConsoleAppender cAppender = new ConsoleAppender();
 				initConsoleAppender(orgCode, cAppender);
@@ -169,7 +168,7 @@ public class Slf4jLoggerFactory {
 				log4jLogger = LogManager.getRootLogger();
 			} else {
 				log4jLogger = LogManager.getLogger(orgCode);
-				FileAppender appender = new DailyRollingFileAppender();
+				FileAppender appender = new DailyRollingFileAppenderX();
 				initFileAppender(orgCode, appender);
 				ConsoleAppender cAppender = new ConsoleAppender();
 				initConsoleAppender(orgCode, cAppender);

@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.DailyRollingFileAppender;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -85,7 +84,7 @@ public class Log4jUtil {
 	public static Logger getLogger(String name, String orgCode) {
 		checkOrg(orgCode);
 		Logger logger = Logger.getLogger(name + orgCode);
-		FileAppender appender = new DailyRollingFileAppender();
+		FileAppender appender = new DailyRollingFileAppenderX();
 		initFileAppender(orgCode, appender);
 		ConsoleAppender cAppender = new ConsoleAppender();
 		initConsoleAppender(orgCode, cAppender);
@@ -99,7 +98,7 @@ public class Log4jUtil {
 
 	private static Logger initLoggerByOrg(String orgCode) {
 		Logger logger = Logger.getLogger(orgCode);
-		FileAppender appender = new DailyRollingFileAppender();
+		FileAppender appender = new DailyRollingFileAppenderX();
 		initFileAppender(orgCode, appender);
 		ConsoleAppender cAppender = new ConsoleAppender();
 		initConsoleAppender(orgCode, cAppender);
