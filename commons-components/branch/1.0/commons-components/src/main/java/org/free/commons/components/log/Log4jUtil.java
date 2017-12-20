@@ -93,6 +93,7 @@ public class Log4jUtil {
 	}
 
 	public static Logger getLoggerByOrg(String orgCode) {
+		checkOrg(orgCode);
 		return ORG_LOGS.get(orgCode);
 	}
 
