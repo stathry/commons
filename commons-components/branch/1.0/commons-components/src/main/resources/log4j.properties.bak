@@ -1,0 +1,16 @@
+
+log4j.rootLogger=info,stdout,logfile
+
+log4j.appender.stdout.Encoding=UTF-8
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d %p [%t] [%C#%L] - %m%n
+
+log4j.appender.logfile=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.logfile.DatePattern = '_'yyyy-MM-dd'.log'
+log4j.appender.logfile.File=logs/commons-components.log
+#log4j.appender.logfile.MaxFileSize=20480KB
+log4j.appender.logfile.layout=org.apache.log4j.PatternLayout
+log4j.appender.logfile.layout.ConversionPattern=%d %p [%t] [%C#%L] - %m%n
+
+
