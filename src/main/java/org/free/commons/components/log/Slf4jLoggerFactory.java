@@ -74,6 +74,7 @@ public class Slf4jLoggerFactory {
 	}
 
 	public static Logger getLoggerByOrg(String orgCode) {
+		checkOrg(orgCode);
 		Logger slf4jLogger = loggerMap.get(orgCode);
 		if (slf4jLogger != null) {
 			return slf4jLogger;
@@ -96,6 +97,7 @@ public class Slf4jLoggerFactory {
 	}
 	
 	public static Logger getLoggerByOrg(String name, String orgCode) {
+		checkOrg(orgCode);
 		name = name + orgCode;
 		Logger slf4jLogger = loggerMap.get(name);
 		if (slf4jLogger != null) {
@@ -177,6 +179,15 @@ public class Slf4jLoggerFactory {
 			Logger newInstance = new Log4jLoggerAdapter(log4jLogger);
 			Logger oldInstance = loggerMap.putIfAbsent(orgCode, newInstance);
 			return oldInstance == null ? newInstance : oldInstance;
+		}
+	}
+	
+	/**
+	 * @param orgCode
+	 */
+	private static void checkOrg(String orgCode) {
+		if (!ORGS.contains(StringUtils.upperCase(orgCode))) {
+			throw new IllegalArgumentException("illegal argument orgCode " + orgCode);
 		}
 	}
 

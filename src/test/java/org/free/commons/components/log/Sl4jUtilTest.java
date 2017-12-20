@@ -15,23 +15,21 @@ public class Sl4jUtilTest {
 
 	@Test
 	public void test0() {
-		Slf4jUtil.getLogger(Sl4jUtilTest.class).info("test0");
-		Slf4jUtil.getLogger(Sl4jUtilTest.class).info("test0");
+		LoggerFactory.getLogger(Sl4jUtilTest.class).info("test0");
+	}
+	@Test
+	public void test1() {
+		Slf4jUtil.getLoggerByOrg("ZMXY").info("test1");
 	}
 
 	@Test
-	public void test1() {
-		Slf4jUtil.getLoggerByOrg("MS").info("MS test1 p1 {}.", 1);
-		Slf4jUtil.getLoggerByOrg("MS").info("MS test1 p1 {}.", 2);
-		Slf4jUtil.getLoggerByOrg("ZMXY").info("ZMXY test1 p1 {}.", 1);
-		Slf4jUtil.getLoggerByOrg("ZMXY").info("ZMXY test1 p1 {}.", 2);
-	}
-	@Test
 	public void test2() {
-		Slf4jUtil.getLoggerByOrg(Sl4jUtilTest.class, "MS").info("MS test2 p1 {}.", 1);
-		Slf4jUtil.getLoggerByOrg(Sl4jUtilTest.class, "MS").info("MS test2 p1 {}.", 2);
-		Slf4jUtil.getLoggerByOrg(Sl4jUtilTest.class.getName(), "ZMXY").info("ZMXY test2 p1 {}.", 1);
-		Slf4jUtil.getLoggerByOrg(Sl4jUtilTest.class.getName(), "ZMXY").info("ZMXY test2 p1 {}.", 2);
+		Slf4jUtil.getLoggerByOrg("GOOGLE").info("test2");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void test3() {
+		Slf4jUtil.getLoggerByOrg("MS").info("test3");
 	}
 
 }

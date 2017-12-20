@@ -33,6 +33,6 @@ public class Slf4jUtil {
 	}
 
 	public static Logger getLoggerByOrg(String name, String orgCode) {
-		return Slf4jLoggerFactory.getLoggerByOrg(orgCode);
+		return Slf4jLoggerFactory.getLoggerByOrg(name, orgCode);
 	}
 }
