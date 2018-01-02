@@ -59,5 +59,9 @@ public class RandomTest {
 			System.out.println(RandomStringUtils.random(6, true, true));
 		}
 	}
+	@Test
+	public void test6() {
+		System.out.println(StringUtils.repeat("abcdefghijklmnopqrstuvwxyz", 100));
+	}
 
 }
