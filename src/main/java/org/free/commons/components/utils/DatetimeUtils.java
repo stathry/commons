@@ -19,6 +19,11 @@ import org.apache.commons.lang3.time.DateUtils;
  */
 public final class DatetimeUtils extends DateUtils {
 	
+	public static void main(String[] args) throws ParseException {
+		System.out.println(intervalOfMonths(parseDate("20161114", "yyyyMMdd"), parseDate("20161114", "yyyyMMdd")));
+//		System.out.println(addMonths(parseDate("20170413", "yyyyMMdd"), 29).toLocaleString());
+	}
+	
 	/**
 	 * 计算间隔年，按每年365天计算
 	 * 

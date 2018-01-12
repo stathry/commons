@@ -28,16 +28,25 @@ import org.junit.Test;
 public class LongFileRWTest {
 
 	private static final String lineSep = System.lineSeparator();
+	private static final int tn = 20;
+	private static final int rn = 10000;
+	private static final int bloking = 100000000;
+	private static final int lines = 10000;
+	
+//	testWriteLongFile-tn-20-rn10000-sec70
+//	testWriteLongFileBatch-tn-20-rn10000-sec16
+
 
 	@Test
 	public void testWriteLongFile() throws InterruptedException {
 		long start = System.currentTimeMillis();
 		File f = new File("/temp/iotest/LOAN1.txt");
+		if(f.exists()) {
+			f.delete();
+		}
 		String s = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
-		int tn = 20;
-		int rn = 100000;
-		ExecutorService exec = new ThreadPoolExecutor(0, tn << 1, 60, TimeUnit.SECONDS,
-				new LinkedBlockingDeque<Runnable>(tn << 1));
+		ExecutorService exec = new ThreadPoolExecutor(0, tn, 60, TimeUnit.SECONDS,
+				new LinkedBlockingDeque<Runnable>(bloking));
 		for (int i = 0; i < tn; i++) {
 			final int idx = i;
 			exec.submit(() -> {
@@ -54,7 +63,7 @@ public class LongFileRWTest {
 
 		exec.awaitTermination(30, TimeUnit.MINUTES);
 		long end = System.currentTimeMillis();
-		System.out.println((end - start) * 1.0 / 1000);
+		System.out.println("testWriteLongFile-tn-" + tn + "-rn" + rn + "-sec" + TimeUnit.MILLISECONDS.toSeconds(end - start));
 		// write1/write2= 559.89/76.112 = 7.36
 	}
 
@@ -63,11 +72,12 @@ public class LongFileRWTest {
 	public void testWriteLongFileBatch() throws InterruptedException {
 		long start = System.currentTimeMillis();
 		File f = new File("/temp/iotest/LOAN2.txt");
+		if(f.exists()) {
+			f.delete();
+		}
 		String s = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
-		int tn = 20;
-		int rn = 100000;
-		ExecutorService exec = new ThreadPoolExecutor(0, tn << 1, 60, TimeUnit.SECONDS,
-				new LinkedBlockingDeque<Runnable>(tn << 1));
+		ExecutorService exec = new ThreadPoolExecutor(0, tn, 60, TimeUnit.SECONDS,
+				new LinkedBlockingDeque<Runnable>(bloking));
 		for (int i = 0; i < tn; i++) {
 			final int idx = i;
 			exec.submit(() -> {
@@ -96,7 +106,7 @@ public class LongFileRWTest {
 		exec.shutdown();
 		exec.awaitTermination(30, TimeUnit.MINUTES);
 		long end = System.currentTimeMillis();
-		System.out.println((end - start) * 1.0 / 1000);
+		System.out.println("testWriteLongFileBatch-tn-" + tn + "-rn" + rn + "-sec" + TimeUnit.MILLISECONDS.toSeconds(end - start));
 	}
 
 	@Test
@@ -104,7 +114,6 @@ public class LongFileRWTest {
 		long start = System.currentTimeMillis();
 		File f = new File("/temp/iotest/LOAN1.txt");
 		File dir = new File("/temp/iotest/LOAN1");
-		int lines = 10000;
 		long i = 0;
 		File fi = null;
 		String name = FilenameUtils.getBaseName(f.getName());
@@ -128,7 +137,6 @@ public class LongFileRWTest {
 		long start = System.currentTimeMillis();
 		File f = new File("/temp/iotest/LOAN1.txt");
 		File dir = new File("/temp/iotest/LOAN1");
-		int lines = 10000;
 		long i = 0;
 		File fi = null;
 		String name = FilenameUtils.getBaseName(f.getName());
@@ -154,7 +162,6 @@ public class LongFileRWTest {
 		long start = System.currentTimeMillis();
 		File f = new File("/temp/iotest/LOAN1.txt");
 		File dir = new File("/temp/iotest/LOAN11");
-		int lines = 10000;
 		long i = 0;
 		File fi = null;
 		String name = FilenameUtils.getBaseName(f.getName());
@@ -186,7 +193,6 @@ public class LongFileRWTest {
 	@Test
 	public void testSpiltLongFileByLine() {
 		File f = new File("/temp/iotest/LOAN.txt");
-		int lines = 10000;
 		long i = 0;
 		File fi = null;
 		File p = f.getParentFile();
@@ -214,7 +220,6 @@ public class LongFileRWTest {
 	@Test
 	public void testSpiltLongFileByLine2() {
 		File f = new File("/temp/iotest/LOAN.txt");
-		int lines = 10000;
 		long i = 0;
 		File fi = null;
 		File p = f.getParentFile();
