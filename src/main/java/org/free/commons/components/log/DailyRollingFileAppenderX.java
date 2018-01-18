@@ -212,7 +212,7 @@ public class DailyRollingFileAppenderX extends FileAppender {
     if(result) {
       LogLog.debug(fileName +" -> "+ scheduledFilename);
     } else {
-//      LogLog.error("Failed to rename ["+fileName+"] to ["+scheduledFilename+"].");
+//      TODO LogLog.error("Failed to rename ["+fileName+"] to ["+scheduledFilename+"].");
     	FileUtils.copyFile(file, target);
     	FileUtils.write(file, "", encoding, false);
     }
