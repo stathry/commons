@@ -134,11 +134,15 @@
 			<artifactId>commons-collections</artifactId>
 			<version>3.1</version>
 		</dependency>
-		<!--commons-codec -->
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.5</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-configuration</groupId>
+		    <artifactId>commons-configuration</artifactId>
+		    <version>1.10</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
