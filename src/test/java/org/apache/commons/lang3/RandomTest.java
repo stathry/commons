@@ -49,7 +49,7 @@ public class RandomTest {
 
 	@Test
 	public void test4() {
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 6; i++) {
 			System.out.println(RandomStringUtils.randomNumeric(6));
 		}
 	}
@@ -58,10 +58,6 @@ public class RandomTest {
 		for (int i = 0; i < 10; i++) {
 			System.out.println(RandomStringUtils.random(6, true, true));
 		}
-	}
-	@Test
-	public void test6() {
-		System.out.println(StringUtils.repeat("abcdefghijklmnopqrstuvwxyz", 100));
 	}
 
 }
