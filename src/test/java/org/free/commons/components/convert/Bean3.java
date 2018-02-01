@@ -3,7 +3,7 @@
  */
 package org.free.commons.components.convert;
 
-import org.free.commons.components.annotation.validation.VDate;
+import org.bryadong.commons.annotation.validation.VDate;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 

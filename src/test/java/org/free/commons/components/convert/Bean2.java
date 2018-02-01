@@ -3,7 +3,7 @@
  */
 package org.free.commons.components.convert;
 
-import org.free.commons.components.annotation.convert.CNum;
+import org.bryadong.commons.annotation.convert.CNum;
 
 /**
  * @author Demon

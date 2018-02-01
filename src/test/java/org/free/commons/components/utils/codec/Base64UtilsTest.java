@@ -5,7 +5,7 @@ package org.free.commons.components.utils.codec;
 
 import static org.junit.Assert.*;
 
-import org.free.commons.components.utils.codec.Base64Utils;
+import org.bryadong.commons.utils.codec.Base64Utils;
 import org.junit.Test;
 
 /**

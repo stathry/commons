@@ -5,9 +5,9 @@ package org.free.commons.components.utils;
 
 import static org.junit.Assert.*;
 
+import org.bryadong.commons.pojo.dto.ValidateResult;
+import org.bryadong.commons.utils.ValidationUtils;
 import org.free.commons.components.convert.Bean3;
-import org.free.commons.components.pojo.dto.ValidateResult;
-import org.free.commons.components.utils.ValidationUtils;
 import org.junit.Test;
 
 /**

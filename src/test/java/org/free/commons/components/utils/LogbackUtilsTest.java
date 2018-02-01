@@ -2,7 +2,7 @@ package org.free.commons.components.utils;
 
 import static org.junit.Assert.*;
 
-import org.free.commons.components.log.LogbackUtils;
+import org.bryadong.commons.log.LogbackUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;

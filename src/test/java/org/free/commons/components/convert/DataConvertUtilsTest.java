@@ -3,7 +3,7 @@
  */
 package org.free.commons.components.convert;
 
-import org.free.commons.components.utils.DataConvertUtils;
+import org.bryadong.commons.utils.DataConvertUtils;
 import org.junit.Test;
 
 

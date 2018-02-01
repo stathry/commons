@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.List;
 import java.util.Map;
 
+import org.bryadong.commons.utils.ConfigManager;
 import org.junit.Assert;
 import org.junit.Test;
 

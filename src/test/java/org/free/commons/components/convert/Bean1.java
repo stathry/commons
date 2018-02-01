@@ -5,7 +5,7 @@ package org.free.commons.components.convert;
 
 import java.io.Serializable;
 
-import org.free.commons.components.annotation.validation.VDate;
+import org.bryadong.commons.annotation.validation.VDate;
 
 /**
  * @author Demon
