@@ -55,8 +55,14 @@ public class RandomTest {
 	}
 	@Test
 	public void test5() {
-		for (int i = 0; i < 10; i++) {
-			System.out.println(RandomStringUtils.random(6, true, true));
+		for (int i = 0; i < 100; i++) {
+			System.out.println(RandomStringUtils.random(4, true, false));
+		}
+	}
+	@Test
+	public void test6() {
+		for (int i = 0; i < 100; i++) {
+			System.out.println(RandomStringUtils.random(4, 'p', 'h', 'a', 'n'));
 		}
 	}
 
