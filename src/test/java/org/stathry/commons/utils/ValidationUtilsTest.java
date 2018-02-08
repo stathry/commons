@@ -1,5 +1,5 @@
 /*
- * Copyright © PING AN INSURANCE (GROUP) COMPANY OF CHINA ，LTD. All Rights Reserved
+ * Copyright © stathry@126.com All Rights Reserved
  */
 package org.stathry.commons.utils;
 
@@ -11,7 +11,7 @@ import org.stathry.commons.pojo.dto.ValidateResult;
 import org.stathry.commons.utils.ValidationUtils;
 
 /**
- * @author dongdaiming911@pingan.com
+ * @author stathry@126.com
  * @date 2017年5月21日
  */
 public class ValidationUtilsTest {

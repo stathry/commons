@@ -1,5 +1,5 @@
 /*
- * Copyright © PING AN INSURANCE (GROUP) COMPANY OF CHINA ，LTD. All Rights Reserved
+ * Copyright © stathry@126.com All Rights Reserved
  */
 package org.stathry.commons.annotation.validation;
 
@@ -15,7 +15,7 @@ import javax.validation.Payload;
 import org.stathry.commons.core.validation.DateValidator;
 
 /**
- * @author dongdaiming911@pingan.com
+ * @author stathry@126.com
  * @date 2017年5月21日
  */
 @Documented
