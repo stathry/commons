@@ -49,8 +49,8 @@ public class RandomTest {
 
 	@Test
 	public void test4() {
-		for (int i = 0; i < 6; i++) {
-			System.out.println(RandomStringUtils.randomNumeric(6));
+		for (int i = 0; i < 10; i++) {
+			System.out.println(RandomStringUtils.randomNumeric(8));
 		}
 	}
 	@Test

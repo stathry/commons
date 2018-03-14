@@ -260,6 +260,11 @@
 			<artifactId>httpmime</artifactId>
 			<version>4.5.1</version>
 		</dependency>
+        <dependency>
+            <groupId>xyz.downgoon</groupId>
+            <artifactId>snowflake</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 	</dependencies>
 	<build>
 		<plugins>
