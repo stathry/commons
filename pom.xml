@@ -265,7 +265,12 @@
             <artifactId>snowflake</artifactId>
             <version>1.0.0</version>
         </dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+    </dependencies>
 	<build>
 		<plugins>
 			<plugin>
