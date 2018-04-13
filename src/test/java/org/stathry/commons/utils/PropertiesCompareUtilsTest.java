@@ -45,7 +45,7 @@ public class PropertiesCompareUtilsTest {
     @Test
     public void testCompareProperties() throws IOException {
 //        boolean allSame = compareProperties("/temp/galaxyETL-config-prod.properties", "/temp/galaxyETL-config-test.properties");
-        boolean allSame = compareProperties("/temp/galaxy-config-test.properties", "/temp/galaxy-config-prod.properties");
+        boolean allSame = compareProperties("/temp/galaxy-dev-config.properties", "/temp/galaxy-prod-config.properties");
         System.out.println();
         System.out.println("allSame=" + allSame);
     }
