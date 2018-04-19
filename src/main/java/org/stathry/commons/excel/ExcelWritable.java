@@ -21,7 +21,7 @@ import java.util.Map;
  * @author stathry
  * @date 2018/4/19
  */
-public interface ExcelWritable {
+public interface ExcelWritable extends Excel {
 
     void writeMaps(String path, List<Map<String, String>> maps, List<String> keys);
 

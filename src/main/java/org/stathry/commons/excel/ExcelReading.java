@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.jeecgframework.poi.excel.entity.enmus.ExcelType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -60,8 +61,8 @@ public class ExcelReading implements ExcelReadable {
         Assert.notEmpty(keys, "required keys.");
         Assert.isTrue(keys.size() == (area.getColumnEnd() - area.getColumnStart()), "keys size not match to columns.");
         String filename = FilenameUtils.getName(path);
-        ExcelType type = ExcelUtils.filenameToType(filename);
-        Assert.notNull(type, "file is not a excel," + path);
+        String type =fileNameToType(filename);
+        Assert.hasText(type, "file is not a excel," + path);
 
         InputStream in = null;
         InputStream bin = null;

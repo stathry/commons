@@ -18,7 +18,7 @@ import java.util.Map;
  * @author stathry
  * @date 2018/4/19
  */
-public interface ExcelReadable {
+public interface ExcelReadable extends Excel {
 
     List<Map<String, String>> readToMaps(String path, List<String> keys);
 

@@ -30,11 +30,5 @@ public class ExcelUtils {
 
     private ExcelUtils() {}
 
-    public static ExcelType filenameToType(String filename) {
-        if(StringUtils.isBlank(filename)) {
-            return null;
-        }
-        return ExcelType.toType(FilenameUtils.getExtension(filename));
-    }
 
 }
