@@ -12,7 +12,6 @@ import org.apache.commons.codec.binary.Base64;
  */
 public final class Base64Utils {
 
-	
 	public static String decode(String data) {
 		return new String(Base64.decodeBase64(data));
 	}

@@ -59,7 +59,7 @@ public class ExcelUtils {
 		}
 		
 		FileOutputStream out = null;
-		FileUtils.mkdirs(path);
+		FileUtils.createParentDir(path);
 		try {
 			out = new FileOutputStream(path);
 			workbook.write(out);
@@ -123,7 +123,7 @@ public class ExcelUtils {
 		}
 		
 		FileOutputStream out = null;
-		FileUtils.mkdirs(path);
+		FileUtils.createParentDir(path);
 		try {
 			out = new FileOutputStream(path);
 			workbook.write(out);

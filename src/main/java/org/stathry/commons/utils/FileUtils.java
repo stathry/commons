@@ -33,16 +33,24 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		return new File(path).exists();
 	}
 
-	public static boolean mkdirs(String path) {
-		if (StringUtils.isBlank(path)) {
-			return false;
-		}
-		File parent = new File(path).getParentFile();
-		if (!parent.exists()) {
-			return parent.mkdirs();
-		}
-		return parent.exists();
-	}
+    public static boolean createParentDir(String path) {
+        if (StringUtils.isBlank(path)) {
+            return false;
+        }
+        return createParentDir(new File(path));
+    }
+
+    public static boolean createParentDir(File file) {
+        if (file == null) {
+            return false;
+        }
+        File parent = file.getParentFile();
+        if(parent == null) {
+            return false;
+        }
+        boolean exists = parent.exists();
+        return exists ? exists : parent.mkdirs();
+    }
 
 	public static boolean createFile(String path) throws IOException {
 		if (StringUtils.isBlank(path)) {
@@ -53,16 +61,25 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	}
 
 	public static boolean createFile(File file) throws IOException {
+		if (file == null || file.exists()) {
+			return file == null ? false : true;
+		}
+		createParentDir(file);
+		return file.createNewFile();
+	}
+
+	public static boolean createNewFile(String path) throws IOException {
+		if (StringUtils.isBlank(path)) {
+			return false;
+		}
+		return createNewFile(new File(path));
+	}
+
+	public static boolean createNewFile(File file) throws IOException {
 		if (file == null) {
 			return false;
 		}
-		if (file.exists()) {
-			return true;
-		}
-		File parent = file.getParentFile();
-		if (!parent.exists()) {
-			parent.mkdirs();
-		}
+		createParentDir(file);
 		return file.createNewFile();
 	}
 
