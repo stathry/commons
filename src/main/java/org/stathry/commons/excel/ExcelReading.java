@@ -44,7 +44,7 @@ public class ExcelReading implements ExcelReadable {
 
     @Override
     public List<Map<String, String>> readToMaps(String path, List<String> keys) {
-        return readToMaps(path, keys);
+        return readToMaps(path, keys, new FileArea(0, maxColumn(), 0, maxRow()));
     }
 
     @Override
@@ -54,6 +54,118 @@ public class ExcelReading implements ExcelReadable {
 
     @Override
     public List<Map<String, String>> readToMaps(String path, Integer sheetIndex, List<String> keys, FileArea area) {
+        checkReadParams(path, sheetIndex, keys, area);
+
+        return readDataToMapsFromExcel(path, sheetIndex,null, keys, area);
+    }
+
+    @Override
+    public List<Map<String, String>> readToMaps(String path, String sheetName, List<String> keys, FileArea area) {
+        checkReadParams(path, null, keys, area);
+
+        return readDataToMapsFromExcel(path, null,sheetName, keys, area);
+    }
+
+    @Override
+    public List<List<String>> readToLists(String path) {
+        return readToLists(path, new FileArea(0, maxColumn(), 0, maxRow()));
+    }
+
+    @Override
+    public List<List<String>> readToLists(String path, FileArea area) {
+        return readToLists(path, 0, area);
+    }
+
+    @Override
+    public List<List<String>> readToLists(String path, Integer sheetIndex, FileArea area) {
+        checkReadParams(path, sheetIndex, area);
+
+        return readDataToListsFromExcel(path, sheetIndex, null, area);
+    }
+
+    @Override
+    public List<List<String>> readToLists(String path, String sheetName, FileArea area) {
+        checkReadParams(path, null, area);
+
+        return readDataToListsFromExcel(path, null, sheetName, area);
+    }
+
+    @Override
+    public String readOneCell(String path, int rowIndex, int cellIndex) {
+        return null;
+    }
+
+    @Override
+    public String readOneCell(Sheet sheet, int rowIndex, int cellIndex) {
+        return null;
+    }
+
+    private List<Map<String, String>> readDataToMapsFromExcel(String path, Integer sheetIndex, String sheetName,
+                                                              List<String> keys, FileArea area) {
+        String filename = FilenameUtils.getName(path);
+        InputStream in = null;
+        InputStream bin = null;
+        Workbook book = null;
+        try {
+            in = new FileInputStream(path);
+            bin = new BufferedInputStream(in);
+            book = WorkbookFactory.create(bin);
+
+            Sheet sheet = getBookSheet(sheetIndex, sheetName, book);
+            if(sheet == null) {
+                LOGGER.warn("sheet is empty, path {}.", path);
+                return Collections.emptyList();
+            }
+
+            LOGGER.info("loading data from excel {}, area {}.", filename, area.toString());
+            List<Map<String, String>> data = readDataToMaps(keys, area, sheet);
+            LOGGER.info("loaded data from excel {} completed, size {}.", filename, data.size());
+            return data;
+        } catch (Exception e) {
+            LOGGER.error("read excel {} error.", path);
+            LOGGER.error("read excel error.", e);
+        } finally {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(bin);
+            IOUtils.closeQuietly(book);
+        }
+        return null;
+    }
+
+    private List<List<String>> readDataToListsFromExcel(String path, Integer sheetIndex, String sheetName, FileArea area) {
+        String filename = FilenameUtils.getName(path);
+        InputStream in = null;
+        InputStream bin = null;
+        Workbook book = null;
+        try {
+            in = new FileInputStream(path);
+            bin = new BufferedInputStream(in);
+            book = WorkbookFactory.create(bin);
+
+            Sheet sheet = getBookSheet(sheetIndex, sheetName, book);
+            if(sheet == null) {
+                LOGGER.warn("sheet is empty, path {}.", path);
+                return Collections.emptyList();
+            }
+
+            LOGGER.info("loading data from excel {}, area {}.", filename, area.toString());
+
+            List<List<String>> data = readDataToLists(area, sheet);
+
+            LOGGER.info("loaded data from excel {} completed, size {}.", filename, data.size());
+            return data;
+        } catch (Exception e) {
+            LOGGER.error("read excel {} error.", path);
+            LOGGER.error("read excel error.", e);
+        } finally {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(bin);
+            IOUtils.closeQuietly(book);
+        }
+        return null;
+    }
+
+    private void checkReadParams(String path, Integer sheetIndex, List<String> keys, FileArea area) {
         Assert.notNull(area, "required area.");
         Assert.isTrue(area.getColumnStart() >= 0 && area.getColumnEnd() <= maxColumn(), "invalid area.");
         Assert.isTrue(area.getRowStart() >= 0 && area.getRowEnd() <= maxRow(), "invalid area.");
@@ -63,46 +175,29 @@ public class ExcelReading implements ExcelReadable {
         String filename = FilenameUtils.getName(path);
         String type =fileNameToType(filename);
         Assert.hasText(type, "file is not a excel," + path);
-
-        InputStream in = null;
-        InputStream bin = null;
-        Workbook book = null;
-        try {
-            in = new FileInputStream(path);
-            bin = new BufferedInputStream(in);
-            book = WorkbookFactory.create(bin);
-            Sheet sheet = getBookSheet(sheetIndex, null, book);
-            System.out.println(getBookSheet(0, null, book) == getBookSheet(1, null, book));
-            if(sheet == null) {
-                LOGGER.warn("sheet is empty, path {}.", path);
-                return Collections.emptyList();
-            }
-
-            LOGGER.info("loading data from excel {}, area {}.", filename, area.toString());
-
-            List<Map<String, String>> data = new ArrayList<>(area.getRowEnd() - area.getRowStart());
-            readDataToMaps(keys, area, sheet, data);
-
-            LOGGER.info("loaded data from excel {} completed, size {}.", filename, data.size());
-            return data;
-
-        } catch (Exception e) {
-            LOGGER.error("read excel {} error.", path);
-            LOGGER.error("read excel error.", e);
-        } finally {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(book);
-        }
-        return null;
+        Assert.isTrue(sheetIndex == null || sheetIndex >= 0, "sheetIndex must great than 0.");
     }
 
-    private void readDataToMaps(List<String> keys, FileArea area, Sheet sheet, List<Map<String, String>> data) {
+    private void checkReadParams(String path, Integer sheetIndex, FileArea area) {
+        Assert.notNull(area, "required area.");
+        Assert.isTrue(area.getColumnStart() >= 0 && area.getColumnEnd() <= maxColumn(), "invalid area.");
+        Assert.isTrue(area.getRowStart() >= 0 && area.getRowEnd() <= maxRow(), "invalid area.");
+        Assert.isTrue(FileUtils.exists(path), "file not found," + path);
+        String filename = FilenameUtils.getName(path);
+        String type =fileNameToType(filename);
+        Assert.hasText(type, "file is not a excel," + path);
+        Assert.isTrue(sheetIndex == null || sheetIndex >= 0, "sheetIndex must great than 0.");
+    }
+
+    private List<Map<String, String>> readDataToMaps(List<String> keys, FileArea area, Sheet sheet) {
+        List<Map<String, String>> data = new ArrayList<>(area.getRowEnd() - area.getRowStart());
         Row row;
         Cell cell;
         int keySize = keys.size();
         Map<String, String> map;
 
         for (int iRow = area.getRowStart(), rowEnd = area.getRowEnd(); iRow < rowEnd; iRow++) {
+            LOGGER.debug("loading data, rowIndex {}.", iRow);
             row = sheet.getRow(iRow);
             if (row == null) {
                 break;
@@ -113,10 +208,36 @@ public class ExcelReading implements ExcelReadable {
                 if (cell == null) {
                     continue;
                 }
-                map.put(keys.get(iCell), StringUtils.trimToEmpty(cellValue(cell)));
+                map.put(keys.get(iCell), cellValue(cell));
             }
             data.add(map);
         }
+        return data;
+    }
+
+    private List<List<String>> readDataToLists(FileArea area, Sheet sheet) {
+        List<List<String>> data = new ArrayList<>(area.getRowEnd() - area.getRowStart());
+        Row row;
+        Cell cell;
+        List<String> list;
+        int columns = area.getColumnEnd() - area.getColumnStart();
+        for (int iRow = area.getRowStart(), rowEnd = area.getRowEnd(); iRow < rowEnd; iRow++) {
+            LOGGER.debug("loading data, rowIndex {}.", iRow);
+            row = sheet.getRow(iRow);
+            if (row == null) {
+                break;
+            }
+            list = new ArrayList<>(columns);
+            for (int iCell = area.getColumnStart(), cellEnd = area.getColumnEnd(); iCell < cellEnd; iCell++) {
+                cell = row.getCell(iCell);
+                if (cell == null) {
+                    continue;
+                }
+                list.add(cellValue(cell));
+            }
+            data.add(list);
+        }
+        return data;
     }
 
     private Sheet getBookSheet(Integer sheetIndex, String sheetName, Workbook book) {
@@ -135,40 +256,5 @@ public class ExcelReading implements ExcelReadable {
             }
             return sheet;
         }
-    }
-
-    @Override
-    public List<Map<String, String>> readToMaps(String path, String sheetName, List<String> keys, FileArea area) {
-        return null;
-    }
-
-    @Override
-    public List<List<String>> readToLists(String path) {
-        return null;
-    }
-
-    @Override
-    public List<List<String>> readToLists(String path, FileArea area) {
-        return null;
-    }
-
-    @Override
-    public List<List<String>> readToLists(String path, Integer sheetIndex, FileArea area) {
-        return null;
-    }
-
-    @Override
-    public List<List<String>> readToLists(String path, String sheetName, FileArea area) {
-        return null;
-    }
-
-    @Override
-    public String readOneCell(String path, int rowIndex, int cellIndex) {
-        return null;
-    }
-
-    @Override
-    public String readOneCell(Sheet sheet, int rowIndex, int cellIndex) {
-        return null;
     }
 }
