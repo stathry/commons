@@ -84,4 +84,30 @@ public class Exec2Test {
         exec.awaitTermination(3, TimeUnit.MINUTES);
     }
 
+    @Test
+    public void testExecReject2() throws InterruptedException {
+        int tasks = 10_0000;
+        ExecutorService exec = Executors2.newDefaultExecutorService();
+        for (int i = 0; i < tasks; i++) {
+            final int index = i;
+            // execute与submit的区别是submit会将任务包装成FutureTask然后再调用execute最后返回FutureTask,execute不会把任务包装成FutureTask，也没有返回值
+            exec.execute(new CustTask1());
+        }
+        exec.shutdown();
+        exec.awaitTermination(3, TimeUnit.MINUTES);
+    }
+
+    private static class CustTask1 implements Runnable {
+
+        @Override
+        public void run() {
+            System.out.println("run custTask1.");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
