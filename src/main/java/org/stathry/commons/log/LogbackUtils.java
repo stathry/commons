@@ -73,14 +73,12 @@ public class LogbackUtils {
 		return rappender;
 	}
 
-	/**
-	 * 
-	 * @param context
-	 * @param appenderName
-	 * @param filename
-	 * @param filenamePattern
-	 * @return
-	 */
+    /**
+     *
+     * @param context
+     * @param appenderName
+     * @return
+     */
 	private static ConsoleAppender<ILoggingEvent> createConsoleAppender(LoggerContext context, String appenderName) {
 		ConsoleAppender<ILoggingEvent> rappender = new ConsoleAppender<ILoggingEvent>();
 		rappender.setName(appenderName);
@@ -125,9 +123,10 @@ public class LogbackUtils {
 		return logger;
 	}
 
-	/**
-	 * @param context
-	 */
+    /**
+     *
+     * @return
+     */
 	private static Map<String, OrgAppenders<ILoggingEvent>> initOrgAppenders() {
 		Map<String, OrgAppenders<ILoggingEvent>> apps = new HashMap<>(CONF.getOrgCodes().size());
 		RollingFileAppender<ILoggingEvent> fileApp;
