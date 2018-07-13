@@ -7,6 +7,7 @@ import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -55,9 +56,14 @@ public class Executors2 {
 
         @Override
         public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-            CustomizableThreadFactory factory = (CustomizableThreadFactory)executor.getThreadFactory();
-            LOGGER.warn("threadPoolPrefix {}, corePoolSize {}, maxPoolSize {}, workQueueSize {}, rejected task {}." ,
-                    factory.getThreadNamePrefix(), executor.getCorePoolSize(), executor.getMaximumPoolSize(), executor.getQueue().size(), r.toString());
+            ThreadFactory factory = executor.getThreadFactory();
+            String threadNamePrefix = "";
+            if(factory.getClass() == CustomizableThreadFactory.class) {
+                CustomizableThreadFactory factory1 = (CustomizableThreadFactory)factory;
+                threadNamePrefix = factory1.getThreadNamePrefix();
+            }
+            LOGGER.warn("threadNamePrefix {}, corePoolSize {}, maxPoolSize {}, workQueueSize {}, rejected task {}." ,
+                    new Object[]{threadNamePrefix, executor.getCorePoolSize(), executor.getMaximumPoolSize(), executor.getQueue().size(), r.toString()});
         }
     }
 }
