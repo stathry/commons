@@ -1,60 +1,46 @@
 package org.stathry.commons.utils;
 
-import org.apache.commons.configuration.AbstractConfiguration;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
-
 import com.alibaba.fastjson.JSON;
 
+import java.util.ResourceBundle;
+
 /**
- * TODO
- * 
- * @author dongdaiming
- * @date 2018年1月18日
+ * 配置管理
+ * Created by dongdaiming on 2018-06-28 16:15
  */
 public class ConfigManager {
-	private static final String FILENAME = "config.properties";
-	private static final Configuration CONF;
 
-	static {
-		AbstractConfiguration.setDefaultListDelimiter('~');
-		try {
-			CONF = new PropertiesConfiguration(FILENAME);
-		} catch (ConfigurationException e) {
-			throw new IllegalStateException(FILENAME);
-		}
-	}
+    private ConfigManager() {}
 
-	private ConfigManager() {
-	}
+    private static final String BASE_RESOURCE_NAME = "config/";
+    private static final ResourceBundle DEFAULT_BUNDLE = ResourceBundle.getBundle(BASE_RESOURCE_NAME + "config");
 
-	public static String get(String key) {
-		return CONF.getString(key);
-	}
+    public static String get(String key) {
+        return DEFAULT_BUNDLE.getString(key);
+    }
 
-	public static int getInt(String key) {
-		return CONF.getInt(key);
-	}
+    public static String getString(String key) {
+        return DEFAULT_BUNDLE.getString(key);
+    }
 
-	public static int[] getIntArray(String key) {
-		String[] strArr = CONF.getStringArray(key);
-		int[] intArr = new int[strArr.length];
-		for (int i = 0; i < strArr.length; i++) {
-			intArr[i] = Integer.parseInt(strArr[i]);
-		}
-		return intArr;
-	}
-	
-	public static String[] getStringArray(String key) {
-		return CONF.getStringArray(key);
-	}
+    public static int getInt(String key) {
+        return Integer.parseInt(DEFAULT_BUNDLE.getString(key));
+    }
 
-	public static <T> T get(String key, Class<T> clazz) {
-		return JSON.parseObject(CONF.getString(key), clazz);
-	}
+    public static long getLong(String key) {
+        return Long.parseLong(DEFAULT_BUNDLE.getString(key));
+    }
 
-	public static Configuration getConfig() {
-		return CONF;
-	}
+    public static <T> T getObject(String key, Class<T> clazz) {
+        return JSON.parseObject(DEFAULT_BUNDLE.getString(key) ,clazz);
+    }
+
+    public static String getByResource(String resourceName, String key) {
+        return ResourceBundle.getBundle(BASE_RESOURCE_NAME + resourceName).getString(key);
+    }
+
+    public static <T> T getObjectByResource(String resourceName, String key, Class<T> clazz) {
+        return JSON.parseObject(ResourceBundle.getBundle(BASE_RESOURCE_NAME + resourceName).getString(key) ,clazz);
+    }
+
 }

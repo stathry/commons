@@ -19,31 +19,30 @@ public class ConfigManagerTest {
 
 	@Test
 	public void test1() {
-		String[] a = ConfigManager.getConfig().getStringArray("log4j.orgCodes");
-		System.out.println(a.length);
-		System.out.println(a[1]);
+		List<String> list = ConfigManager.getObject("log4j.orgCodes", List.class);
+		System.out.println(list.size());
+		System.out.println(list.get(0));
 	}
 
 	@Test
 	public void test2() {
-		int[] a = ConfigManager.getIntArray("ints");
-		System.out.println(a.length);
-		System.out.println(a[1]);
-		System.out.println(a[1]);
+		List<Integer> list = ConfigManager.getObject("ints", List.class);
+		System.out.println(list.size());
+		System.out.println(list.get(1));
 	}
 	
 	@Test
 	public void test3() {
-		Object v = ConfigManager.getConfig().getProperty("k8");
+		String v = ConfigManager.get("k8");
 		System.out.println(v);
 	}
 	@Test
 	public void test4() {
-		Map<String, Map<String,String>> m = ConfigManager.get("k6", Map.class);
+		Map<String, Map<String,String>> m = ConfigManager.getObject("k6", Map.class);
 		Assert.assertNotNull(m);
 		Assert.assertEquals("BEAN1", m.get("ORG1").get("SERVICE1"));
 		
-		List<Integer> l = ConfigManager.get("k9", List.class);
+		List<Integer> l = ConfigManager.getObject("k9", List.class);
 		Assert.assertTrue(22 == l.get(1));
 	}
 	

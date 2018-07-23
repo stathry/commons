@@ -21,7 +21,7 @@ import ch.qos.logback.core.util.StatusPrinter;
 
 public class LogbackUtils {
 
-	private static final LogConfig CONF = ConfigManager.get("app.logback", LogConfig.class);
+	private static final LogConfig CONF = ConfigManager.getObject("app.logback", LogConfig.class);
 	private static final String MSG_PATTERN = ConfigManager.get("app.logback.msgPattern");
 	private static final String FILENAME_PATTERN = ConfigManager.get("app.logback.filenamePattern");
 	private static final String FSEP = File.separator;

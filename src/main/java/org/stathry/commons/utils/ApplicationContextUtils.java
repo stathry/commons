@@ -3,12 +3,14 @@
  */
 package org.stathry.commons.utils;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * @author Demon
+ * 获取spring容器中的bean
+ * @author stathry
  *
  * 2016年8月18日
  */
@@ -17,8 +19,7 @@ public class ApplicationContextUtils implements ApplicationContextAware {
 	private static ApplicationContext context;
 
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		ApplicationContextUtils.context = applicationContext;
 	}
 	
@@ -28,6 +29,10 @@ public class ApplicationContextUtils implements ApplicationContextAware {
 	
 	public static Object getBean(String beanName) {
 		return context.getBean(beanName);
+	}
+
+	public static <T> T getBean(String beanName, Class<T> clazz) {
+		return (T)context.getBean(beanName);
 	}
 	
 	public static ApplicationContext getContext() {

@@ -14,6 +14,22 @@ import java.util.concurrent.TimeUnit;
 public class SnowflakeTest {
 
     @Test
+    public void testSnowflake1() {
+        Snowflake snowflake = new Snowflake(1, 1);
+        String s = String.valueOf(snowflake.nextId());
+        Assert.assertEquals(18, s.length());
+        System.out.println(s);
+    }
+
+    @Test
+    public void testSnowflakes() {
+        Snowflake snowflake = new Snowflake(1, 1);
+        for (int i = 0; i < 10; i++) {
+            System.out.println(snowflake.nextId());
+        }
+    }
+
+    @Test
     public void testConcurrent() throws Exception {
         final int n = 8;
         final int limit = 1000000;

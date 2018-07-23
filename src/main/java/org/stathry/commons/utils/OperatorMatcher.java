@@ -22,7 +22,7 @@ import java.util.Set;
  * @author dongdaiming
  * @date 2018/5/10
  */
-@Component
+//@Component
 public class OperatorMatcher implements OperatorMatchable, InitializingBean {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(OperatorMatcher.class);
