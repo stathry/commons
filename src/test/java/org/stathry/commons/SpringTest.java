@@ -30,7 +30,7 @@ public class SpringTest {
     }
 
     @Test
-    public void testAppContextUtils() {
+    public void testGetBeanByNameAndType() {
         DruidDataSource bean = ApplicationContextUtils.getBean("dataSource", DruidDataSource.class);
         System.out.println(bean);
         Assert.assertNotNull(bean);

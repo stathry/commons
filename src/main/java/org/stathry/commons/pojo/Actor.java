@@ -4,6 +4,7 @@
 package org.stathry.commons.pojo;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 
@@ -24,9 +25,15 @@ public class Actor {
       
     /**  */
     private Date lastUpdate;
-      
-  
-    public Integer getActorId(){  
+
+    public Actor(Integer actorId, String firstName, String lastName, Date lastUpdate) {
+        this.actorId = actorId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.lastUpdate = lastUpdate;
+    }
+
+    public Integer getActorId(){
       return actorId;  
     }  
     
@@ -56,8 +63,22 @@ public class Actor {
     
     public void setLastUpdate(Date lastUpdate){  
       this.lastUpdate = lastUpdate;  
-    } 
-     
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Actor actor = (Actor) o;
+        return Objects.equals(actorId, actor.actorId) &&
+                Objects.equals(firstName, actor.firstName) &&
+                Objects.equals(lastName, actor.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(actorId, firstName, lastName);
+    }
 
     @Override
     public String toString() {

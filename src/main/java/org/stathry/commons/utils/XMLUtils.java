@@ -28,6 +28,7 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ResourceUtils;
 
 public final class XMLUtils {
 	
@@ -72,6 +73,15 @@ public final class XMLUtils {
 		}
 		 return doc;
 	}
+
+    public static Document parseFromClasspath(String resourceName) throws Exception {
+        resourceName = resourceName.startsWith("classpath:") ? resourceName : "classpath:" + resourceName;
+        return new SAXReader().read(ResourceUtils.getFile(resourceName));
+    }
+
+	public static String docToString(Document doc) {
+	    return doc.asXML();
+    }
 	
 	@SuppressWarnings("rawtypes")
 	public static List selectNodes(Document doc , String xpath) {
