@@ -1,4 +1,4 @@
-package org.stathry.commons.redis;
+package org.stathry.commons.dao;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.time.DateUtils;
@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.stathry.commons.dao.cache.RedisManager;
+import org.stathry.commons.dao.RedisManager;
 import org.stathry.commons.pojo.Actor;
 
 import java.util.ArrayList;
@@ -44,6 +44,14 @@ public class RedisManagerTest {
         List<String> list = redisManager.get(Arrays.asList("k1", "k2"));
         System.out.println(list);
         Assert.assertEquals(2, list.size());
+    }
+
+    @Test
+    public void testSetGetString() {
+        redisManager.setString("迪丽热巴", "迪丽热巴|迪力木拉提", 3, TimeUnit.MINUTES);
+        String v2 = redisManager.getString("迪丽热巴");
+        System.out.println(v2);
+        Assert.assertEquals("迪丽热巴|迪力木拉提", v2);
     }
 
     @Test

@@ -1,7 +1,10 @@
-package org.stathry.commons.dao.cache;
+package org.stathry.commons.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ListOperations;
-import org.springframework.stereotype.Component;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Repository;
 import org.stathry.commons.utils.ConfigManager;
 
 import java.util.Collection;
@@ -16,14 +19,33 @@ import java.util.concurrent.TimeUnit;
  *
  * @author stathry
  */
-@Component("redisManager")
-public class RedisManager extends AbstractRedisManager<String, Object> {
+@Repository
+public class RedisManager {
 
     private static final long DEFAULT_EXPIRE_MS = ConfigManager.getLong("cache.default.expireMS");
-//    private static final long DEFAULT_EXPIRE_MS = 5 * 60 * 1000;
+    //    private static final long DEFAULT_EXPIRE_MS = 5 * 60 * 1000;
+
+    @Autowired
+    protected RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    protected StringRedisTemplate stringRedisTemplate;
+
+
+    public RedisTemplate<String, Object> getRedisTemplate() {
+        return redisTemplate;
+    }
+
+    public StringRedisTemplate getStringRedisTemplate() {
+        return stringRedisTemplate;
+    }
 
     public Object get(String key) {
         return redisTemplate.opsForValue().get(key);
+    }
+
+    public String getString(String key) {
+        return stringRedisTemplate.opsForValue().get(key);
     }
 
     public <T> List<T> get(List<String> keys) {
@@ -44,7 +66,7 @@ public class RedisManager extends AbstractRedisManager<String, Object> {
     }
 
     // 适用于value为JSONString,含转义字符等复杂格式
-    public void setString(String key, String value, TimeUnit unit, long timeout) {
+    public void setString(String key, String value, long timeout, TimeUnit unit) {
         stringRedisTemplate.opsForValue().set(key, value, timeout, unit);
     }
 
