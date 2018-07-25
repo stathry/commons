@@ -1,9 +1,6 @@
 package org.stathry.commons.dao;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import static org.junit.Assert.*;
-
-import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,16 +9,21 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.stathry.commons.pojo.Actor;
-import org.stathry.commons.pojo.Actor2;
+import org.stathry.commons.pojo.Hero;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * TODO
@@ -34,62 +36,83 @@ public class MongoTest {
     @Autowired
     private MongoManager mongoManager;
 
+    private static final String COLL_NAME = "hero";
+    private static final String FIRST_NAMES = "TYRION";
+    private static final String LAST_NAMES = "LANNISTER";
+
+    private Map<String, Object> initDocWithMap() {
+        Map<String, Object> doc = new HashMap<>(8);
+        doc.put("heroId", new Random().nextInt(10000));
+        doc.put("firstName", RandomStringUtils.random(3, FIRST_NAMES.toCharArray()));
+        doc.put("lastName", RandomStringUtils.random(3, LAST_NAMES.toCharArray()));
+        doc.put("lastUpdate", new Date());
+        return doc;
+    }
+
+    private void batchSaveWithIdAndName(int size, List<Map<String, Object>> list, Integer hid, String lastName) throws InterruptedException {
+        Map<String, Object> doc;
+        for (int i = 0; i < size; i++) {
+            doc = new HashMap<>(8);
+            doc.put("heroId", hid);
+            doc.put("firstName", RandomStringUtils.random(3, FIRST_NAMES.toCharArray()));
+            doc.put("lastName", lastName);
+            doc.put("lastUpdate", new Date());
+            list.add(doc);
+            Thread.sleep(10);
+        }
+        list.add(initDocWithMap());
+        mongoManager.batchSaveDoc(COLL_NAME, list);
+    }
+
     @Test
     public void testSaveDocByMap() {
-        Map<String, Object> doc = new HashMap<>(8);
-        doc.put("actorId", new Random().nextInt(10000));
-        doc.put("firstName", RandomStringUtils.random(3, "迪丽热巴".toCharArray()));
-        doc.put("lastName", RandomStringUtils.random(3, "GOOGLE".toCharArray()));
-        doc.put("lastUpdate", new Date());
-        mongoManager.saveDoc("actor", doc);
+        Map<String, Object> doc = initDocWithMap();
+        mongoManager.saveDoc(COLL_NAME, doc);
         System.out.println(doc);
     }
 
-//    @Test
+    //    @Test
     public void testBatchSaveDocByMap() {
         List<Map<String, Object>> list = new ArrayList<>(5);
-        Map<String, Object> doc;
         for (int i = 0; i < 5; i++) {
-            doc = new HashMap<>(8);
-        doc.put("actorId", new Random().nextInt(10000));
-        doc.put("firstName", RandomStringUtils.random(3, "迪丽热巴".toCharArray()));
-        doc.put("lastName", RandomStringUtils.random(3, "GOOGLE".toCharArray()));
-        doc.put("lastUpdate", new Date());
-        list.add(doc);
+            list.add(initDocWithMap());
         }
-        mongoManager.batchSaveDoc("actor", list);
+        mongoManager.batchSaveDoc(COLL_NAME, list);
     }
 
     @Test
     public void testSaveDocByBean() {
-        Actor2 act = new Actor2(new Random().nextInt(10000),
-                RandomStringUtils.random(3, "迪丽热巴".toCharArray()),
-                RandomStringUtils.random(3, "GOOGLE".toCharArray()),
-                new Date());
-
-        mongoManager.saveMongoDoc( act);
+        Hero act = initDocWithBean();
+        mongoManager.saveMongoDoc(act);
         assertNotNull(act.getId());
         System.out.println("id:" + act.getId() + ", doc:" + act);
     }
 
+    private Hero initDocWithBean() {
+        return new Hero(new Random().nextInt(10000),
+                RandomStringUtils.random(3, FIRST_NAMES.toCharArray()),
+                RandomStringUtils.random(3, LAST_NAMES.toCharArray()),
+                new Date());
+    }
+
     @Test
     public void testSaveDocByNormalBean() {
-        Actor act = new Actor(new Random().nextInt(10000),
-                RandomStringUtils.random(3, "迪丽热巴".toCharArray()),
-                RandomStringUtils.random(3, "GOOGLE".toCharArray()),
+        Hero act = new Hero(new Random().nextInt(10000),
+                RandomStringUtils.random(3, FIRST_NAMES.toCharArray()),
+                RandomStringUtils.random(3, LAST_NAMES.toCharArray()),
                 new Date());
 
-        mongoManager.saveDoc("actor", act);
+        mongoManager.saveDoc(COLL_NAME, act);
         System.out.println(act);
     }
 
-//    @Test
+    //    @Test
     public void testBatchSaveDocByBean() {
-        List<Actor2> list = new ArrayList<>(5);
+        List<Hero> list = new ArrayList<>(5);
         for (int i = 0; i < 5; i++) {
-            list.add(new Actor2(new Random().nextInt(10000),
-                    RandomStringUtils.random(3, "迪丽热巴".toCharArray()),
-                    RandomStringUtils.random(3, "GOOGLE".toCharArray()),
+            list.add(new Hero(new Random().nextInt(10000),
+                    RandomStringUtils.random(3, FIRST_NAMES.toCharArray()),
+                    RandomStringUtils.random(3, LAST_NAMES.toCharArray()),
                     new Date()));
         }
         mongoManager.batchSaveMongoDoc(list);
@@ -97,21 +120,18 @@ public class MongoTest {
 
     @Test
     public void testQueryById() {
-        Actor2 act = new Actor2(new Random().nextInt(10000),
-                RandomStringUtils.random(3, "迪丽热巴".toCharArray()),
-                RandomStringUtils.random(3, "GOOGLE".toCharArray()),
-                new Date());
-
-        mongoManager.saveMongoDoc( act);
+        Hero act = initDocWithBean();
+        mongoManager.saveMongoDoc(act);
         assertNotNull(act.getId());
-        Map<String, Object> map = mongoManager.queryDocById("actor", act.getId());
+
+        Map<String, Object> map = mongoManager.queryDocById(COLL_NAME, act.getId());
         System.out.println(map);
         assertTrue(map != null && !map.isEmpty());
     }
 
     @Test
     public void testQueryAll() {
-        List<Map> list = mongoManager.queryAllDoc("actor");
+        List<Map> list = mongoManager.queryAllDoc(COLL_NAME);
         System.out.println(list);
         assertTrue(list != null && !list.isEmpty());
         System.out.println(list.size());
@@ -119,60 +139,152 @@ public class MongoTest {
     }
 
     @Test
-    public void testQueryOneByMap() {
+    public void testQueryOneByMap() throws InterruptedException {
+        int size = 3;
+        List<Map<String, Object>> list = new ArrayList<>(size);
+        Integer hid = new Random().nextInt(10000);
+        String lastName = RandomStringUtils.random(3, LAST_NAMES.toCharArray());
+        batchSaveWithIdAndName(size, list, hid, lastName);
+        
         Map<String, Object> param = new HashMap<>();
-        param.put("lastName", "LOL");
-        param.put("firstName", "迪迪热");
-        Map doc = mongoManager.queryOneDoc("actor", param);
-        System.out.println(doc);
-        assertTrue(doc != null && !doc.isEmpty());
-    }
-
-    @Test
-    public void testQueryOneByMapAndSort() {
-        Map<String, Object> param = new HashMap<>();
-        param.put("lastName", "LOL");
-        Map doc = mongoManager.queryOneDoc("actor", param, null);
-        System.out.println(doc);
-        assertTrue(doc != null && !doc.isEmpty());
-        ObjectId id1 = (ObjectId) doc.get("_id");
-        System.out.println(id1.toString());
-        assertEquals("5b57188fb081620af4429e90", id1.toString());
-
-        Map doc2 = mongoManager.queryOneDoc("actor", param,
-                new Sort(Arrays.asList(new Sort.Order(Sort.Direction.ASC, "actorId"), new Sort.Order(Sort.Direction.DESC, "_id"))));
+        param.put("heroId", hid);
+        param.put("lastName", lastName);
+        Map doc2 = mongoManager.queryOneDoc(COLL_NAME, param);
         System.out.println(doc2);
         assertTrue(doc2 != null && !doc2.isEmpty());
-        ObjectId id2 = (ObjectId) doc2.get("_id");
-        System.out.println(id2.toString());
-        assertEquals("5b57188fb081620af4429e8a", id2.toString());
     }
 
     @Test
-    public void testQueryListByMapNoSort() {
+    public void testQueryOneByMapAndSort() throws InterruptedException {
+        int size = 3;
+        List<Map<String, Object>> list = new ArrayList<>(size);
+        Integer hid = new Random().nextInt(10000);
+        String lastName = RandomStringUtils.random(3, LAST_NAMES.toCharArray());
+        batchSaveWithIdAndName(size, list, hid, lastName);
+
         Map<String, Object> param = new HashMap<>();
-        param.put("lastName", "LOL");
-        List<Map> docs = mongoManager.queryDocList("actor", param);
+        param.put("heroId", hid);
+        param.put("lastName", lastName);
+        Map doc2 = mongoManager.queryOneDoc(COLL_NAME, param,
+                new Sort(Arrays.asList(new Sort.Order(Sort.Direction.ASC, "lastUpdate"), new Sort.Order(Sort.Direction.DESC, "firstName"))));
+        System.out.println(doc2);
+        assertNotNull(doc2);
+        assertEquals(doc2.get("firstName"), list.get(0).get("firstName"));
+        assertEquals(doc2.get("lastUpdate"), list.get(0).get("lastUpdate"));
+    }
+
+    @Test
+    public void testQueryListByMapNoSort() throws InterruptedException {
+        int size = 3;
+        List<Map<String, Object>> list = new ArrayList<>(size);
+        Integer hid = new Random().nextInt(10000);
+        String lastName = RandomStringUtils.random(3, LAST_NAMES.toCharArray());
+        batchSaveWithIdAndName(size, list, hid, lastName);
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("heroId", hid);
+        param.put("lastName", lastName);
+        List<Map> docs = mongoManager.queryDocList(COLL_NAME, param);
         System.out.println(docs);
         assertTrue(docs != null && !docs.isEmpty());
+        System.out.println(docs.size());
+        assertTrue(docs.size() >= size);
     }
 
     @Test
-    public void testQueryListByMapSort() {
+    public void testQueryListByMapSort() throws InterruptedException {
+        int size = 3;
+        List<Map<String, Object>> list = new ArrayList<>(size);
+        Integer hid = new Random().nextInt(10000);
+        String lastName = RandomStringUtils.random(3, LAST_NAMES.toCharArray());
+        batchSaveWithIdAndName(size, list, hid, lastName);
+
         Map<String, Object> param = new HashMap<>();
-        param.put("lastName", "LOL");
-        List<Map> docs = mongoManager.queryDocList("actor", param, null);
+        param.put("heroId", hid);
+        param.put("lastName", lastName);
+
+        Collections.sort(list, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                int c1 = o1.get("firstName").toString().compareTo(o2.get("firstName").toString());
+                if(c1 != 0) {
+                    return c1;
+                }
+                Date d1 = (Date)o1.get("lastUpdate");
+                Date d2 = (Date)o2.get("lastUpdate");
+                return d1.compareTo(d2);
+            }
+        });
+        list.remove(list.size() - 1);
+        List<Map> docs = mongoManager.queryDocList(COLL_NAME, param,
+                new Sort(Arrays.asList(new Sort.Order(Sort.Direction.ASC, "firstName"), new Sort.Order(Sort.Direction.DESC, "lastUpdate"))));
         System.out.println(docs);
         assertTrue(docs != null && !docs.isEmpty());
+        System.out.println(docs.size());
+        assertTrue(docs.size() >= size);
+        for (int i = 0; i < list.size(); i++) {
+        assertEquals(list.get(i).get("heroId"), docs.get(i).get("heroId"));
+        assertEquals(list.get(i).get("firstName"), docs.get(i).get("firstName"));
+        assertEquals(list.get(i).get("lastName"), docs.get(i).get("lastName"));
+        assertEquals(list.get(i).get("lastUpdate"), docs.get(i).get("lastUpdate"));
+        }
     }
 
     @Test
-    public void testQueryMongoDocList() {
+    public void testQueryMongoDocListByRange() throws InterruptedException {
+        int size = 3;
+        List<Map<String, Object>> list = new ArrayList<>(size);
+        Integer hid = new Random().nextInt(10000);
+        String lastName = RandomStringUtils.random(3, LAST_NAMES.toCharArray());
+        batchSaveWithIdAndName(size, list, hid, lastName);
+
         Query q = new Query();
-        q.addCriteria(Criteria.where("actorId").gte(9000));
-        List<Actor> docs = mongoManager.queryMongoDocList("actor", q, Actor.class, null);
+        q.addCriteria(Criteria.where("heroId").gte(hid));
+//        q.addCriteria(Criteria.where("heroId").gte(3021));
+        List<Hero> docs = mongoManager.queryMongoDocList(COLL_NAME, q, Hero.class, null);
         System.out.println(docs.size());
         System.out.println(docs);
         assertTrue(docs != null && !docs.isEmpty());
+        assertTrue(docs.size() >= size);
     }
+
+    @Test
+    public void testQueryMongoDocListByCollection() throws InterruptedException {
+        int size = 3;
+        List<Map<String, Object>> list = new ArrayList<>(size);
+        Integer hid = new Random().nextInt(10000);
+        String lastName = RandomStringUtils.random(3, LAST_NAMES.toCharArray());
+        batchSaveWithIdAndName(size, list, hid, lastName);
+        System.out.println(list);
+
+        Query q = new Query();
+        q.addCriteria(Criteria.where("heroId").in(hid, list.get(list.size() - 1).get("heroId")));
+//        q.addCriteria(Criteria.where("firstName").in("OYN", "ONI"));
+        List<Hero> docs = mongoManager.queryMongoDocList(COLL_NAME, q, Hero.class, null);
+        System.out.println(docs.size());
+        System.out.println(docs);
+        assertTrue(docs != null && !docs.isEmpty());
+        assertTrue(docs.size() >= size);
+    }
+
+    @Test
+    public void testQueryMongoDocListByMultiCondition() throws InterruptedException {
+        int size = 3;
+        List<Map<String, Object>> list = new ArrayList<>(size);
+        Integer hid = new Random().nextInt(10000);
+        String lastName = RandomStringUtils.random(3, LAST_NAMES.toCharArray());
+        batchSaveWithIdAndName(size, list, hid, lastName);
+        System.out.println("hid:" + hid + ", lastName:" + lastName);
+        System.out.println(list);
+
+        Query q = new Query();
+        q.addCriteria(Criteria.where("heroId").is(hid).and("lastName").is(lastName));
+//        q.addCriteria(Criteria.where("heroId").is(hid).and("lastName").is(lastName).and("firstName").is(list.get(0).get("firstName")));
+        List<Hero> docs = mongoManager.queryMongoDocList(COLL_NAME, q, Hero.class, null);
+        System.out.println(docs.size());
+        System.out.println(docs);
+        assertTrue(docs != null && !docs.isEmpty());
+        assertTrue(docs.size() >= size);
+    }
+
 }

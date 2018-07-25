@@ -26,6 +26,9 @@ public class Actor {
     /**  */
     private Date lastUpdate;
 
+    public Actor() {
+    }
+
     public Actor(Integer actorId, String firstName, String lastName, Date lastUpdate) {
         this.actorId = actorId;
         this.firstName = firstName;

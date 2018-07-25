@@ -15,13 +15,13 @@ import java.util.Objects;
  * @date 2018-07-20 10:26
  */
 
-@Document(collection = "actor")
-public class Actor2 {
+@Document(collection = "hero")
+public class Hero {
 
     @Id
     private String id;
     /**  */
-    private Integer actorId;
+    private Integer heroId;
 
     /**  */
     private String firstName;
@@ -32,22 +32,22 @@ public class Actor2 {
     /**  */
     private Date lastUpdate;
 
-    public Actor2(Integer actorId, String firstName, String lastName, Date lastUpdate) {
-        this.actorId = actorId;
+    public Hero(Integer actorId, String firstName, String lastName, Date lastUpdate) {
+        this.heroId = actorId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.lastUpdate = lastUpdate;
     }
 
-    public Actor2() {
+    public Hero() {
     }
 
-    public Integer getActorId(){
-      return actorId;  
+    public Integer getHeroId(){
+      return heroId;
     }  
     
-    public void setActorId(Integer actorId){  
-      this.actorId = actorId;  
+    public void setHeroId(Integer heroId){
+      this.heroId = heroId;
     } 
      
     public String getFirstName(){  
@@ -86,22 +86,22 @@ public class Actor2 {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Actor2 actor = (Actor2) o;
-        return Objects.equals(actorId, actor.actorId) &&
+        Hero actor = (Hero) o;
+        return Objects.equals(heroId, actor.heroId) &&
                 Objects.equals(firstName, actor.firstName) &&
                 Objects.equals(lastName, actor.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(actorId, firstName, lastName);
+        return Objects.hash(heroId, firstName, lastName);
     }
 
     @Override
     public String toString() {
-        return "Actor2{" +
+        return "Hero{" +
                 "id='" + id + '\'' +
-                ", actorId=" + actorId +
+                ", heroId=" + heroId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", lastUpdate=" + lastUpdate +
