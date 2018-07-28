@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.stathry.commons.dao.RedisManager;
+import org.stathry.commons.lock.DistributedLock;
 import org.stathry.commons.lock.RedisLock;
 import org.stathry.commons.pojo.Actor;
 
@@ -36,12 +37,21 @@ public class RedisLockTest {
     private StringRedisTemplate stringRedisTemplate;
 
     @Test
-    public void test1() {
-        RedisLock redisLock = new RedisLock(stringRedisTemplate, "k1");
+    public void test1() throws InterruptedException {
+        DistributedLock lock = new RedisLock(stringRedisTemplate, "k1");
         int tn = 8;
+        int limit = 100_0000;
         ExecutorService exec = Executors.newFixedThreadPool(tn);
-        redisLock.lock();
+        for (int i = 0; i < tn; i++) {
+            exec.execute(() -> {
+                for (int j = 0; j < limit; j++) {
+                    lock.lock();
 
+                }
+            });
+        }
+        exec.shutdown();
+        exec.awaitTermination(5, TimeUnit.MINUTES);
     }
 
 }
