@@ -1,12 +1,17 @@
 package org.stathry.commons;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.ValueFilter;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +21,16 @@ import java.util.List;
  * Created by dongdaiming on 2018-07-23 16:59
  */
 public class JSONTest {
+
+    @Test
+    public void testEscapeJSONStr() throws IOException {
+        String s = FileUtils.readFileToString(new File("/temp/taobaoOData.txt"), "utf-8");
+        System.out.println(s);
+        JSONObject j = JSON.parseObject(s);
+        System.out.println();
+        System.out.println(j.toJSONString());
+        System.out.println(StringEscapeUtils.escapeJson(j.toJSONString()));
+    }
 
     @Test
     public void testWriteNullValue() {

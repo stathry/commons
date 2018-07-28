@@ -1,4 +1,4 @@
-package org.stathry.commons.dao;
+package org.stathry.commons.redis;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.time.DateUtils;

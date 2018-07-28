@@ -5,7 +5,11 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 /**
@@ -13,6 +17,15 @@ import org.junit.Test;
  * @author dongdaiming
  */
 public class FileUtilsTest {
+
+    @Test
+    public void testReadJSONStr() throws IOException {
+        String s = FileUtils.readFileToString(new File("/temp/taobaoOData.txt"), "utf-8");
+        System.out.println(s);
+        JSONObject j = JSON.parseObject(s);
+        System.out.println();
+        System.out.println(j.toJSONString());
+    }
 
     @Test
     public void test1() throws IOException {
