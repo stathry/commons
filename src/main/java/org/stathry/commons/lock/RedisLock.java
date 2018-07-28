@@ -22,7 +22,7 @@ public class RedisLock implements DistributedLock {
     private final long LOCK_EXPIRE_MS;
     private final long LOCK_TIMEOUT_MS;
 
-    private final int RANDOM_SLEEP_MS = 100;
+    private final int RANDOM_SLEEP_MS = 30;
     private final String DEFAULT_VALUE = "1";
     private final String KEY;
     private final Random RANDOM = new Random();

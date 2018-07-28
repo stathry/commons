@@ -39,19 +39,30 @@ public class RedisLockTest {
     @Test
     public void test1() throws InterruptedException {
         DistributedLock lock = new RedisLock(stringRedisTemplate, "k1");
-        int tn = 8;
-        int limit = 100_0000;
+        int tn = 2;
+        int limit = 1_00;
+        Inc inc = new Inc();
         ExecutorService exec = Executors.newFixedThreadPool(tn);
         for (int i = 0; i < tn; i++) {
             exec.execute(() -> {
                 for (int j = 0; j < limit; j++) {
                     lock.lock();
-
+                    inc.inc();
+                    lock.unlock();
                 }
             });
         }
         exec.shutdown();
         exec.awaitTermination(5, TimeUnit.MINUTES);
+        System.out.println(inc.inc());
+    }
+
+    private static class Inc {
+
+        private int i = 0;
+        public int inc() {
+            return ++i;
+        }
     }
 
 }
