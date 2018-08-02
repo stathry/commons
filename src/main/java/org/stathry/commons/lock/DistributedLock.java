@@ -10,7 +10,7 @@ public interface DistributedLock {
      * 获取锁(阻塞式)
      * @return 是否锁定成功
      */
-    boolean lock();
+    boolean lock() throws InterruptedException;
 
     /**
      * 获取锁(非阻塞式)

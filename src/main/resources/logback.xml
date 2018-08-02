@@ -14,12 +14,12 @@
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
-            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] [%logger{20}:%line] - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] [%logger:%line] - %msg%n</pattern>
         </layout>
     </appender>
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] [%logger{20}:%line] - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] [%logger{80}:%line] - %msg%n</pattern>
         </encoder>
     </appender>
     <!-- 日志输出级别 -->

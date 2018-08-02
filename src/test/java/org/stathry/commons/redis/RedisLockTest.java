@@ -1,26 +1,18 @@
 package org.stathry.commons.redis;
 
-import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.stathry.commons.dao.RedisManager;
 import org.stathry.commons.lock.DistributedLock;
 import org.stathry.commons.lock.RedisLock;
-import org.stathry.commons.pojo.Actor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -34,27 +26,78 @@ import java.util.concurrent.TimeUnit;
 public class RedisLockTest {
 
     @Autowired
-    private StringRedisTemplate stringRedisTemplate;
+    protected RedisTemplate<String, Long> redisTemplate;
 
     @Test
-    public void test1() throws InterruptedException {
-        DistributedLock lock = new RedisLock(stringRedisTemplate, "k1");
-        int tn = 2;
+    public void testSetNXAndExpire() {
+        String key = DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS");
+        if(redisTemplate.opsForValue().setIfAbsent(key, 1L)) {
+            redisTemplate.expire(key, 30, TimeUnit.SECONDS);
+        }
+    }
+
+    @Test
+    public void testOriginalSingleInc() throws InterruptedException {
         int limit = 1_00;
         Inc inc = new Inc();
+        String key = "k_inc";
+        ValueOperations<String, Long> ops = redisTemplate.opsForValue();
+        for (int i = 0; i < limit; i++) {
+            if (ops.setIfAbsent(key, 1L)) {
+                inc.inc();
+                redisTemplate.delete(key);
+            }
+        }
+        Assert.assertEquals(limit, inc.inc() - 1);
+    }
+
+    @Test
+    public void testSingleInc() throws InterruptedException {
+        long start = System.currentTimeMillis();
+        int limit = 10_0000;
+        Inc inc = new Inc();
+        String key = DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS");
+        DistributedLock lock = new RedisLock(redisTemplate, key);
+        redisTemplate.delete(key);
+        for (int i = 0; i < limit; i++) {
+            if (lock.lock()) {
+                inc.inc();
+                lock.unlock();
+            }
+        }
+        System.out.println("limit:" + limit + ", sec:" + TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start));
+        Assert.assertEquals(limit, inc.inc() - 1);
+    }
+
+    @Test
+    public void testConcurrentInc() throws InterruptedException {
+        long start = System.currentTimeMillis();
+        int limit = 10_0000;
+        Inc inc = new Inc();
+        String key = DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS");
+        DistributedLock lock = new RedisLock(redisTemplate, key);
+        System.out.println(key);
+        redisTemplate.delete(key);
+        int tn = 2;
         ExecutorService exec = Executors.newFixedThreadPool(tn);
         for (int i = 0; i < tn; i++) {
             exec.execute(() -> {
                 for (int j = 0; j < limit; j++) {
-                    lock.lock();
-                    inc.inc();
-                    lock.unlock();
+                    try {
+                        if (lock.lock()) {
+                            inc.inc();
+                            lock.unlock();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
         exec.shutdown();
         exec.awaitTermination(5, TimeUnit.MINUTES);
-        System.out.println(inc.inc());
+        Assert.assertEquals(tn * limit, inc.inc() - 1);
+        System.out.println("times:" + tn * limit + ", sec:" + TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - start));
     }
 
     private static class Inc {

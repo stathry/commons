@@ -1,5 +1,9 @@
 package org.stathry.commons.dao;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -124,14 +128,14 @@ public class MongoTest {
         mongoManager.saveMongoDoc(act);
         assertNotNull(act.getId());
 
-        Map<String, Object> map = mongoManager.queryDocById(COLL_NAME, act.getId());
+        JSONObject map = mongoManager.queryDocById(COLL_NAME, act.getId());
         System.out.println(map);
         assertTrue(map != null && !map.isEmpty());
     }
 
     @Test
     public void testQueryAll() {
-        List<Map> list = mongoManager.queryAllDoc(COLL_NAME);
+        List<JSONObject> list = mongoManager.queryAllDoc(COLL_NAME);
         System.out.println(list);
         assertTrue(list != null && !list.isEmpty());
         System.out.println(list.size());
@@ -184,7 +188,7 @@ public class MongoTest {
         Map<String, Object> param = new HashMap<>();
         param.put("heroId", hid);
         param.put("lastName", lastName);
-        List<Map> docs = mongoManager.queryDocList(COLL_NAME, param);
+        List<JSONObject> docs = mongoManager.queryDocList(COLL_NAME, param);
         System.out.println(docs);
         assertTrue(docs != null && !docs.isEmpty());
         System.out.println(docs.size());
@@ -216,7 +220,7 @@ public class MongoTest {
             }
         });
         list.remove(list.size() - 1);
-        List<Map> docs = mongoManager.queryDocList(COLL_NAME, param,
+        List<JSONObject> docs = mongoManager.queryDocList(COLL_NAME, param,
                 new Sort(Arrays.asList(new Sort.Order(Sort.Direction.ASC, "firstName"), new Sort.Order(Sort.Direction.DESC, "lastUpdate"))));
         System.out.println(docs);
         assertTrue(docs != null && !docs.isEmpty());
@@ -285,6 +289,19 @@ public class MongoTest {
         System.out.println(docs);
         assertTrue(docs != null && !docs.isEmpty());
         assertTrue(docs.size() >= size);
+    }
+
+    @Test
+    public void testQueryDocListByFields() {
+        DBObject params = new BasicDBObject();
+        params.put("lastName", "NAS");  //查询条件
+
+        BasicDBObject fields = new BasicDBObject();
+        fields.put("heroId", true);
+        fields.put("_id", false);
+        List<JSONObject> docs = mongoManager.queryDocListByFields(COLL_NAME, params, fields, null);
+        assertTrue(docs != null && !docs.isEmpty());
+        System.out.println(JSON.toJSONString(docs));
     }
 
 }

@@ -1,8 +1,11 @@
 package org.stathry.commons.dao;
 
+import com.alibaba.fastjson.JSONObject;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -42,45 +45,52 @@ public class MongoManager {
         mongoTemplate.save(doc, collectionName);
     }
 
-    public Map queryDocById(String collectionName, String docId) {
-        return mongoTemplate.findById(docId, Map.class, collectionName);
+    public JSONObject queryDocById(String collectionName, String docId) {
+        return mongoTemplate.findById(docId, JSONObject.class, collectionName);
     }
 
-    public Map queryOneDoc(String collectionName, Map<String, Object> param) {
+    public JSONObject queryOneDoc(String collectionName, Map<String, Object> param) {
         Query q = new Query();
         for (Map.Entry<String, Object> e : param.entrySet()) {
             q.addCriteria(Criteria.where(e.getKey()).is(e.getValue()));
         }
-        return mongoTemplate.findOne(q, Map.class, collectionName);
+        return mongoTemplate.findOne(q, JSONObject.class, collectionName);
     }
 
-    public Map queryOneDoc(String collectionName, Map<String, Object> param, Sort sort) {
-        Query q = new Query();
-        for (Map.Entry<String, Object> e : param.entrySet()) {
-            q.addCriteria(Criteria.where(e.getKey()).is(e.getValue()));
-        }
-        sort = sort == null ? new Sort(Sort.Direction.DESC, "_id") : sort;
-        q.with(sort);
-
-        return mongoTemplate.findOne(q, Map.class, collectionName);
-    }
-
-    public List<Map> queryDocList(String collectionName, Map<String, Object> param) {
-        Query q = new Query();
-        for (Map.Entry<String, Object> e : param.entrySet()) {
-            q.addCriteria(Criteria.where(e.getKey()).is(e.getValue()));
-        }
-        return mongoTemplate.find(q, Map.class, collectionName);
-    }
-
-    public List<Map> queryDocList(String collectionName, Map<String, Object> param, Sort sort) {
+    public JSONObject queryOneDoc(String collectionName, Map<String, Object> param, Sort sort) {
         Query q = new Query();
         for (Map.Entry<String, Object> e : param.entrySet()) {
             q.addCriteria(Criteria.where(e.getKey()).is(e.getValue()));
         }
         sort = sort == null ? new Sort(Sort.Direction.DESC, "_id") : sort;
         q.with(sort);
-        return mongoTemplate.find(q, Map.class, collectionName);
+
+        return mongoTemplate.findOne(q, JSONObject.class, collectionName);
+    }
+
+    public List<JSONObject> queryDocList(String collectionName, Map<String, Object> param) {
+        Query q = new Query();
+        for (Map.Entry<String, Object> e : param.entrySet()) {
+            q.addCriteria(Criteria.where(e.getKey()).is(e.getValue()));
+        }
+        return mongoTemplate.find(q, JSONObject.class, collectionName);
+    }
+
+    public List<JSONObject> queryDocList(String collectionName, Map<String, Object> param, Sort sort) {
+        Query q = new Query();
+        for (Map.Entry<String, Object> e : param.entrySet()) {
+            q.addCriteria(Criteria.where(e.getKey()).is(e.getValue()));
+        }
+        sort = sort == null ? new Sort(Sort.Direction.DESC, "_id") : sort;
+        q.with(sort);
+        return mongoTemplate.find(q, JSONObject.class, collectionName);
+    }
+
+    public List<JSONObject> queryDocListByFields(String collectionName, DBObject params, DBObject fields, Sort sort) {
+        Query q = new BasicQuery(params, fields);
+        sort = sort == null ? new Sort(Sort.Direction.DESC, "_id") : sort;
+        q.with(sort);
+        return mongoTemplate.find(q, JSONObject.class, collectionName);
     }
 
     public <T> List<T> queryMongoDocList(String collectionName, Query q, Class<T> mongoDocType, Sort sort) {
@@ -89,8 +99,8 @@ public class MongoManager {
         return mongoTemplate.find(q, mongoDocType, collectionName);
     }
 
-    public List<Map> queryAllDoc(String collectionName) {
-        return mongoTemplate.findAll(Map.class, collectionName);
+    public List<JSONObject> queryAllDoc(String collectionName) {
+        return mongoTemplate.findAll(JSONObject.class, collectionName);
     }
 
 }
