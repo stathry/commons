@@ -14,8 +14,7 @@
         </encoder>
     </appender>
 
-    <appender name="RF"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="RF" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${LOG_HOME}/app.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <FileNamePattern>${LOG_HOME}/app-%d{yyyyMMdd}-%i.log</FileNamePattern>
