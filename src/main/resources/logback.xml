@@ -1,31 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="false">
+<!-- https://logback.qos.ch/manual/index.html -->
+<configuration>
 
-    <property name="LOG_HOME" value="logs" />
+    <property name="LOG_PATTERN_CONSOLE" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] [%logger{32}#%M:%line] - %msg%n"/>
+    <property name="LOG_PATTERN_FILE" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] [%logger{32}] - %msg%n"/>
+    <property name="CHARSET" value="UTF-8"/>
+    <property name="LOG_HOME" value="/temp/logs/commons" />
 
-    <appender name="RollingFile"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <Encoding>UTF-8</Encoding>
-        <File>${LOG_HOME}/commons.log</File>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_HOME}/commons.%d{yyyyMMdd}.log
-            </FileNamePattern>
-            <MaxHistory>30</MaxHistory>
-        </rollingPolicy>
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
-            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] [%logger:%line] - %msg%n</pattern>
-        </layout>
-    </appender>
-    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="C" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] [%logger{80}:%line] - %msg%n</pattern>
+            <pattern>${LOG_PATTERN_CONSOLE}</pattern>
+            <charset>${CHARSET}</charset>
         </encoder>
     </appender>
-    <!-- 日志输出级别 -->
-    <root level="INFO">
-        <appender-ref ref="RollingFile" />
-        <appender-ref ref="Console" />
+
+    <appender name="RF"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_HOME}/app.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/app-%d{yyyyMMdd}-%i.log</FileNamePattern>
+            <maxFileSize>20MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN_FILE}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+        <layout><pattern>${LOG_PATTERN_FILE}</pattern></layout>
+    </appender>
+
+    <appender name ="ARF" class= "ch.qos.logback.classic.AsyncAppender">
+        <queueSize>1024</queueSize>
+        <appender-ref ref ="RF"/>
+    </appender>
+
+    <logger name="org.springframework" level="INFO" additivity="true" />
+
+    <root level="WARN">
+        <appender-ref ref="ARF" />
+        <appender-ref ref="C" />
     </root>
 
 </configuration>
