@@ -93,8 +93,9 @@ public final class DatetimeUtils extends DateUtils {
 	/**
 	 * 计算间隔日期
 	 * 
-	 * @param startTime
-	 * @param endTime
+	 * @param start
+	 * @param end
+	 * @param pattern
 	 * @return
 	 * @throws ParseException 
 	 */
@@ -107,8 +108,8 @@ public final class DatetimeUtils extends DateUtils {
 			return days;
 		}
 
-		startTime = StringUtils.isBlank(start) ? new Date() : DatetimeFormatUtils.parseDatetime(start, pattern);
-		endTime = DatetimeFormatUtils.parseDatetime(end, pattern);
+		startTime = StringUtils.isBlank(start) ? new Date() : DatetimeFormatUtils.parse(start, pattern);
+		endTime = DatetimeFormatUtils.parse(end, pattern);
 
 		if (startTime == null || endTime == null) {
 			return 0;

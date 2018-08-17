@@ -1,5 +1,6 @@
 package org.stathry.commons.dao;
 
+import org.apache.ibatis.session.SqlSession;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -27,7 +27,9 @@ public class CryptTest {
     @Test
     public void testEncryptByAES2() throws UnsupportedEncodingException {
         String pwd = "xyz";
-        String src = "tianji_api_tianjireport_detail_response";
+        String src = "{\"expire_time\":\"\",\"join_time\":\"\",\"member_type\":\"member\",\"mobile_city\":\"广州\",\"num\":\"2\",\"phone\":\"xxxxxxxxxxx\",\"short_num\":\"557\"}";
+        System.out.println("src:" + src);
+        System.out.println("src.bytes:" + src.getBytes().length);
         String data = AESUtils.encrypt2HexStr(src, pwd);
         System.out.println("encrypted:" + data);
 
@@ -35,6 +37,7 @@ public class CryptTest {
         System.out.println("decrypted:" + r);
         Assert.assertEquals(src, r);
     }
+
     @Test
     public void testEncryptByAES3() {
         String pwd = "xyz";

@@ -35,8 +35,9 @@
     </appender>
 
     <logger name="org.springframework" level="INFO" additivity="true" />
+    <logger name="org.stathry.commons.dao" level="DEBUG" additivity="true" />
 
-    <root level="WARN">
+    <root level="INFO">
         <appender-ref ref="ARF" />
         <appender-ref ref="C" />
     </root>

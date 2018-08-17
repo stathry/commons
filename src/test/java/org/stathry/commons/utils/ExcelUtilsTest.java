@@ -54,10 +54,10 @@ public class ExcelUtilsTest {
 		header.add("时间");
 		data1.add("青云门");
 		data1.add("陆雪琪");
-		data1.add(DatetimeFormatUtils.formatDate(new Date()));
+		data1.add(DatetimeFormatUtils.format(new Date()));
 		data2.add("合欢派");
 		data2.add("妙妙");
-		data2.add(DatetimeFormatUtils.formatDate(new Date()));
+		data2.add(DatetimeFormatUtils.format(new Date()));
 
 		data.add(data1);
 		data.add(data2);

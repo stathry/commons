@@ -79,7 +79,7 @@ public final class DataConvertUtils{
 					CDate cd = f.getAnnotation(CDate.class);
 					if(cd != null) {
 						if(fvalue instanceof Date) {
-							value = DatetimeFormatUtils.formatDate((Date) fvalue, cd.pattern());
+							value = DatetimeFormatUtils.format((Date) fvalue, cd.pattern());
 							map.put(fname, value);
 							continue;
 						}
@@ -203,10 +203,10 @@ public final class DataConvertUtils{
 			CDate cdate = sourceField.getAnnotation(CDate.class);
 			if(cdate != null) {
 				if(sourceFieldValue instanceof Date) {
-					targetFieldValue = DatetimeFormatUtils.formatDate((Date) sourceFieldValue, cdate.pattern());
+					targetFieldValue = DatetimeFormatUtils.format((Date) sourceFieldValue, cdate.pattern());
 					PropertyUtils.setProperty(target, sourceFieldName, targetFieldValue);
 				} else if(sourceFieldValue instanceof String){
-					PropertyUtils.setProperty(target, sourceFieldName, DatetimeFormatUtils.parseDate((String) sourceFieldValue, cdate.pattern()));
+					PropertyUtils.setProperty(target, sourceFieldName, DatetimeFormatUtils.parse((String) sourceFieldValue, cdate.pattern()));
 				}
 				return ;
 			}

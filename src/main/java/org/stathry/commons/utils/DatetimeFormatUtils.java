@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  *
  * 2016年8月5日
  */
-public class DatetimeFormatUtils extends DateFormatUtils {
+public class DatetimeFormatUtils {
 	
 	private static Logger LOGGER = LoggerFactory.getLogger(DatetimeFormatUtils.class); 
 	/** yyyy-MM-dd HH:mm:ss */
@@ -37,6 +37,8 @@ public class DatetimeFormatUtils extends DateFormatUtils {
 	public static final String PATTERN_DATETIME6 = "yyyy年M月d日  HH:mm:ss E";
 	/** yyyy-MM-dd HH:mm:ss E */
 	public static final String PATTERN_DATETIME7 = "yyyy-MM-dd HH:mm:ss E";
+    /** yyyy-MM-dd'T'HH:mm:ss.SSSX */
+	public static final String PATTERN_DATETIME8 = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
 	/** yyyy-MM-dd */
 	public static final String PATTERN_DATE = "yyyy-MM-dd";
 	/** yyyy_MM_dd */
@@ -56,198 +58,66 @@ public class DatetimeFormatUtils extends DateFormatUtils {
 	/** E */
 	public static final String PATTERN_WEEK = "E";
 
-	private static SimpleDateFormat SDF = null;
 	private static final boolean LENIENT = false;
-	
-	static {
-		SDF = new SimpleDateFormat(PATTERN_DATETIME);
-		SDF.setLenient(LENIENT);
-	}
-	
 
-	/**
-	 * 格式化日期时间 默认格式'yyyy-MM-dd HH:mm:ss'
-	 * @param date
-	 * @return string
-	 */
-	public static String formatDatetime(Date date) {
-		if (date == null) {
-			return null;
-		}
-			SDF.applyPattern(PATTERN_DATETIME);
-		return SDF.format(date);
+    public static String format() {
+        return format(new Date(), PATTERN_DATETIME);
+    }
+
+	public static String format(Date date) {
+		return format(date, PATTERN_DATETIME);
 	}
 
-	/**
-	 *格式化日期时间
-	 * @param date
-	 * @param pattern
-	 * @return string
-	 */
-	public static String formatDatetime(Date date, String pattern) {
-		if (StringUtils.isBlank(pattern)) {
-			return formatDatetime(date);
+	public static String format(Date date, String pattern) {
+		if (date == null || StringUtils.isBlank(pattern)) {
+			return "";
 		}
-		
-		try {
-			SDF.applyPattern(pattern);
-		} catch (Exception e) {
-			LOGGER.warn("the given pattern is invalid", e);
-			return null;
-		}
-		
-		return SDF.format(date);
-	}
-	
-	/**
-	 * 格式化日期，默认格式'yyyy-MM-dd'
-	 * @param date
-	 * @return
-	 */
-	public static String formatDate(Date date) {
-		if (date == null) {
-			return null;
-		}
-		SDF.applyPattern(PATTERN_DATE);
-		return SDF.format(date);
-	}
-	
-	/**
-	 * 格式化日期
-	 * @param date
-	 * @param pattern
-	 * @return
-	 */
-	public static String formatDate(Date date, String pattern) {
-		if (StringUtils.isBlank(pattern)) {
-			return formatDate(date);
-		}
-		
-		try {
-			SDF.applyPattern(pattern);
-		} catch (Exception e) {
-			LOGGER.warn("the given pattern is invalid", e);
-			return null;
-		}
-		
-		return SDF.format(date);
-	}
-	
-	/**
-	 * 格式化时间，默认格式'HH:mm:ss'
-	 * @param date
-	 * @return string
-	 */
-	public static String formatTime(Date date) {
-		if (date == null) {
-			return null;
-		}
-		SDF.applyPattern(PATTERN_TIME);
-		return SDF.format(date);
-	}
-	
-	/**
-	 * 格式化时间
-	 * @param date
-	 * @param pattern
-	 * @return string
-	 */
-	public static String formatTime(Date date, String pattern) {
-		if (StringUtils.isBlank(pattern)) {
-			return formatTime(date);
-		}
-		
-		try {
-			SDF.applyPattern(pattern);
-		} catch (Exception e) {
-			LOGGER.warn("the given pattern is invalid", e);
-			return null;
-		}
-		
-		return SDF.format(date);
+
+		return new SimpleDateFormat(pattern).format(date);
 	}
 
-	/**
-	 * 解析日期时间(pattern:yyyy-MM-dd HH:mm:ss)
-	 * @param source
-	 * @return
-	 * @throws ParseException
-	 */
-	public static Date parseDatetime(String source) throws ParseException {
-		return parseDatetime(source, PATTERN_DATETIME);
+
+	public static Date parse(String source) throws ParseException {
+		return parse(source, PATTERN_DATE);
+	}
+	
+	public static Date parse(String source, String pattern) throws ParseException {
+		return parse(source, pattern, LENIENT);
+	}
+	
+	public static Date parse(String source, String pattern, boolean lenient) throws ParseException {
+		if(StringUtils.isBlank(source) || StringUtils.isBlank(pattern)) {
+			return null;
+		}
+
+		SimpleDateFormat f = new SimpleDateFormat(PATTERN_DATETIME);
+		f.setLenient(lenient);
+		return f.parse(source);
 	}
 
-	/**
-	 * 解析日期时间
-	 * @param source
-	 * @param pattern 默认yyyy-MM-dd HH:mm:ss
-	 * @return
-	 * @throws ParseException
-	 */
-	public static Date parseDatetime(String source, String pattern) throws ParseException {
-		return parseDatetime(source, pattern, LENIENT);
-	}
-	
-	/**
-	 * 解析日期时间
-	 * @param source
-	 * @param pattern 默认yyyy-MM-dd HH:mm:ss 
-	 * @param lenient
-	 * @return
-	 * @throws ParseException
-	 */
-	public static Date parseDatetime(String source, String pattern, boolean lenient) throws ParseException {
-		if(StringUtils.isBlank(source)) {
-			return null;
-		}
-		if(StringUtils.isBlank(pattern)) {
-			SDF.applyPattern(PATTERN_DATETIME1);
-		} else {
-			SDF.applyPattern(pattern);
-		}
-		SDF.setLenient(lenient);
-		return SDF.parse(source);
-	}
-	/**
-	 * 解析日期(pattern:yyyy_MM_dd)
-	 * @param source
-	 * @return
-	 * @throws ParseException
-	 */
-	public static Date parseDate(String source) throws ParseException {
-		return parseDate(source, PATTERN_DATE);
-	}
-	
-	/**
-	 * 解析日期时间
-	 * @param source
-	 * @param pattern 默认yyyy-MM-dd
-	 * @return
-	 * @throws ParseException
-	 */
-	public static Date parseDate(String source, String pattern) throws ParseException {
-		return parseDate(source, pattern, LENIENT);
-	}
-	
-	/**
-	 * 解析日期时间
-	 * @param source
-	 * @param pattern 默认yyyy-MM-dd
-	 * @param lenient
-	 * @return
-	 * @throws ParseException
-	 */
-	public static Date parseDate(String source, String pattern, boolean lenient) throws ParseException {
-		if(StringUtils.isBlank(source)) {
-			return null;
-		}
-		if(StringUtils.isBlank(pattern)) {
-			SDF.applyPattern(PATTERN_DATE);
-		} else {
-			SDF.applyPattern(pattern);
-		}
-		SDF.setLenient(lenient);
-		return SDF.parse(source);
-	}
+    public static Date parseQuietly(String source) {
+        return parseQuietly(source, PATTERN_DATE);
+    }
+
+    public static Date parseQuietly(String source, String pattern) {
+        return parseQuietly(source, pattern, LENIENT);
+    }
+
+    public static Date parseQuietly(String source, String pattern, boolean lenient) {
+        if(StringUtils.isBlank(source) || StringUtils.isBlank(pattern)) {
+            return null;
+        }
+
+        SimpleDateFormat f = new SimpleDateFormat(PATTERN_DATETIME);
+        f.setLenient(lenient);
+
+        Date date = null;
+        try {
+            date = f.parse(source);
+        } catch (ParseException e) {
+            // ignore
+        }
+        return date;
+    }
 	
 }

@@ -80,7 +80,7 @@ public class RegExpTest {
         String[] a ;
         for (int i = 0; i < n; i++) {
             a = l.get(i).split(",");
-//            System.out.println(Arrays.toString(a));
+//            System.out.println(Arrays.format(a));
         }
         long end = System.currentTimeMillis();
         System.out.println("testSplit1:" + (end - start));
@@ -98,7 +98,7 @@ public class RegExpTest {
         for (int i = 0; i < n; i++) {
 //            a = l.get(i).split(",");
             a = StringUtils.split(l.get(i), ',');
-//            System.out.println(Arrays.toString(a));
+//            System.out.println(Arrays.format(a));
         }
         long end = System.currentTimeMillis();
         System.out.println("testSplit1:" + (end - start));

@@ -19,13 +19,28 @@ public class LogTest {
 
     @Test
     public void test1() {
+        LOGGER.debug("hello, {}.", new MSG());// 无需输出时不会把参数转换成String,即不会执行toString
+
         LOGGER.info("hello, {}.", "flint");
         LOGGER.info("hello, {}, {}, {}.", "flint", 666, new Date());
 
         LOGGER.warn("warn, {}.", "flint");
-        LOGGER.warn("warn, {}, {}, {}.", "flint", 666, new Date());
+        LOGGER.warn("warn, {}, {}, {}, {}, {}.", "flint", 666, 4, 5, new Date());
     }
 
+    private static class MSG {
+
+        public MSG() {
+            System.out.println("MSG:CONSTRUCTOR");
+
+        }
+
+        @Override
+        public String toString() {
+            System.out.println("MGS:format");
+            return super.toString();
+        }
+    }
 
     @Test
     public void testConc() throws InterruptedException {

@@ -27,7 +27,7 @@ public final class TextUtils {
 			return (String) data;
 		}
 		if (data instanceof Number) {
-			return NumberUtils.toString(data);
+			return NumberFormatUtils.format((Number) data);
 		}
 
 		if (data instanceof byte[]) {
@@ -42,7 +42,7 @@ public final class TextUtils {
 
 		if (data instanceof Date) {
 			Date temp = (Date) data;
-			return DatetimeFormatUtils.formatDatetime(temp);
+			return DatetimeFormatUtils.format(temp);
 		}
 
 		return data.toString();
@@ -91,7 +91,7 @@ public final class TextUtils {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(getEncoding("董代明"));
+		System.out.println(getEncoding("中国"));
 		System.out.println(toString(new Date()));
 		System.out.println(toString(1223333.323f));
 	}

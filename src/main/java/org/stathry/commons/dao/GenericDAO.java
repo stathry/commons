@@ -3,6 +3,8 @@
  */
 package org.stathry.commons.dao;
 
+import org.apache.ibatis.session.SqlSession;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -12,6 +14,8 @@ import java.util.List;
  * @date 2018-07-19 17:46
  */
 public interface GenericDAO<T, ID extends Serializable> {
+
+    SqlSession getSqlSession();
 
 	/** 
 	 * 包装SQLID
