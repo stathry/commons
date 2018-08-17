@@ -8,6 +8,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.Assert;
 
 /**
  * @author stathry@126.com
@@ -17,18 +18,25 @@ public final class NumberFormatUtils {
 
 	private NumberFormatUtils() {}
 
-    public static String format(Number num) {
-        return format(num, 2, RoundingMode.HALF_UP);
+    public static String format(Number num, int scale, RoundingMode mode) {
+        DecimalFormat f = new DecimalFormat();
+        f.setGroupingUsed(false);
+        f.setMaximumFractionDigits(scale);
+        f.setMinimumFractionDigits(scale);
+        f.setRoundingMode(mode);
+        return f.format(num);
     }
 
-    public static String format(Number num, int scale, RoundingMode mode) {
-        if(num == null) {
-            return "";
-        }
-        BigDecimal dec = new BigDecimal(num.toString());
-        mode = mode == null ? RoundingMode.HALF_UP : mode;
-        dec = dec.setScale(scale, mode);
-        return dec.toPlainString();
+    public static String downFormat(Number num, int scale) {
+        return format(num, scale, RoundingMode.DOWN);
+    }
+
+    public static String downFormat(String num, int scale) {
+        return format(Double.valueOf(num), scale, RoundingMode.DOWN);
+    }
+
+    public static String format(String num, int scale, RoundingMode mode) {
+        return format(Double.valueOf(num), scale, mode);
     }
 
     public static String formatBigInt(Number num, RoundingMode mode, int groupSize) {

@@ -3,6 +3,7 @@
  */
 package org.stathry.commons.utils;
 
+import java.math.RoundingMode;
 import java.util.Date;
 
 /**
@@ -27,7 +28,7 @@ public final class TextUtils {
 			return (String) data;
 		}
 		if (data instanceof Number) {
-			return NumberFormatUtils.format((Number) data);
+			return NumberFormatUtils.format((Number) data, 2, RoundingMode.HALF_UP);
 		}
 
 		if (data instanceof byte[]) {
