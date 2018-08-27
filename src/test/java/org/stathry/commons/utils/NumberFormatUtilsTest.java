@@ -13,28 +13,7 @@ public class NumberFormatUtilsTest {
     
     @Test
     public void testFormat1() {
-        // NumberFormatUtils.downFormat
-        org.springframework.util.Assert.isTrue("6.00".equals(NumberFormatUtils.downFormat(6, 2)), "error.");
-        org.springframework.util.Assert.isTrue("-6.00".equals(NumberFormatUtils.downFormat(-6, 2)), "error.");
-
-        org.springframework.util.Assert.isTrue("6.60".equals(NumberFormatUtils.downFormat(6.6, 2)), "error.");
-        org.springframework.util.Assert.isTrue("-6.60".equals(NumberFormatUtils.downFormat(-6.6, 2)), "error.");
-
-        org.springframework.util.Assert.isTrue("1.65".equals(NumberFormatUtils.downFormat(1.656, 2)), "error.");
-        org.springframework.util.Assert.isTrue("1.65".equals(NumberFormatUtils.downFormat(1.654, 2)), "error.");
-        org.springframework.util.Assert.isTrue("-1.65".equals(NumberFormatUtils.downFormat(-1.656, 2)), "error.");
-        org.springframework.util.Assert.isTrue("-1.65".equals(NumberFormatUtils.downFormat(-1.654, 2)), "error.");
-
-        org.springframework.util.Assert.isTrue("6.00".equals(NumberFormatUtils.downFormat("6", 2)), "error.");
-        org.springframework.util.Assert.isTrue("-6.00".equals(NumberFormatUtils.downFormat("-6", 2)), "error.");
-
-        org.springframework.util.Assert.isTrue("6.60".equals(NumberFormatUtils.downFormat("6.6", 2)), "error.");
-        org.springframework.util.Assert.isTrue("-6.60".equals(NumberFormatUtils.downFormat("-6.6", 2)), "error.");
-
-        org.springframework.util.Assert.isTrue("1.65".equals(NumberFormatUtils.downFormat("1.656", 2)), "error.");
-        org.springframework.util.Assert.isTrue("-1.65".equals(NumberFormatUtils.downFormat("-1.656", 2)), "error.");
-
-        // NumberFormatUtils.format
+        // NumberFormatUtils.formatFraction
         org.springframework.util.Assert.isTrue("6.00".equals(NumberFormatUtils.format(6, 2, RoundingMode.HALF_UP)), "error.");
         org.springframework.util.Assert.isTrue("-6.00".equals(NumberFormatUtils.format(-6, 2, RoundingMode.HALF_UP)), "error.");
 
@@ -45,7 +24,6 @@ public class NumberFormatUtilsTest {
         org.springframework.util.Assert.isTrue("1.65".equals(NumberFormatUtils.format(1.654, 2, RoundingMode.HALF_UP)), "error.");
         org.springframework.util.Assert.isTrue("-1.66".equals(NumberFormatUtils.format(-1.656, 2, RoundingMode.HALF_UP)), "error.");
         org.springframework.util.Assert.isTrue("-1.65".equals(NumberFormatUtils.format(-1.654, 2, RoundingMode.HALF_UP)), "error.");
-
 
         org.springframework.util.Assert.isTrue("6.60".equals(NumberFormatUtils.format("6.6", 2, RoundingMode.HALF_UP)), "error.");
         org.springframework.util.Assert.isTrue("-6.60".equals(NumberFormatUtils.format("-6.6", 2, RoundingMode.HALF_UP)), "error.");
@@ -96,7 +74,8 @@ public class NumberFormatUtilsTest {
 
     @Test
     public void testFormatScaleRoundModeGroup() {
-        System.out.println(NumberFormatUtils.formatBigInt(1234567890, RoundingMode.HALF_UP, 4));
-        Assert.assertEquals("12,3456,7890", NumberFormatUtils.formatBigInt(1234567890, RoundingMode.HALF_UP, 4));
+        Assert.assertEquals("1234,5678,9012,3456", NumberFormatUtils.formatBigInt(1234567890123456L, RoundingMode.HALF_UP, 4));
+        Assert.assertEquals("0000,1234", NumberFormatUtils.formatBigInt(1234L, RoundingMode.HALF_UP, 4, 8));
+        Assert.assertEquals("1234,5678,9012,3456", NumberFormatUtils.formatBigInt(1234567890123456L, RoundingMode.HALF_UP, 4, 8));
     }
 }

@@ -37,7 +37,7 @@ public class LogTest {
 
         @Override
         public String toString() {
-            System.out.println("MGS:format");
+            System.out.println("MGS:formatFraction");
             return super.toString();
         }
     }

@@ -27,28 +27,33 @@ public final class NumberFormatUtils {
         return f.format(num);
     }
 
-    public static String downFormat(Number num, int scale) {
-        return format(num, scale, RoundingMode.DOWN);
-    }
-
-    public static String downFormat(String num, int scale) {
-        return format(Double.valueOf(num), scale, RoundingMode.DOWN);
-    }
-
     public static String format(String num, int scale, RoundingMode mode) {
-        return format(Double.valueOf(num), scale, mode);
+        return format(new BigDecimal(num), scale, mode);
     }
 
     public static String formatBigInt(Number num, RoundingMode mode, int groupSize) {
         if(num == null) {
             return "";
         }
-        DecimalFormat format = new DecimalFormat();
+        DecimalFormat f = new DecimalFormat();
         mode = mode == null ? RoundingMode.HALF_UP : mode;
-        format.setRoundingMode(mode);
-        format.setGroupingUsed(true);
-        format.setGroupingSize(groupSize);
-        return format.format(num);
+        f.setRoundingMode(mode);
+        f.setGroupingUsed(true);
+        f.setGroupingSize(groupSize);
+        return f.format(num);
+    }
+
+    public static String formatBigInt(Number num, RoundingMode mode, int groupSize, int minIntDigits) {
+        if(num == null) {
+            return "";
+        }
+        DecimalFormat f = new DecimalFormat();
+        mode = mode == null ? RoundingMode.HALF_UP : mode;
+        f.setRoundingMode(mode);
+        f.setGroupingUsed(true);
+        f.setGroupingSize(groupSize);
+        f.setMinimumIntegerDigits(minIntDigits);
+        return f.format(num);
     }
 	
 	public static String formatByPattern(Number num) {

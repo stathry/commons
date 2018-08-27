@@ -203,10 +203,10 @@ public class Snowflake {
 
 	/**
 	 * extract and display time stamp, datacenterId, workerId and sequence
-	 * number information from the given id in humanization format
+	 * number information from the given id in humanization formatFraction
 	 * 
-	 * @param id snowflake id in Long format
-	 * @return snowflake id in String format
+	 * @param id snowflake id in Long formatFraction
+	 * @return snowflake id in String formatFraction
 	 */
 	public String formatId(long id) {
 		long[] arr = parseId(id);
