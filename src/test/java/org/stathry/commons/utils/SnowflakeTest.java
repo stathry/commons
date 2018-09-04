@@ -1,5 +1,6 @@
 package org.stathry.commons.utils;
 
+import com.google.common.math.IntMath;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -12,6 +13,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class SnowflakeTest {
+
+
+
+    @Test
+    public void testHashcode1() {
+        Assert.assertEquals(31, IntMath.pow(2, 5) - 1);
+        Assert.assertEquals(-1, -1 % 31);
+        Assert.assertEquals(0, -31 % 31);
+        Assert.assertEquals(-1, -32 % 31);
+    }
 
     @Test
     public void testSnowflake1() {

@@ -15,5 +15,15 @@ import org.stathry.commons.pojo.Actor;
 @Repository
 public class ActorDAOImpl extends GenericDAOImpl<Actor, Long> implements ActorDAO {
 
+//    private int n1 = mn1();
+//    private static int n2 = mn2();
+
+    private int mn1() {
+        throw new NullPointerException();
+    }
+
+    private static int mn2() {
+        throw new NullPointerException();
+    }
 
 }  
