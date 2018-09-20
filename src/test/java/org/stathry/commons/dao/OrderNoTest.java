@@ -6,11 +6,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.stathry.commons.pojo.Actor;
 import org.stathry.commons.utils.ConfigManager;
 import org.stathry.commons.utils.Snowflake;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -37,7 +35,7 @@ public class OrderNoTest {
         final Integer Z = 0;
         // dataCenterId可用于区分机器，workerId可用于区分业务
         long dataCenterId = redisManager.increment("order.host.flag") % 31;
-        long workerId = ConfigManager.getLong("order.type.loan") % 31;
+        long workerId = ConfigManager.getSysObj("order.type.loan", Long.class) % 31;
         final Snowflake snowflake = new Snowflake(dataCenterId, workerId);
         final Map<String,Integer> all = new ConcurrentHashMap<>();
         ExecutorService exec = Executors.newFixedThreadPool(n);

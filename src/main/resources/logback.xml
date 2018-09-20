@@ -2,10 +2,10 @@
 <!-- https://logback.qos.ch/manual/index.html -->
 <configuration>
 
-    <property name="LOG_PATTERN_CONSOLE" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] [%logger{32}#%M:%line] - %msg%n"/>
-    <property name="LOG_PATTERN_FILE" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] [%logger{32}] - %msg%n"/>
+    <property name="LOG_PATTERN_CONSOLE" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] [%logger{20}:%line] - %msg%n"/>
+    <property name="LOG_PATTERN_FILE" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] [%logger{60}:%line] - %msg%n"/>
     <property name="CHARSET" value="UTF-8"/>
-    <property name="LOG_HOME" value="/temp/logs/commons" />
+    <property name="LOG_HOME" value="logs" />
 
     <appender name="C" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -15,26 +15,25 @@
     </appender>
 
     <appender name="RF" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_HOME}/app.log</File>
+        <File>${LOG_HOME}/mock.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_HOME}/app-%d{yyyyMMdd}-%i.log</FileNamePattern>
+            <FileNamePattern>${LOG_HOME}/mock-%d{yyyyMMdd}-%i.log</FileNamePattern>
             <maxFileSize>20MB</maxFileSize>
             <maxHistory>30</maxHistory>
-            <totalSizeCap>10GB</totalSizeCap>
+            <totalSizeCap>20GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>${LOG_PATTERN_FILE}</pattern>
             <charset>${CHARSET}</charset>
         </encoder>
-        <layout><pattern>${LOG_PATTERN_FILE}</pattern></layout>
     </appender>
 
     <appender name ="ARF" class= "ch.qos.logback.classic.AsyncAppender">
-        <queueSize>1024</queueSize>
+        <discardingThreshold >0</discardingThreshold>
+        <queueSize>5120</queueSize>
         <appender-ref ref ="RF"/>
     </appender>
 
-    <logger name="org.springframework" level="INFO" additivity="true" />
     <logger name="org.stathry.commons.dao" level="DEBUG" additivity="true" />
 
     <root level="INFO">

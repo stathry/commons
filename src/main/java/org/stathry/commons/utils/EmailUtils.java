@@ -64,7 +64,7 @@ public class EmailUtils {
 		try {
 			init(email,config,subject, to);
 		} catch (EmailException e) {
-			LOGGER.warn("init email config error.", e);
+			LOGGER.warn("init email conf error.", e);
 			return ;
 		}
 

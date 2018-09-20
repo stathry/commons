@@ -15,18 +15,18 @@ public class RedissonLockTest {
 
     @Test
     public void testInit1() {
-/*        Config config = new Config();
-        config.setTransportMode(TransportMode.EPOLL);
-        config.useClusterServers().addNodeAddress("redis://127.0.0.1:6379");
-        RedissonClient redisson = Redisson.create(config);
+/*        Config conf = new Config();
+        conf.setTransportMode(TransportMode.EPOLL);
+        conf.useClusterServers().addNodeAddress("redis://127.0.0.1:6379");
+        RedissonClient redisson = Redisson.create(conf);
         System.out.println(redisson);*/
     }
 
     @Test
     public void testInit2() {
-/*        Config config = new Config();
-        config. useSingleServer().setAddress("127.0.0.1:6379");
-        RedissonClient redisson = Redisson.create(config);
+/*        Config conf = new Config();
+        conf. useSingleServer().setAddress("127.0.0.1:6379");
+        RedissonClient redisson = Redisson.create(conf);
         Assert.assertNotNull(redisson);
         System.out.println(redisson);*/
     }

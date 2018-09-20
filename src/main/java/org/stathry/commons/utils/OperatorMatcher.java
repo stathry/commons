@@ -219,8 +219,8 @@ public class OperatorMatcher implements OperatorMatchable, InitializingBean {
 //            return;
 //        }
 //        list = operatorSegmentMapRepository.findAll();
-//        Assert.notEmpty(list, "operator segment config error.");
-//        LOGGER.info("list operator phone segment from config, size {}.", list.size());
+//        Assert.notEmpty(list, "operator segment conf error.");
+//        LOGGER.info("list operator phone segment from conf, size {}.", list.size());
 //        orgOptMap.clear();
 //        initOrgOptMap(orgOptMap, list);
 //        redisBaseDao.addString(KEY_OPT_SEG_MAP, "1", operatorCacheTime);

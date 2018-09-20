@@ -2,6 +2,8 @@ package org.stathry.commons.utils;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -57,11 +59,13 @@ public class HttpClientUtil {
 		try {
 			HttpEntity entity = new StringEntity(requestBody, "utf-8");
 			httpPost.setEntity(entity);
-			CloseableHttpClient client = getClientFromPool();
+			CloseableHttpClient client = HttpClients.createDefault();
 			System.out.println(client);
 			response = client.execute(httpPost);
-			int statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode == 200) {
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            LOGGER.info("invoke uri {} response status {}, reason {}.", uri, statusCode, statusLine.getReasonPhrase());
+			if (statusCode == HttpStatus.SC_OK) {
 				HttpEntity respEntity = response.getEntity();
 				String str = EntityUtils.toString(respEntity, "utf-8");
 				return str;

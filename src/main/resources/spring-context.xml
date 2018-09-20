@@ -11,10 +11,10 @@
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <array>
-                <value>classpath:/config/config.properties</value>
-                <value>classpath:/config/jdbc.properties</value>
-                <value>classpath:/config/redis.properties</value>
-                <value>classpath:/config/mongo.properties</value>
+                <value>classpath:/conf/config.properties</value>
+                <value>classpath:/conf/jdbc.properties</value>
+                <value>classpath:/conf/redis.properties</value>
+                <value>classpath:/conf/mongo.properties</value>
             </array>
         </property>
     </bean>

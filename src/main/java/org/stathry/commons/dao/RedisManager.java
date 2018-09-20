@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 @Repository
 public class RedisManager {
 
-    private static final long DEFAULT_EXPIRE_MS = ConfigManager.getLong("cache.default.expireMS");
+    private static final long DEFAULT_EXPIRE_MS = ConfigManager.getSysObj("cache.default.expireMS", Long.class);
     //    private static final long DEFAULT_EXPIRE_MS = 5 * 60 * 1000;
 
     @Autowired
