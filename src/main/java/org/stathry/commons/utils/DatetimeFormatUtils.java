@@ -41,7 +41,6 @@ public class DatetimeFormatUtils {
 		return new SimpleDateFormat(pattern).format(date);
 	}
 
-
 	public static Date parse(String source) throws ParseException {
 		return parse(source, PATTERN_DATETIME);
 	}
@@ -55,7 +54,7 @@ public class DatetimeFormatUtils {
 			return null;
 		}
 
-		SimpleDateFormat f = new SimpleDateFormat(PATTERN_DATETIME);
+		SimpleDateFormat f = new SimpleDateFormat(pattern);
 		f.setLenient(lenient);
 		return f.parse(source);
 	}
@@ -73,7 +72,7 @@ public class DatetimeFormatUtils {
             return null;
         }
 
-        SimpleDateFormat f = new SimpleDateFormat(PATTERN_DATETIME);
+        SimpleDateFormat f = new SimpleDateFormat(pattern);
         f.setLenient(lenient);
 
         Date date = null;

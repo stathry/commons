@@ -23,6 +23,13 @@ import static org.junit.Assert.assertNotNull;
 public class DigestTest {
 
     @Test
+    public void testMd5Empty() {
+        String r = DigestUtils.md5Hex("");
+        System.out.println(r);
+        Assert.assertEquals("d41d8cd98f00b204e9800998ecf8427e", r);
+    }
+
+    @Test
     public void testJdkBase64() {
         String s = java.util.Base64.getEncoder().encodeToString("拿骚N".getBytes());
         System.out.println(s);
