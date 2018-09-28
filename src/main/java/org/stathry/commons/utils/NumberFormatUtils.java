@@ -3,12 +3,11 @@
  */
 package org.stathry.commons.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.Assert;
 
 /**
  * @author stathry@126.com
@@ -24,7 +23,7 @@ public final class NumberFormatUtils {
         f.setMaximumFractionDigits(scale);
         f.setMinimumFractionDigits(scale);
         f.setRoundingMode(mode);
-        return f.format(num);
+        return f.format(new BigDecimal(String.valueOf(num)));
     }
 
     public static String format(String num, int scale, RoundingMode mode) {

@@ -14,6 +14,9 @@ public class NumberFormatUtilsTest {
     @Test
     public void testFormat1() {
         // NumberFormatUtils.formatFraction
+        org.springframework.util.Assert.isTrue("500.89".equals(NumberFormatUtils.format(500.885, 2, RoundingMode.HALF_UP)), "error.");
+        org.springframework.util.Assert.isTrue("500.89".equals(NumberFormatUtils.format(500.885f, 2, RoundingMode.HALF_UP)), "error.");
+
         org.springframework.util.Assert.isTrue("6.00".equals(NumberFormatUtils.format(6, 2, RoundingMode.HALF_UP)), "error.");
         org.springframework.util.Assert.isTrue("-6.00".equals(NumberFormatUtils.format(-6, 2, RoundingMode.HALF_UP)), "error.");
 

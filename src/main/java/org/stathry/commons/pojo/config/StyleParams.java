@@ -38,13 +38,13 @@ public class StyleParams {
 	 * 
 	 * @see org.apache.poi.ss.usermodel.CellStyle#ALIGN_CENTER
 	 */
-	private short align = CellStyle.ALIGN_CENTER;
+	private short align;// = CellStyle.ALIGN_CENTER;
 	/**
 	 * 垂直对齐方式
 	 * 
 	 * @see org.apache.poi.ss.usermodel.CellStyle#VERTICAL_CENTER
 	 */
-	private short verticalAlign = CellStyle.VERTICAL_CENTER;
+	private short verticalAlign;// = CellStyle.VERTICAL_CENTER;
 	/**
 	 * 背景色
 	 * 

@@ -1,5 +1,8 @@
 package org.stathry.commons.excel;
 
+import com.alibaba.fastjson.JSON;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -20,72 +23,68 @@ public class ExcelReadingTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelReadingTest.class);
 
-    ExcelReadable excelReading = new ExcelReading();
-
-    // method testReading100,time 1912
-//    method testReading100VSAll,time 1590
-
     @Test
-    public void testReading100() {
+    public void testReadToMap() {
         long start = System.currentTimeMillis();
-        String path = "/mnt/data/galaxy-pull/ssd-contact/悠融-闪信贷客户通讯录411/闪信贷待调取通讯录名单4.11.xlsx";
-        List<String> keys = Arrays.asList("order", "name", "id");
-        FileArea area = new FileArea(0, 3, 1, 101);
-        List<Map<String, String>> list = excelReading.readToMaps(path, 0, keys, area);
+        String path = "/temp/users.xlsx";
+        List<Map<String, String>> list = ExcelReading.readToMaps(path);
+        System.out.println(JSON.toJSONString(list));
         Assert.assertNotNull(list);
         Assert.assertTrue(!list.isEmpty());
-        Assert.assertEquals(100, list.size());
+        Assert.assertEquals(17, list.size());
         Assert.assertNotNull(list.get(0));
-        Assert.assertEquals(3, list.get(0).size());
+        Assert.assertEquals(5, list.get(0).size());
         LOGGER.info("first {}, last {}.", list.get(0), list.get(list.size() - 1));
         long end = System.currentTimeMillis();
         LOGGER.info("method {},time {}", Thread.currentThread().getStackTrace()[1].getMethodName(), end - start);
     }
 
     @Test
-    public void testReading100VSAll() {
+    public void testReadToMapWithSheet() {
         long start = System.currentTimeMillis();
-        String path = "/mnt/data/galaxy-pull/ssd-contact/悠融-闪信贷客户通讯录411/闪信贷待调取通讯录名单4.11.xlsx";
-        List<String> keys = Arrays.asList("order", "name", "id");
-        FileArea area = new FileArea(0, 3, 1, 500000);
-        List<Map<String, String>> list = excelReading.readToMaps(path, 0, keys, area);
+        String path = "/temp/users.xlsx";
+        List<Map<String, String>> list = ExcelReading.readToMaps(path, null, null, "sheet2");
+        System.out.println(JSON.toJSONString(list));
         Assert.assertNotNull(list);
         Assert.assertTrue(!list.isEmpty());
-        LOGGER.info("first {}, last {}.", list.get(0), list.get(list.size() - 1));
-        Assert.assertEquals(100, list.size());
+        Assert.assertEquals(17, list.size());
         Assert.assertNotNull(list.get(0));
-        Assert.assertEquals(3, list.get(0).size());
+        Assert.assertEquals(5, list.get(0).size());
+        LOGGER.info("first {}, last {}.", list.get(0), list.get(list.size() - 1));
         long end = System.currentTimeMillis();
         LOGGER.info("method {},time {}", Thread.currentThread().getStackTrace()[1].getMethodName(), end - start);
     }
 
     @Test
-    public void testReadingSheet2R100() {
-        String path = "/mnt/data/galaxy-pull/ssd-contact/悠融-闪信贷客户通讯录411/闪信贷待调取通讯录名单4.11.xlsx";
-        List<String> keys = Arrays.asList("order", "name", "id");
-        FileArea area = new FileArea(0, 3, 1, 101);
-        List<Map<String, String>> list = excelReading.readToMaps(path, 1, keys, area);
+    public void testReadToMapWithArea() {
+        long start = System.currentTimeMillis();
+        String path = "/temp/users.xlsx";
+        List<String> keys = Arrays.asList("name", "age", "birth", "assert");
+        FileArea area = new FileArea(1, 4, 1, 10);
+        List<Map<String, String>> list = ExcelReading.readToMaps(path, keys, area);
+        System.out.println(JSON.toJSONString(list));
         Assert.assertNotNull(list);
         Assert.assertTrue(!list.isEmpty());
-        Assert.assertEquals(100, list.size());
+        Assert.assertEquals(area.getRowEnd() + 1 - area.getRowStart(), list.size());
         Assert.assertNotNull(list.get(0));
-        Assert.assertEquals(3, list.get(0).size());
+        Assert.assertEquals(keys.size(), list.get(0).size());
         LOGGER.info("first {}, last {}.", list.get(0), list.get(list.size() - 1));
-        Assert.assertEquals("邢书敏2", list.get(list.size() - 1).get("name"));
+        long end = System.currentTimeMillis();
+        LOGGER.info("method {},time {}", Thread.currentThread().getStackTrace()[1].getMethodName(), end - start);
     }
 
     @Test
-    public void testReading10() {
-        String path = "/mnt/data/galaxy-pull/ssd-contact/悠融-闪信贷客户通讯录411/闪信贷待调取通讯录名单4.11.xlsx";
-        List<String> keys = Arrays.asList("order", "name", "id");
-        FileArea area = new FileArea(0, 3, 1, 11);
-        List<Map<String, String>> list = excelReading.readToMaps(path, 0, keys, area);
-        Assert.assertNotNull(list);
-        Assert.assertTrue(!list.isEmpty());
-        Assert.assertEquals(10, list.size());
-        Assert.assertNotNull(list.get(0));
-        LOGGER.info("first {}, last {}.", list.get(0), list.get(list.size() - 1));
-        Assert.assertEquals(3, list.get(0).size());
+    public void testReadStr() {
+        String path = "/temp/temp.xlsx";
+        String content = ExcelReading.readToString(path);
+        Assert.assertTrue(StringUtils.isNotBlank(content));
+    }
+
+    @Test
+    public void testReadStrWithPwd() {
+        String path = "/temp/temp2.xlsx";
+        String content = ExcelReading.readToString(path, "666888");
+        Assert.assertTrue(StringUtils.isNotBlank(content));
     }
 
 }

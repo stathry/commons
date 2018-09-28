@@ -1,11 +1,13 @@
 package org.stathry.commons.enums;
 
+import org.stathry.commons.excel.ExcelConstant;
+
 public class FileArea {
 
     private int columnStart = 0;
-    private int columnEnd = Integer.MAX_VALUE;
+    private int columnEnd = ExcelConstant.MAX_COLUMN;
     private int rowStart = 0;
-    private int rowEnd = Integer.MAX_VALUE;
+    private int rowEnd = ExcelConstant.MAX_ROW;
 
     public FileArea() {
     }
