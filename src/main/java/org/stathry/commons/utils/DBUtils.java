@@ -1,9 +1,7 @@
 package org.stathry.commons.utils;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.stathry.commons.excel.ExcelReading;
 
@@ -15,7 +13,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * DBUtils
+ * 数据库操作工具类
  * Created by dongdaiming on 2018-09-29 14:58
  */
 public class DBUtils {
@@ -32,11 +30,17 @@ public class DBUtils {
     private DBUtils() {
     }
 
+    /**
+     * 从excel读取数据并批量导入至mysql
+     * @param path
+     * @param table
+     * @return
+     */
     public static int insertFromExcel(String path, String table) {
         List<Map<String, String>> list = ExcelReading.readToMaps(path);
         int size = list == null ? 0 : list.size();
 
-        LOGGER.info("read from excel, size {}", size);
+        LOGGER.info("read data from excel, size {}.", size);
         if(size == 0) {
             return 0;
         }
@@ -45,17 +49,19 @@ public class DBUtils {
 
         String sql = keysToSQL(cols, table);
 
+        LOGGER.info("generate sql by excel header, sql:{}", sql);
+
         int bs = batchSize < size ? batchSize : size;
         List<Object[]> args = new ArrayList<>(bs);
         Map<String, String> r;
         for(int i = 0, last = size - 1; i < size; i++) {
             r = list.get(i);
             if((i != 0 && i % bs == 0)) {
-                LOGGER.info("batchUpdate, table {}, index {}, rows {}.", table, i, args.size());
+                LOGGER.info("batch insert data to table {}, index {}, rows {}.", table, i, args.size());
                 jdbcTemplate.batchUpdate(sql, args);
             } else if(i == last) {
                 args.add(mapToArgArray(r, cols));
-                LOGGER.info("batchUpdate, table {}, index {}, rows {}.", table, i, args.size());
+                LOGGER.info("batch insert data to table {}, index {}, rows {}.", table, i, args.size());
                 jdbcTemplate.batchUpdate(sql, args);
             }
 
@@ -91,6 +97,6 @@ public class DBUtils {
         sql1.append(')');
         sql2.deleteCharAt(sql2.length() - 1);
         sql2.append(')');
-        return sql1.append(sql2).toString();
+        return sql1.append(' ').append(sql2).toString();
     }
 }
