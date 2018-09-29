@@ -10,11 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.stathry.commons.enums.FileArea;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
- * TODO
+ * ExcelReadingTest
  *
  * @author dongdaiming
  * @date 2018/4/19
@@ -22,6 +23,22 @@ import java.util.Map;
 public class ExcelReadingTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelReadingTest.class);
+
+    @Test
+    public void testReadToObject() {
+        long start = System.currentTimeMillis();
+        String path = "/temp/users.xlsx";
+        List<User> list = ExcelReading.readToObjects(path, User.class, new FileArea(0, 4, 1, 10));
+        System.out.println(JSON.toJSONString(list));
+        Assert.assertNotNull(list);
+        Assert.assertTrue(!list.isEmpty());
+        Assert.assertEquals(10, list.size());
+        Assert.assertNotNull(list.get(0));
+        Assert.assertTrue(list.get(0).getClass() == User.class);
+        LOGGER.info("first {}, last {}.", list.get(0), list.get(list.size() - 1));
+        long end = System.currentTimeMillis();
+        LOGGER.info("method {},time {}", Thread.currentThread().getStackTrace()[1].getMethodName(), end - start);
+    }
 
     @Test
     public void testReadToMap() {
@@ -59,7 +76,7 @@ public class ExcelReadingTest {
     public void testReadToMapWithArea() {
         long start = System.currentTimeMillis();
         String path = "/temp/users.xlsx";
-        List<String> keys = Arrays.asList("name", "age", "birth", "assert");
+        List<String> keys = Arrays.asList("name", "age", "birth", "asserts");
         FileArea area = new FileArea(1, 4, 1, 10);
         List<Map<String, String>> list = ExcelReading.readToMaps(path, keys, area);
         System.out.println(JSON.toJSONString(list));
@@ -85,6 +102,55 @@ public class ExcelReadingTest {
         String path = "/temp/temp2.xlsx";
         String content = ExcelReading.readToString(path, "666888");
         Assert.assertTrue(StringUtils.isNotBlank(content));
+    }
+
+    private static class User {
+        private Long id;
+        private Integer age;
+        private Date birth;
+        private Double asserts;
+
+        @Override
+        public String toString() {
+            return "User{" +
+                    "id=" + id +
+                    ", age=" + age +
+                    ", birth=" + birth +
+                    ", asserts=" + asserts +
+                    '}';
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public Integer getAge() {
+            return age;
+        }
+
+        public void setAge(Integer age) {
+            this.age = age;
+        }
+
+        public Date getBirth() {
+            return birth;
+        }
+
+        public void setBirth(Date birth) {
+            this.birth = birth;
+        }
+
+        public Double getAsserts() {
+            return asserts;
+        }
+
+        public void setAsserts(Double asserts) {
+            this.asserts = asserts;
+        }
     }
 
 }

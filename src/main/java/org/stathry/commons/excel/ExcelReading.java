@@ -1,5 +1,6 @@
 package org.stathry.commons.excel;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -33,17 +34,31 @@ import java.util.Map;
  */
 public class ExcelReading {
 
-    
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelReading.class);
+    private static final String LINE_SEP = SystemUtils.LINE_SEPARATOR;
+    private static final String COL_SEP = ",\t";
 
     public static String readToString(String path) {
         return readToStringFromExcel(path, null,
-                ExcelConstant.MAX_CONTINUOUS_EMPTY_ROWS, ExcelConstant.MAX_CONTINUOUS_EMPTY_COLS, SystemUtils.LINE_SEPARATOR, ",\t");
+                ExcelConstant.MAX_CONTINUOUS_EMPTY_ROWS, ExcelConstant.MAX_CONTINUOUS_EMPTY_COLS, LINE_SEP, COL_SEP);
     }
 
     public static String readToString(String path, String password) {
         return readToStringFromExcel(path, password,
-                ExcelConstant.MAX_CONTINUOUS_EMPTY_ROWS, ExcelConstant.MAX_CONTINUOUS_EMPTY_COLS, SystemUtils.LINE_SEPARATOR, ",\t");
+                ExcelConstant.MAX_CONTINUOUS_EMPTY_ROWS, ExcelConstant.MAX_CONTINUOUS_EMPTY_COLS, LINE_SEP, COL_SEP);
+    }
+
+    public static <T> List<T> readToObjects(String path, Class<T> clazz) {
+        return readToObjects(path, clazz, new FileArea());
+    }
+
+    public static <T> List<T> readToObjects(String path, Class<T> clazz, FileArea area) {
+        area = area == null ? new FileArea() : area;
+        checkReadParams(path, null, area);
+
+        List<Map<String, String>> maps = readDataToMapsFromExcel(path, null, area, null, null);
+        String js = JSON.toJSONStringWithDateFormat(maps, ExcelConstant.READ_DATE_PATTERN);
+        return JSON.parseArray(js, clazz);
     }
 
     /**
@@ -52,9 +67,10 @@ public class ExcelReading {
      * @return
      */
     public static List<Map<String, String>> readToMaps(String path) {
-        checkReadParams(path, null, new FileArea());
+        FileArea area = new FileArea();
+        checkReadParams(path, null, area);
 
-        return readDataToMapsFromExcel(path, null, new FileArea(), null, null);
+        return readDataToMapsFromExcel(path, null, area, null, null);
     }
 
     /**
@@ -64,9 +80,10 @@ public class ExcelReading {
      * @return
      */
     public static List<Map<String, String>> readToMaps(String path, List<String> keys) {
-        checkReadParams(path, null, new FileArea());
+        FileArea area = new FileArea();
+        checkReadParams(path, null, area);
 
-        return readDataToMapsFromExcel(path, keys, new FileArea(), null, null);
+        return readDataToMapsFromExcel(path, keys, area, null, null);
     }
 
     /**
@@ -312,7 +329,7 @@ public class ExcelReading {
         int cellStart = row.getFirstCellNum() > area.getColumnStart() ? row.getFirstCellNum() : area.getColumnStart();
         int cellEnd = row.getLastCellNum() < area.getColumnEnd() ? row.getLastCellNum() : area.getColumnEnd();
         Assert.notEmpty(keys, "not found keys.");
-        Assert.isTrue(keys.size() == cellEnd + 1 - cellStart, "keys size not match to column range.");
+        Assert.isTrue(keys.size() <= (cellEnd + 1 - cellStart), "keys size not match to column range.");
         int keySize = keys.size();
         for (; rowStart <= rowEnd; rowStart++) {
             LOGGER.debug("loading data, rowIndex {}.", rowStart);
