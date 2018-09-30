@@ -4,12 +4,17 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -73,6 +78,47 @@ public class ExcelUtils {
         return StringUtils.trimToEmpty(value);
     }
 
+    /**
+     * 根据数据类型创建单元格并赋值
+     * @param row
+     * @param i
+     * @param value
+     */
+    public static Cell createCell(Row row, int i, Object value, CellStyle dateStyle, CellStyle floatStyle) {
+        Cell cell;
+        if(value == null) {
+            return row.createCell(i, Cell.CELL_TYPE_BLANK);
+        }
+
+        Class c = value.getClass();
+        if(c == String.class) {
+            cell = row.createCell(i, Cell.CELL_TYPE_STRING);
+            cell.setCellValue((String) value);
+        } else if(value instanceof Number) {
+            cell = row.createCell(i, Cell.CELL_TYPE_NUMERIC);
+            cell.setCellValue(((Number) value).doubleValue());
+            if(c == Double.class || c == Float.class || c == BigDecimal.class) {
+             cell.setCellStyle(floatStyle);
+            }
+
+        } else if(c == Date.class) {
+            cell = row.createCell(i, Cell.CELL_TYPE_NUMERIC);
+            cell.setCellValue(((Date) value));
+            cell.setCellStyle(dateStyle);
+        } else if(c == Calendar.class) {
+            cell = row.createCell(i, Cell.CELL_TYPE_NUMERIC);
+            cell.setCellValue(((Calendar) value));
+            cell.setCellStyle(dateStyle);
+        } else if(c == Boolean.class) {
+            cell = row.createCell(i, Cell.CELL_TYPE_BOOLEAN);
+            cell.setCellValue(((Boolean) value));
+        } else {
+            cell = row.createCell(i, Cell.CELL_TYPE_STRING);
+            cell.setCellValue((String) value);
+        }
+        return cell;
+    }
+
     public static String fileNameToType(String filename) {
         if (StringUtils.isBlank(filename)) {
             return "";
@@ -101,5 +147,18 @@ public class ExcelUtils {
         return is;
     }
 
+    public static CellStyle createDateStyle(Workbook book) {
+        CellStyle style = book.createCellStyle();
+        DataFormat format = book.createDataFormat();
+        style.setDataFormat(format.getFormat(ExcelConstant.WRITE_DATE_PATTERN));
+        return style;
+    }
+
+    public static CellStyle createFloatStyle(Workbook book) {
+        CellStyle style = book.createCellStyle();
+        DataFormat format = book.createDataFormat();
+        style.setDataFormat(format.getFormat(ExcelConstant.WRITE_NUM_FORMAT));
+        return style;
+    }
 
 }
