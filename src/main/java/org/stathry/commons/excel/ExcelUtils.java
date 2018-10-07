@@ -11,8 +11,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.stathry.commons.math.DecimalUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,6 +28,8 @@ import java.util.Date;
 public class ExcelUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelUtils.class);
+
+    private static final DecimalUtils DECIMAL_UTILS = new DecimalUtils(22, 2, RoundingMode.HALF_UP);
 
     private ExcelUtils() {}
 
@@ -96,11 +100,12 @@ public class ExcelUtils {
             cell.setCellValue((String) value);
         } else if(value instanceof Number) {
             cell = row.createCell(i, Cell.CELL_TYPE_NUMERIC);
-            cell.setCellValue(((Number) value).doubleValue());
             if(c == Double.class || c == Float.class || c == BigDecimal.class) {
              cell.setCellStyle(floatStyle);
+             cell.setCellValue(Double.parseDouble(DECIMAL_UTILS.format(value)));
+            } else {
+                cell.setCellValue(((Number) value).doubleValue());
             }
-
         } else if(c == Date.class) {
             cell = row.createCell(i, Cell.CELL_TYPE_NUMERIC);
             cell.setCellValue(((Date) value));

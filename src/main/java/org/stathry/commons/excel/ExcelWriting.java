@@ -66,7 +66,7 @@ public class ExcelWriting {
             Sheet sheet = book.createSheet(FilenameUtils.getBaseName(path));
 
             writeHeader(sheet, header);
-            writeData(book, sheet, maps, keys);
+            writeData(book, sheet, maps, keys, header);
             LOGGER.info("write data of maps completion, size {}, path {}.", maps.size(), path);
             book.write(new FileOutputStream(file));
         } catch (Exception e) {
@@ -84,8 +84,9 @@ public class ExcelWriting {
         return r;
     }
 
-    private static void writeData(Workbook book, Sheet sheet, List<? extends Map> maps, List<String> keys) {
-        int ir = sheet.getLastRowNum() + 1;
+    private static void writeData(Workbook book, Sheet sheet, List<? extends Map> maps, List<String> keys, List<String> header) {
+        int ir = sheet.getLastRowNum();
+        ir = (header == null || header.isEmpty()) ? ir : (ir + 1);
         Row row;
         int rows = maps.size();
         int cols;
