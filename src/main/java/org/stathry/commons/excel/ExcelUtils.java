@@ -106,7 +106,7 @@ public class ExcelUtils {
             } else {
                 cell.setCellValue(((Number) value).doubleValue());
             }
-        } else if(c == Date.class) {
+        } else if(value instanceof Date) {
             cell = row.createCell(i, Cell.CELL_TYPE_NUMERIC);
             cell.setCellValue(((Date) value));
             cell.setCellStyle(dateStyle);

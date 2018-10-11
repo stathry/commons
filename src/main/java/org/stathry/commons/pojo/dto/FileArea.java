@@ -1,4 +1,4 @@
-package org.stathry.commons.enums;
+package org.stathry.commons.pojo.dto;
 
 import org.stathry.commons.excel.ExcelConstant;
 

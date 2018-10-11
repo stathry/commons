@@ -1,13 +1,12 @@
 package org.stathry.commons.excel;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.stathry.commons.enums.FileArea;
+import org.stathry.commons.pojo.dto.FileArea;
 
 import java.util.Arrays;
 import java.util.Date;

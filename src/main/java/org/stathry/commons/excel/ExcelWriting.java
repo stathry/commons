@@ -11,6 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+import org.springframework.util.LinkedCaseInsensitiveMap;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,12 +40,12 @@ public class ExcelWriting {
         writeMapsToExcel(path, maps, keys, header);
     }
 
-    public static void writeLinkedMaps(String path, List<LinkedHashMap<String, Object>> maps) {
+    public static void writeLinkedMaps(String path, List<Map<String, Object>> maps) {
         checkParams(path, maps, null);
         writeMapsToExcel(path, maps, null, null);
     }
 
-    public static void writeLinkedMaps(String path, List<LinkedHashMap<String, Object>> maps, List<String> header) {
+    public static void writeLinkedMaps(String path, List<Map<String, Object>> maps, List<String> header) {
         checkParams(path, maps, null);
         writeMapsToExcel(path, maps, null, header);
     }
@@ -156,7 +157,7 @@ public class ExcelWriting {
         Assert.isTrue("xls".equals(type) || "xlsx".equals(type), "not support excel type.");
         Assert.notEmpty(maps, "required maps data.");
         Assert.notEmpty(maps.get(0), "required maps data.");
-        Assert.isTrue(maps.get(0) instanceof LinkedHashMap || (keys != null && !keys.isEmpty()),
+        Assert.isTrue(maps.get(0) instanceof LinkedHashMap || maps.get(0) instanceof LinkedCaseInsensitiveMap || (keys != null && !keys.isEmpty()),
                 "type of maps is not LinkedHashMap or keys is empty.");
     }
 

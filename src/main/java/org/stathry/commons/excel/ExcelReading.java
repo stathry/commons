@@ -13,7 +13,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
-import org.stathry.commons.enums.FileArea;
+import org.stathry.commons.pojo.dto.FileArea;
 import org.stathry.commons.utils.FileUtils;
 
 import java.io.BufferedInputStream;

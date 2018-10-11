@@ -46,4 +46,5 @@ public class JdbcTemplateTest {
             args.add(new Object[] {"o" + i / 10, "bc" + i / 5});
         }
     }
+
 }

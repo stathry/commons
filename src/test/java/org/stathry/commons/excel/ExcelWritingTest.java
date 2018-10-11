@@ -19,7 +19,7 @@ public class ExcelWritingTest {
 
     @Test
     public void testWriteLinkedMaps1() {
-        List<LinkedHashMap<String, Object>> maps = new ArrayList<>();
+        List<Map<String, Object>> maps = new ArrayList<>();
         LinkedHashMap<String, Object> map;
         double d = 800.889;
         for (int i = 0; i < 100; i++) {
@@ -35,7 +35,7 @@ public class ExcelWritingTest {
 
     @Test
     public void testWriteLinkedMaps2() {
-        List<LinkedHashMap<String, Object>> maps = new ArrayList<>();
+        List<Map<String, Object>> maps = new ArrayList<>();
         LinkedHashMap<String, Object> map;
         double d = 800.889;
         for (int i = 0; i < 100; i++) {
@@ -82,5 +82,10 @@ public class ExcelWritingTest {
         List<String> keys = Arrays.asList("id", "name", "birth", "asserts");
         List<String> header = Arrays.asList("id", "姓名", "统计时间", "资产");
         ExcelWriting.writeMaps("/temp/maps4.xlsx", maps, keys, header);
+    }
+
+    @Test
+    public void testWritingFromDB1() {
+
     }
 }
