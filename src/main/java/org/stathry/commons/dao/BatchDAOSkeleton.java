@@ -1,6 +1,10 @@
 package org.stathry.commons.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.stathry.commons.utils.ApplicationContextUtils;
+import org.stathry.commons.utils.DBUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +15,15 @@ import java.util.List;
  */
 public class BatchDAOSkeleton {
 
-    public static <T extends BatchInsertion> Integer batchSave(JdbcTemplate jdbcTemplate, List<T> list, String sql, int batchSize) {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BatchDAOSkeleton.class);
+
+    private static final JdbcTemplate jdbcTemplate;
+
+    static {
+        jdbcTemplate = ApplicationContextUtils.getBean("jdbcTemplate", JdbcTemplate.class);
+    }
+
+    public static <T extends BatchInsertion> Integer batchSave(List<T> list, String sql, int batchSize) {
         int size = list.size();
         List<Object[]> args = new ArrayList<>(batchSize);
         T c;
@@ -19,9 +31,11 @@ public class BatchDAOSkeleton {
             c = list.get(i);
             if((i != 0 && i % batchSize == 0)) {
                 jdbcTemplate.batchUpdate(sql, args);
+                LOGGER.info("batchInsert, index {}", i);
             } else if(i == last) {
                 args.add(c.toArgArray());
                 jdbcTemplate.batchUpdate(sql, args);
+                LOGGER.info("batchInsert, index {}", i);
             }
 
             if(i != 0 && i % batchSize == 0) {
