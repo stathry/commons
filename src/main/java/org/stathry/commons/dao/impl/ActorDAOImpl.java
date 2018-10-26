@@ -5,7 +5,7 @@ package org.stathry.commons.dao.impl;
 
 import org.springframework.stereotype.Repository;
 import org.stathry.commons.dao.ActorDAO;
-import org.stathry.commons.pojo.Actor;
+import org.stathry.commons.model.Actor;
 
 /**
  * 

@@ -6,6 +6,7 @@
     <property name="LOG_PATTERN_FILE" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] [%logger{60}:%line] - %msg%n"/>
     <property name="CHARSET" value="UTF-8"/>
     <property name="LOG_HOME" value="logs" />
+    <property name="LOG_NAME" value="app" />
 
     <appender name="C" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -15,9 +16,9 @@
     </appender>
 
     <appender name="RF" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_HOME}/mock.log</File>
+        <File>${LOG_HOME}/${LOG_NAME}.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_HOME}/mock-%d{yyyyMMdd}-%i.log</FileNamePattern>
+            <FileNamePattern>${LOG_HOME}/${LOG_NAME}-%d{yyyyMMdd}-%i.log</FileNamePattern>
             <maxFileSize>20MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>20GB</totalSizeCap>

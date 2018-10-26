@@ -12,7 +12,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import org.apache.commons.lang3.StringUtils;
-import org.stathry.commons.pojo.dto.ValidateResult;
+import org.stathry.commons.model.dto.ValidateResult;
 
 /**
  * @author Demon

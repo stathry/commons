@@ -21,8 +21,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.stathry.commons.enums.ExcelTypeEnums;
-import org.stathry.commons.pojo.config.ExcelParams;
-import org.stathry.commons.pojo.config.StyleParams;
+import org.stathry.commons.model.config.ExcelParams;
+import org.stathry.commons.model.config.StyleParams;
 
 /**
  * @author dongdaiming@free.com
@@ -59,7 +59,7 @@ public class ExcelUtils {
 		}
 		
 		FileOutputStream out = null;
-		FileUtils.createParentDir(path);
+//		FileUtils.createParentDir(path);
 		try {
 			out = new FileOutputStream(path);
 			workbook.write(out);
@@ -123,7 +123,7 @@ public class ExcelUtils {
 		}
 		
 		FileOutputStream out = null;
-		FileUtils.createParentDir(path);
+//		FileUtils.createParentDir(path);
 		try {
 			out = new FileOutputStream(path);
 			workbook.write(out);

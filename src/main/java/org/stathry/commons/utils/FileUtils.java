@@ -33,57 +33,35 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		return new File(path).exists();
 	}
 
-    public static boolean createParentDir(String path) {
-        if (StringUtils.isBlank(path)) {
-            return false;
-        }
-        return createParentDir(new File(path));
-    }
-
-    public static boolean createParentDir(File file) {
-        if (file == null) {
-            return false;
-        }
-        File parent = file.getParentFile();
-        if(parent == null) {
-            return false;
-        }
-        boolean exists = parent.exists();
-        return exists ? exists : parent.mkdirs();
-    }
-
-	public static boolean createFile(String path) throws IOException {
+	public static boolean createFile(String path, boolean forceNew) throws IOException {
 		if (StringUtils.isBlank(path)) {
 			return false;
 		}
-		File file = new File(path);
-		return createFile(file);
+		return createFile(new File(path), forceNew);
 	}
 
-	public static boolean createFile(File file) throws IOException {
-		if (file == null || file.exists()) {
-			return file == null ? false : true;
-		}
-		createParentDir(file);
-		return file.createNewFile();
-	}
-
-	public static boolean createNewFile(String path) throws IOException {
-		if (StringUtils.isBlank(path)) {
-			return false;
-		}
-		return createNewFile(new File(path));
-	}
-
-	public static boolean createNewFile(File file) throws IOException {
+	public static boolean createFile(File file, boolean forceNew) throws IOException {
 		if (file == null) {
 			return false;
 		}
-		createParentDir(file);
-		return file.createNewFile();
+		boolean fex = file.exists();
+		boolean r;
+		if(forceNew && fex) {
+		    file.delete();
+            r = file.createNewFile();
+        } else if(forceNew && !fex) {
+            file.getParentFile().mkdirs();
+            r = file.createNewFile();
+        } else if(!forceNew && fex) {
+		    r = true;
+        } else {
+            file.getParentFile().mkdirs();
+            r = file.createNewFile();
+        }
+		return r;
 	}
 
-	public static List<File> splitFileByLines(String path, int lines) throws IOException {
+	public static List<File> splitFileByLines(String path, int lineLimit) throws IOException {
 		File file = new File(path);
 		List<File> fs = new ArrayList<>();
 		LineIterator lit = IOUtils.lineIterator(new BufferedInputStream(new FileInputStream(file)), CHARSET);
@@ -98,7 +76,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		fs.add(f);
 		for (; lit.hasNext(); fcount++) {
 			rcount++;
-			if (rcount >= lines) {
+			if (rcount >= lineLimit) {
 				write(f, buf, CHARSET, true);
 				buf.setLength(0);
 				f = new File(pre + bname + fcount + suf);

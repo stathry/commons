@@ -1,4 +1,4 @@
-package org.stathry.commons.pojo.config;
+package org.stathry.commons.model.config;
 
 /**
  * TODO

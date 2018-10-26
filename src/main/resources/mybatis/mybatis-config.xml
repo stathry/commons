@@ -20,6 +20,6 @@
 
 	</settings>
     <typeAliases>
-        <typeAlias type="org.stathry.commons.pojo.Actor" alias="Actor"/>
+        <typeAlias type="org.stathry.commons.model.Actor" alias="Actor"/>
     </typeAliases>
 </configuration>

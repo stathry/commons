@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.stathry.commons.pojo.dto.FileArea;
+import org.stathry.commons.model.dto.FileArea;
 
 import java.util.Arrays;
 import java.util.Date;

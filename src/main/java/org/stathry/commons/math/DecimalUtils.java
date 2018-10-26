@@ -1,7 +1,5 @@
 package org.stathry.commons.math;
 
-import org.springframework.util.Assert;
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -56,23 +54,35 @@ public class DecimalUtils {
 		return d1.divide(d2, mc);
 	}
 
-	public String format(Object n) {
-		if (!(n instanceof Number)) {
-		    throw new IllegalArgumentException();
-		}
+	public String formatDecimal(Object n) {
+		if (n.getClass() == String.class) {
+		    n = new BigDecimal(n.toString());
+		} else if(!(n instanceof Number)){
+		    throw new IllegalArgumentException("not a number.");
+        }
 		return decimalFormatter.format(n);
 	}
 
-    public static void main(String[] args) {
-        DecimalUtils DU = new DecimalUtils(5, 2, RoundingMode.HALF_UP);
-        String s1 = DU.format(0);
-        System.out.println(s1);
-        Assert.isTrue("0.00".equals(s1));
+    public static String format(Object n) {
+        return format(n, SCALE, MODE);
+    }
 
-        String s2 = DU.format(12345.345678);
-        System.out.println(s2);
-        Assert.isTrue("345.35".equals(s2));
-
+    public static String format(Object n, int scale, RoundingMode mode) {
+	    if(n == null) {
+	        return "";
+        }
+        if(n.getClass() != String.class && !(n instanceof Number)){
+            throw new IllegalArgumentException("not a number.");
+        }
+        n = n.getClass() == BigDecimal.class ? n : new BigDecimal(n.toString());
+        scale = scale < 0 ? 0 : scale;
+        DecimalFormat decimalFormatter = new DecimalFormat();
+        decimalFormatter.setRoundingMode(mode);
+        decimalFormatter.setGroupingUsed(false);
+        decimalFormatter.setMaximumIntegerDigits(PRECISION - scale);
+        decimalFormatter.setMaximumFractionDigits(scale);
+        decimalFormatter.setMinimumFractionDigits(scale);
+        return decimalFormatter.format(n);
     }
 
 }

@@ -7,8 +7,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.stathry.commons.convert.Bean3;
-import org.stathry.commons.pojo.dto.ValidateResult;
-import org.stathry.commons.utils.ValidationUtils;
+import org.stathry.commons.model.dto.ValidateResult;
 
 /**
  * @author stathry@126.com

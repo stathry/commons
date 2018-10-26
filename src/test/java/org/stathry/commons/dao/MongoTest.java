@@ -15,7 +15,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.stathry.commons.pojo.Hero;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +42,7 @@ public class MongoTest {
     @Autowired
     private MongoManager mongoManager;
 
-    private static final String COLL_NAME = "hero";
+    private static final String COLL_NAME = "tfd_phone_check";
     private static final String FIRST_NAMES = "TYRION";
     private static final String LAST_NAMES = "LANNISTER";
 
@@ -297,13 +296,11 @@ public class MongoTest {
     @Test
     public void testQueryDocListByFields() {
         DBObject params = new BasicDBObject();
-        params.put("lastName", "NAS");  //查询条件
+        params.put("idCard", "610322198902264537");  //查询条件
 
-        BasicDBObject fields = new BasicDBObject();
-        fields.put("heroId", true);
-        fields.put("_id", false);
-        List<JSONObject> docs = mongoManager.queryDocListByFields(COLL_NAME, params, fields, null);
+        List<JSONObject> docs = mongoManager.queryDocListByFields(COLL_NAME, params, Arrays.asList("idCard", "phoneNo", "realName"), null);
         assertTrue(docs != null && !docs.isEmpty());
+        assertTrue(!docs.get(0).isEmpty());
         System.out.println(JSON.toJSONString(docs));
     }
 

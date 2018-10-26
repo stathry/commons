@@ -3,7 +3,7 @@
  */
 package org.stathry.commons.utils;
 
-import org.stathry.commons.pojo.Page;
+import org.stathry.commons.model.Page;
 
 /**
  * @author Demon

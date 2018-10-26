@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.stathry.commons.dao.RedisManager;
-import org.stathry.commons.pojo.Actor;
+import org.stathry.commons.model.Actor;
 
 import java.util.ArrayList;
 import java.util.Arrays;

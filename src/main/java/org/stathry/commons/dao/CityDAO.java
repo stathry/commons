@@ -3,7 +3,7 @@
  */
 package org.stathry.commons.dao;
 
-import org.stathry.commons.model.Actor;
+import org.stathry.commons.model.City;
 
 /**
  * 
@@ -11,7 +11,7 @@ import org.stathry.commons.model.Actor;
  * @date 2018-07-20 10:26
  */
 
-public interface ActorDAO extends GenericDAO<Actor, Long> {
+public interface CityDAO extends GenericDAO<City, Integer> {
 
 
 }  

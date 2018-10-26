@@ -1,13 +1,13 @@
 package org.stathry.commons.dao;
 
-import org.apache.ibatis.session.SqlSession;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.stathry.commons.pojo.Actor;
+import org.stathry.commons.model.Actor;
+import org.stathry.commons.model.City;
 
 import java.util.List;
 
@@ -24,6 +24,9 @@ public class ActorDAOTest {
     @Autowired
     private ActorDAO actorDAO;
 
+    @Autowired
+    private CityDAO cityDAO;
+
     @Test
     public void testQueryAll() {
         List<Actor> list = actorDAO.queryAll();
@@ -32,6 +35,21 @@ public class ActorDAOTest {
         Assert.assertTrue(list != null);
         Assert.assertTrue(list.size() > 0);
         Assert.assertTrue(list.size() == 200);
+    }
+
+    @Test
+    public void testQueryByCityId() {
+        System.out.println(cityDAO.queryById(6));
+    }
+
+    @Test
+    public void testSaveCity() {
+        City t = new City();
+        t.setName("SUOMALI");
+        t.setCountryCode("ABW");
+        t.setDistrict("888");
+        t.setPopulation(999);
+        System.out.println(cityDAO.insert(t));
     }
 
 }

@@ -5,6 +5,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.stathry.commons.dao.RedisManager;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,9 +17,47 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:spring-context.xml")
 public class SnowflakeTest {
 
+    @Autowired
+    private RedisManager redisManager;
 
+    @Test
+    public void testIncDataCenter() throws InterruptedException {
+        final int n = 8;
+        final int limit = 1000000;
+        final Integer Z = 0;
+        // dataCenterId可用于区分机器，workerId可用于区分业务
+        final Snowflake snowflake1 = new Snowflake(redisManager.increment("order.inc") % 31, 1);
+        final Snowflake snowflake2 = new Snowflake(redisManager.increment("order.inc") % 31, 1);
+        final Map<String,Integer> all = new ConcurrentHashMap<>();
+        ExecutorService exec = Executors.newFixedThreadPool(n);
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < n; i++) {
+            exec.submit(new Runnable() {
+                @Override
+                public void run() {
+                    String o;
+                    for(int j = 0; j < limit; j++) {
+                        if(j % 2 == 0) {
+                         o = String.valueOf(snowflake1.nextId());
+                        } else {
+                            o = String.valueOf(snowflake2.nextId());
+                        }
+//                System.out.println(o);
+                        all.put(o, Z);
+                    }
+                }
+            });
+        }
+        exec.shutdown();
+        exec.awaitTermination(30, TimeUnit.SECONDS);
+        System.out.println(all.size());
+        Assert.assertEquals(n * limit, all.size());
+        System.out.println("n=" + n + ",limit=" + limit + ",map size=" + all.size() + ",ms=" + (System.currentTimeMillis() - start));
+    }
 
     @Test
     public void testHashcode1() {

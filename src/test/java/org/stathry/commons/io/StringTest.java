@@ -150,8 +150,7 @@ public class StringTest {
 				"        }\r\n" + 
 				"    }\r\n" + 
 				"}";
-		s = s.replaceAll("\r\n", "");
-		s = s.replaceAll(" ", "");
+		s = s.replaceAll("\\s", "");
 		System.out.println(s);
 	}
 

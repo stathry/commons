@@ -1,4 +1,4 @@
-package org.stathry.commons.pojo.dto;
+package org.stathry.commons.model.dto;
 
 import org.stathry.commons.excel.ExcelConstant;
 

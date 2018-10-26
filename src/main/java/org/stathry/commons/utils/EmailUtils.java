@@ -21,7 +21,7 @@ import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.stathry.commons.pojo.config.EmailConfig;
+import org.stathry.commons.model.config.EmailConfig;
 
 /**
  * 

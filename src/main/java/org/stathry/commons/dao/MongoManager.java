@@ -1,6 +1,7 @@
 package org.stathry.commons.dao;
 
 import com.alibaba.fastjson.JSONObject;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Map;
@@ -86,8 +88,8 @@ public class MongoManager {
         return mongoTemplate.find(q, JSONObject.class, collectionName);
     }
 
-    public List<JSONObject> queryDocListByFields(String collectionName, DBObject params, DBObject fields, Sort sort) {
-        Query q = new BasicQuery(params, fields);
+    public List<JSONObject> queryDocListByFields(String collectionName, DBObject params, List<String> fields, Sort sort) {
+        Query q = new BasicQuery(params, transferFields(fields));
         sort = sort == null ? new Sort(Sort.Direction.DESC, "_id") : sort;
         q.with(sort);
         return mongoTemplate.find(q, JSONObject.class, collectionName);
@@ -101,6 +103,16 @@ public class MongoManager {
 
     public List<JSONObject> queryAllDoc(String collectionName) {
         return mongoTemplate.findAll(JSONObject.class, collectionName);
+    }
+
+    private DBObject transferFields(List<String> fieldList) {
+        Assert.notEmpty(fieldList, "required fieldList.");
+        BasicDBObject fields = new BasicDBObject();
+        fields.put("_id", false);
+        for (int i = 0, size = fieldList.size(); i < size; i++) {
+            fields.put(fieldList.get(i), true);
+        }
+        return fields;
     }
 
 }

@@ -26,7 +26,7 @@ import org.jeecgframework.poi.exception.excel.ExcelExportException;
 import org.jeecgframework.poi.word.WordExportUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.stathry.commons.pojo.config.DocInfo;
+import org.stathry.commons.model.config.DocInfo;
 
 /**
  * MS word工具类
