@@ -30,7 +30,7 @@ public class ExcelWritingTest {
             map.put("asserts", d + i);
             maps.add(map);
         }
-        ExcelWriting.writeLinkedMaps("/temp/maps1.xlsx", maps);
+        ExcelWriting.writeLinkedMaps("/temp/poi/maps1.xlsx", maps);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class ExcelWritingTest {
             maps.add(map);
         }
         List<String> header = Arrays.asList("id", "name", "birth", "asserts");
-        ExcelWriting.writeLinkedMaps("/temp/maps2.xlsx", maps, header);
+        ExcelWriting.writeLinkedMaps("/temp/poi/maps2.xlsx", maps, header);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class ExcelWritingTest {
             map.put("asserts", d + i);
             maps.add(map);
         }
-        ExcelWriting.writeMaps("/temp/maps3.xlsx", maps, Arrays.asList("id", "name", "birth", "asserts"));
+        ExcelWriting.writeMaps("/temp/poi/maps3.xlsx", maps, Arrays.asList("id", "name", "birth", "asserts"));
     }
 
     @Test
@@ -81,7 +81,7 @@ public class ExcelWritingTest {
         }
         List<String> keys = Arrays.asList("id", "name", "birth", "asserts");
         List<String> header = Arrays.asList("id", "姓名", "统计时间", "资产");
-        ExcelWriting.writeMaps("/temp/maps4.xlsx", maps, keys, header);
+        ExcelWriting.writeMaps("/temp/poi/maps4.xlsx", maps, keys, header);
     }
 
     @Test

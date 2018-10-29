@@ -17,7 +17,7 @@
 		<spring.version>5.0.0.RELEASE</spring.version>
 		<mybatis.version>3.3.0</mybatis.version>
 		<easypoi.version>2.3.0.2</easypoi.version>
-		<poi.version>3.14</poi.version>
+		<poi.version>4.0.0</poi.version>
 		<druid.version>1.1.10</druid.version>
         <mysql.connector.version>5.1.26</mysql.connector.version>
         <jedis.version>2.9.0</jedis.version>
@@ -148,6 +148,11 @@
 		    <artifactId>commons-configuration</artifactId>
 		    <version>1.10</version>
 		</dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>27.0-jre</version>
+        </dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
@@ -183,7 +188,13 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>ooxml-schemas</artifactId>
 			<version>1.1</version>
-		</dependency>
+            <exclusions>
+                <exclusion>
+                    <artifactId>xmlbeans</artifactId>
+                    <groupId>org.apache.xmlbeans</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
@@ -203,36 +214,6 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-scratchpad</artifactId>
 			<version>${poi.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jeecg</groupId>
-			<artifactId>easypoi-base</artifactId>
-			<version>${easypoi.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jeecg</groupId>
-			<artifactId>easypoi-web</artifactId>
-			<version>${easypoi.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-webmvc</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-web</artifactId>
-                </exclusion>
-            </exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.jeecg</groupId>
-			<artifactId>easypoi-annotation</artifactId>
-			<version>${easypoi.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.xmlbeans</groupId>
-			<artifactId>xmlbeans</artifactId>
-			<version>2.6.0</version>
 		</dependency>
 
 		<dependency>

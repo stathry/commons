@@ -4,6 +4,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -131,7 +132,7 @@ public class ExcelWriting {
         Row row = sheet.createRow(0);
         Cell cell;
         for (int i = 0, size = header.size(); i < size; i++) {
-            cell = row.createCell(i, Cell.CELL_TYPE_STRING);
+            cell = row.createCell(i, CellType.STRING);
             cell.setCellValue(header.get(i));
         }
     }

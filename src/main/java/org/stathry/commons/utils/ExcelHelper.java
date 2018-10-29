@@ -3,7 +3,9 @@
  */
 package org.stathry.commons.utils;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -29,13 +31,13 @@ public class ExcelHelper {
 
 		CellStyle style = workbook.createCellStyle();
 		style.setWrapText(true);
-		style.setAlignment(params.getAlign());
-		style.setVerticalAlignment(params.getVerticalAlign());
+//		style.setAlignment(params.getAlign());
+//		style.setVerticalAlignment(params.getVerticalAlign());
 		if(params.isHasBorder()) {
-			style.setBorderBottom(CellStyle.BORDER_THIN); 
-			style.setBorderLeft(CellStyle.BORDER_THIN);
-			style.setBorderTop(CellStyle.BORDER_THIN);
-			style.setBorderRight(CellStyle.BORDER_THIN);
+			style.setBorderBottom(BorderStyle.THIN);
+			style.setBorderLeft(BorderStyle.THIN);
+			style.setBorderTop(BorderStyle.THIN);
+			style.setBorderRight(BorderStyle.THIN);
 		}
 		
 		Font font = workbook.createFont();
@@ -45,7 +47,7 @@ public class ExcelHelper {
 		
 		if(params.getBackgroundColor() > 0) {
 			style.setFillForegroundColor(params.getBackgroundColor());
-			style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+			style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		}
 		
 		font.setColor(params.getFontColor());

@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -256,7 +257,7 @@ public class ExcelUtils {
 			
 			int columnDataIndex = 0;
 			for (int j = 0; j < rowData.length ; j++) {
-				Cell cell = row.createCell(j + styleParam.getStartColumn(), Cell.CELL_TYPE_STRING);
+				Cell cell = row.createCell(j + styleParam.getStartColumn(), CellType.STRING);
 				cell.setCellValue(rowData[columnDataIndex++]);
 				cell.setCellStyle(cellStyle);
 			}
@@ -267,7 +268,7 @@ public class ExcelUtils {
 	private static void createRowCells(Sheet sheet,String[] cellData, CellStyle cellStyle, StyleParams styleParam) {
 		Row row = sheet.createRow(styleParam.getStartRow());
 		for (int i = 0; i < cellData.length; i++) {
-			Cell headerCell = row.createCell(i + styleParam.getStartColumn(), Cell.CELL_TYPE_STRING);
+			Cell headerCell = row.createCell(i + styleParam.getStartColumn(), CellType.STRING);
 			headerCell.setCellStyle(cellStyle);
 			headerCell.setCellValue(cellData[i]);
 		}
@@ -279,7 +280,7 @@ public class ExcelUtils {
 			Row row = sheet.createRow(rowIndex + styleParam.getStartRow());
 			
 			for (int cellIndex = 0; cellIndex < rowData.size() ; cellIndex++) {
-				Cell cell = row.createCell(cellIndex + styleParam.getStartColumn(), Cell.CELL_TYPE_STRING);
+				Cell cell = row.createCell(cellIndex + styleParam.getStartColumn(), CellType.STRING);
 				cell.setCellValue(TextUtils.toString(rowData.get(keyIndex[cellIndex])));
 				cell.setCellStyle(cellStyle);
 			}
@@ -292,7 +293,7 @@ public class ExcelUtils {
 		Row row = sheet.createRow(styleParam.getStartRow());
 		int cellIndex = 0;
 		for (String key : keyIndex) {
-			Cell headerCell = row.createCell(cellIndex++ + styleParam.getStartColumn(), Cell.CELL_TYPE_STRING);
+			Cell headerCell = row.createCell(cellIndex++ + styleParam.getStartColumn(), CellType.STRING);
 			headerCell.setCellStyle(cellStyle);
 			headerCell.setCellValue(TextUtils.toString(cellData.get(key)));
 		}
