@@ -30,11 +30,11 @@ public class BatchDAOSkeleton {
             c = list.get(i);
             if((i != 0 && i % batchSize == 0)) {
                 jdbcTemplate.batchUpdate(sql, args);
-                LOGGER.info("batchInsert, index {}", i);
+                LOGGER.info("insertList, index {}", i);
             } else if(i == last) {
                 args.add(c.toArgArray());
                 jdbcTemplate.batchUpdate(sql, args);
-                LOGGER.info("batchInsert, index {}", i);
+                LOGGER.info("insertList, index {}", i);
             }
 
             if(i != 0 && i % batchSize == 0) {
