@@ -3,6 +3,7 @@ package org.stathry.commons.dao;
 import com.alibaba.fastjson.JSONObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -72,21 +73,17 @@ public class EasyMongoTemplate {
 
     public static <T> T findOne(String collectionName, Class<T> resultType, Map<String, Object> params,
                                 Sort.Direction sortDirection, List<String> sortProperties) {
-        Query q = new Query(mapToCriteria(params));
-        if (sortProperties != null && !sortProperties.isEmpty()) {
-            q.with(new Sort(sortDirection, sortProperties));
-        }
+        Query query = new Query(mapToCriteria(params));
+        Sort sort = (sortProperties == null || sortProperties.isEmpty()) ? null : new Sort(sortDirection, sortProperties);
 
-        return mongoTemplate.findOne(q, resultType, collectionName);
+        return findOne(collectionName, resultType, query, sort);
     }
 
     public static <T> T findOne(String collectionName, Class<T> resultType, Map<String, Object> params, List<Sort.Order> sortOrders) {
-        Query q = new Query(mapToCriteria(params));
-        if (sortOrders != null && !sortOrders.isEmpty()) {
-            q.with(new Sort(sortOrders));
-        }
+        Query query = new Query(mapToCriteria(params));
+        Sort sort = (sortOrders == null || sortOrders.isEmpty()) ? null : new Sort(sortOrders);
 
-        return mongoTemplate.findOne(q, resultType, collectionName);
+        return findOne(collectionName, resultType, query, sort);
     }
 
     public static <T> T findOne(String collectionName, Class<T> resultType, Query query, Sort sort) {
@@ -94,7 +91,9 @@ public class EasyMongoTemplate {
             query.with(sort);
         }
 
-        return mongoTemplate.findOne(query, resultType, collectionName);
+        T t = (collectionName == null || collectionName.isEmpty()) ? mongoTemplate.findOne(query, resultType)
+                : mongoTemplate.findOne(query, resultType, collectionName);
+        return t;
     }
 
     public static List<JSONObject> find(String collectionName, Map<String, Object> params) {
@@ -128,15 +127,18 @@ public class EasyMongoTemplate {
         Assert.notEmpty(params, "required params.");
         DBObject qdb = new BasicDBObject(params);
 
-        Query q = fdb == null ? new BasicQuery(qdb) : new BasicQuery(qdb, fdb);
+        Query query = fdb == null ? new BasicQuery(qdb) : new BasicQuery(qdb, fdb);
 
         Sort sort = (orders != null && !orders.isEmpty()) ? new Sort(orders) :
                 (sortProperties != null && !sortProperties.isEmpty() ? new Sort(sortDirection, sortProperties) : null);
 
         if (sort != null) {
-            q.with(sort);
+            query.with(sort);
         }
-        return mongoTemplate.find(q, resultType, collectionName);
+
+        List<T> list = (collectionName == null || collectionName.isEmpty()) ? mongoTemplate.find(query, resultType)
+                : mongoTemplate.find(query, resultType, collectionName);
+        return list;
     }
 
     public static <T> List<T> find(String collectionName, Criteria criteria, Class<T> resultType, Sort sort) {

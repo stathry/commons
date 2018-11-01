@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.math.IntMath;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -25,14 +27,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * TODO
+ * MongoTest
  * Created by dongdaiming on 2018-07-24 17:45
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring-context.xml")
 public class MongoTest {
-
-
 
     private static final String COLL_NAME = "player";
     private static final String FIRST_NAMES = "TYRION";
@@ -170,26 +170,54 @@ public class MongoTest {
 
     @Test
     public void testFindSelectFields() {
-        String c = "xjbk_mobile_calls";
         Map<String, Object> params = new HashMap<>();
-        params.put("orderNo", "181030000003");
-        params.put("batchNo", "1540867127516");
+        params.put("playId", 609);
+        List<String> selectFields = Arrays.asList("playId", "firstName", "lastUpdate");
 
-        List<JSONObject> docs = EasyMongoTemplate.find(c, JSONObject.class, params, Arrays.asList("idCard", "phoneNo", "realName"), null);
+        List<JSONObject> docs = EasyMongoTemplate.find(COLL_NAME, JSONObject.class, params, selectFields, null);
+        System.out.println(JSON.toJSONString(docs));
         assertTrue(docs != null && !docs.isEmpty());
         assertTrue(!docs.get(0).isEmpty());
+        assertEquals(3, docs.get(0).size());
+
+        List<Player> list = EasyMongoTemplate.find(null, Player.class, params, selectFields, null);
+        System.out.println(JSON.toJSONString(list));
+        assertTrue(list != null && !list.isEmpty());
+        Player p = list.get(0);
+        assertNotNull(p);
+        assertTrue(StringUtils.isNotBlank(p.getFirstName()));
+        assertNotNull(p.getPlayId());
+        assertTrue(StringUtils.isBlank(p.getLastName()));
+    }
+
+    @Test
+    public void testFindSort() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("playId", 609);
+        List<String> selectFields = Arrays.asList("playId", "firstName", "lastUpdate");
+
+        List<JSONObject> docs = EasyMongoTemplate.find(COLL_NAME, JSONObject.class, params, selectFields, Sort.Direction.DESC, Arrays.asList("lastUpdate"));
         System.out.println(JSON.toJSONString(docs));
+        assertTrue(docs != null && !docs.isEmpty());
+        assertTrue(!docs.get(0).isEmpty());
+        assertEquals(3, docs.get(0).size());
+
+        List<Player> list = EasyMongoTemplate.find(null, Player.class, params, selectFields, Sort.Direction.ASC, Arrays.asList("lastUpdate"));
+        System.out.println(JSON.toJSONString(list));
+        assertTrue(list != null && !list.isEmpty());
+        Player p = list.get(0);
+        assertNotNull(p);
+        assertTrue(StringUtils.isNotBlank(p.getFirstName()));
+        assertNotNull(p.getPlayId());
+        assertTrue(StringUtils.isBlank(p.getLastName()));
     }
 
     @Test
     public void testGroup() {
-        String c = "xjbk_mobile_calls";
         Map<String, Object> params = new HashMap<>();
-        params.put("orderNo", "181030000003");
-        params.put("batchNo", "1540867127516");
-        params.put("peerNumber", "13761008456");
+        params.put("lastName", "ELA");
 
-        List<JSONObject> docs = EasyMongoTemplate.group(c, params, Arrays.asList("billMonth", "openId"));
+        List<JSONObject> docs = EasyMongoTemplate.group(COLL_NAME, params, Arrays.asList("playId", "firstName"));
         assertTrue(docs != null && !docs.isEmpty());
         assertTrue(!docs.get(0).isEmpty());
         System.out.println(JSON.toJSONString(docs));
@@ -197,13 +225,10 @@ public class MongoTest {
 
     @Test
     public void testCountGroup() {
-        String c = "xjbk_mobile_calls";
         Map<String, Object> params = new HashMap<>();
-        params.put("orderNo", "181030000003");
-        params.put("batchNo", "1540867127516");
-        params.put("peerNumber", "13761008456");
+        params.put("lastName", "ELA");
 
-        Integer n = EasyMongoTemplate.countGroup(c, params, Arrays.asList("billMonth", "openId"));
+        Integer n = EasyMongoTemplate.countGroup(COLL_NAME, params, Arrays.asList("playId", "firstName"));
         assertNotNull(n);
         System.out.println(n);
     }
