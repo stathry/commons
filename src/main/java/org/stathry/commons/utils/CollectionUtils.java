@@ -4,10 +4,11 @@
 package org.stathry.commons.utils;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.RandomAccess;
+import java.util.Set;
 
 /**
  * @author dongdaiming@free.com
@@ -57,7 +58,42 @@ public class CollectionUtils {
 
 		return dest;
 	}
-	
-	
+
+    public static <E> int countSameElementsOf(Collection<E> c1, Collection<E> c2) {
+        if (c1 == null || c1.isEmpty() || c2 == null || c2.isEmpty()) {
+            return -1;
+        }
+        int c = 0;
+        Iterator<E> it;
+        E e1;
+        int size1 = c1.size(), size2 = c2.size();
+        if (size1 < size2) {
+            c = countByCollectionType(c1, c2, c, size1);
+        } else {
+            c = countByCollectionType(c2, c1, c, size1);
+        }
+
+        return c;
+    }
+
+    private static <E> int countByCollectionType(Collection<E> c1, Collection<E> c2, int c, int size1) {
+        Iterator<E> it;
+        if(c1 instanceof RandomAccess && c1 instanceof List) {
+            List<E> c11 = (List<E>) c1;
+            for (int i = 0; i < size1; i++) {
+                if(c2.contains(c11.get(i))) {
+                    c++;
+                }
+            }
+        } else {
+            it = c1.iterator();
+            for (; it.hasNext(); ) {
+                if (c2.contains(it.next())) {
+                    c++;
+                }
+            }
+        }
+        return c;
+    }
 
 }

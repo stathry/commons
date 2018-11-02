@@ -66,21 +66,6 @@ public class PropertiesCompareUtilsTest {
 
     }
 
-    @Test
-    public void testMapCompare() {
-        Map<Integer, Integer> map = new TreeMap<>();
-        map.put(1, 11);
-        map.put(2, 22);
-        map.put(3, 33);
-        map.put(4, 44);
-        Map<Integer, Integer> map2 = new TreeMap<>();
-        map2.put(1, 11);
-        map2.put(2, 22);
-        map2.put(33, 333);
-        MapDifference<Integer, Integer> r = Maps.difference(map, map2);
-        System.out.println("only left:" + JSON.toJSONString(r.entriesOnlyOnLeft()));
-        System.out.println("only right:" + JSON.toJSONString(r.entriesOnlyOnRight()));
-        System.out.println("commons:" + JSON.toJSONString(r.entriesInCommon()));
-    }
+
 
 }

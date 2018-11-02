@@ -23,6 +23,16 @@ import java.util.List;
 public class JSONTest {
 
     @Test
+    public void testToStr() {
+        JSONObject data = new JSONObject();
+        data.put("k1", "v1");
+        data.put("k2", null);
+        data.put("k3", "");
+        System.out.println(data.toJSONString());
+        Assert.assertEquals("{\"k1\":\"v1\",\"k3\":\"\"}", data.toJSONString());
+    }
+
+    @Test
     public void testGetIntToDouble() throws IOException {
         JSONObject js1 = JSON.parseObject("{\"k1\":1.55, \"k2\":null}");
         JSONObject js2 = JSON.parseObject("{\"k1\":1, \"k2\":null}");

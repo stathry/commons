@@ -74,19 +74,11 @@ public final class DatetimeUtils extends DateUtils {
 	 * @return
 	 */
 	public static long intervalOfDays(Date startTime, Date endTime) {
-		int days = 0;
-		if (endTime == null) {
-			return days;
+		if (startTime == null || endTime == null) {
+			return 0;
 		}
-		
-		if (startTime == null) {
-			startTime = new Date();
-		}
-		
-		Date endTime1 = DateUtils.truncate(endTime, Calendar.DAY_OF_MONTH);
-		Date startTime1 = DateUtils.truncate(startTime, Calendar.DAY_OF_MONTH);
-		long millis = endTime1.getTime() - startTime1.getTime();
-		return TimeUnit.MILLISECONDS.toDays(millis);
+
+		return TimeUnit.MILLISECONDS.toDays(endTime.getTime() - startTime.getTime());
 	}
 	
 	
@@ -100,14 +92,11 @@ public final class DatetimeUtils extends DateUtils {
 	 * @throws ParseException 
 	 */
 	public static long intervalOfDays(String start, String end, String pattern) throws ParseException {
-		long days = 0;
-		Date startTime = null;
-		Date endTime = null;
-
-		if (StringUtils.isBlank(end)) {
-			return days;
+		if (StringUtils.isBlank(end) || StringUtils.isBlank(start)) {
+			return 0;
 		}
 
+		Date startTime, endTime;
 		startTime = StringUtils.isBlank(start) ? new Date() : DatetimeFormatUtils.parse(start, pattern);
 		endTime = DatetimeFormatUtils.parse(end, pattern);
 
