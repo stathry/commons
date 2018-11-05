@@ -10,7 +10,7 @@ import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.stathry.commons.math.DecimalUtils;
+import org.stathry.commons.utils.DecimalUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

@@ -28,7 +28,7 @@ public final class TextUtils {
 			return (String) data;
 		}
 		if (data instanceof Number) {
-			return NumberFormatUtils.format((Number) data, 2, RoundingMode.HALF_UP);
+			return DecimalUtils.format((Number) data, 2, RoundingMode.HALF_UP);
 		}
 
 		if (data instanceof byte[]) {
@@ -43,7 +43,7 @@ public final class TextUtils {
 
 		if (data instanceof Date) {
 			Date temp = (Date) data;
-			return DatetimeFormatUtils.format(temp);
+			return DatetimeUtils.format(temp);
 		}
 
 		return data.toString();

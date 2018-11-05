@@ -1,4 +1,4 @@
-package org.stathry.commons.math;
+package org.stathry.commons.utils;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
