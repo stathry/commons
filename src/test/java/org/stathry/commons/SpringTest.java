@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.stathry.commons.data.ReplaceableBean;
 import org.stathry.commons.utils.ApplicationContextUtils;
 
 import javax.sql.DataSource;
@@ -29,11 +30,23 @@ public class SpringTest {
         System.out.println("spring started.");
     }
 
-    @Test
+//    @Test
     public void testGetBeanByNameAndType() {
         DruidDataSource bean = ApplicationContextUtils.getBean("dataSource", DruidDataSource.class);
         System.out.println(bean);
         Assert.assertNotNull(bean);
+    }
+
+    @Test
+    public void testHelloMethodReplacer() {
+        ReplaceableBean bean = ApplicationContextUtils.getBean("replaceableBean1", ReplaceableBean.class);
+        Assert.assertEquals("hi world", bean.hello("world"));
+    }
+
+    @Test
+    public void testSrcHelloMethod() {
+        ReplaceableBean bean = ApplicationContextUtils.getBean("replaceableBean2", ReplaceableBean.class);
+        Assert.assertEquals("hello world", bean.hello("world"));
     }
 
 }
