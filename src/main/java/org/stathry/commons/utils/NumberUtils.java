@@ -38,4 +38,17 @@ public class NumberUtils {
         return n1.subtract(n2).setScale(scale, mode).toPlainString();
     }
 
+    public static boolean isNum(String num) {
+        num = num == null ? null : num.trim();
+        if(num == null || num.length() == 0) {
+            return false;
+        }
+        BigDecimal n = null;
+        try {
+            n = new BigDecimal(num);
+        } catch (Exception e) {
+        }
+        return n != null;
+    }
+
 }

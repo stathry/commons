@@ -84,6 +84,7 @@ public class MapSortUtils {
 	 * @param asc 是否为升序
 	 * @return
 	 */
+	@Deprecated
 	public static <K, V extends Comparable<V>> Map<K, V> sortByValue2(Map<K, V> map, final boolean asc) {
 		if(map == null || map.isEmpty()){
 			return map;
