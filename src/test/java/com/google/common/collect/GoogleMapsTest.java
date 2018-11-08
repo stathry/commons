@@ -44,7 +44,7 @@ public class GoogleMapsTest {
     }
 
     @Test
-    public void testMultiMapTest() {
+    public void testMultiMap() {
         Multimap<String, String> map = ArrayListMultimap.create();
         map.put("girl", "dwj");
         map.put("girl", "wqf");
@@ -54,5 +54,37 @@ public class GoogleMapsTest {
         Collection<String> girls = map.get("girl");
         System.out.println(girls);
         Assert.assertEquals(2, girls.size());
+    }
+
+    @Test
+    public void testImmutableMap() {
+        ImmutableMap<String, String> map;
+        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+        map = builder.put("k1", "v1").put("k2", "v2").build();
+        System.out.println(map);
+
+        ImmutableMap<String, String> map2 = ImmutableMap.of("k3", "v3", "k4", "v4");
+        System.out.println(map2);
+    }
+
+    // BiMap value也要唯一，如果value重复则会抛异常
+    @Test
+    public void testBiMap() {
+        BiMap<String, String> map = HashBiMap.create();
+        map.put("k1", "v1");
+        map.put("k1", "v2");
+        Assert.assertEquals(1, map.size());
+
+        BiMap<String, String> map2 = HashBiMap.create();
+        map2.put("k1", "v1");
+        try {
+            map2.put("k2", "v1");
+        } catch (Exception e) {
+            Assert.assertTrue(e instanceof IllegalArgumentException);
+            e.printStackTrace();
+        }
+        Assert.assertEquals(1, map2.size());
+
+        Assert.assertEquals("k1", map.inverse().get("v2"));
     }
 }

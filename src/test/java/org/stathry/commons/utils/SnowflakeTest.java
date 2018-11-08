@@ -77,10 +77,13 @@ public class SnowflakeTest {
 
     @Test
     public void testSnowflakes() {
+        int limit = 100_0000;
         Snowflake snowflake = new Snowflake(1, 1);
-        for (int i = 0; i < 10; i++) {
-            System.out.println(snowflake.nextId());
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < limit; i++) {
+            snowflake.nextId();
         }
+        System.out.println("gen order:" + limit + ", time:" + (System.currentTimeMillis() - start));
     }
 
     @Test
