@@ -16,7 +16,7 @@ public class RedisLock implements DistributedLock {
 
     private static final RedisManager redisManager = ApplicationContextUtils.getBean(RedisManager.class);
 
-    private static final long DEFAULT_LOCK_EXPIRE = 30 * 1000;
+    private static final long DEFAULT_LOCK_EXPIRE = 15 * 1000;
     private static final long DEFAULT_LOCK_TIMEOUT = 10 * 1000;
     private static final long DEFAULT_SLEEP = 50;
     private static final boolean DEFAULT_FAIR_LOCK = false;
@@ -53,16 +53,18 @@ public class RedisLock implements DistributedLock {
     }
 
     @Override
-    public boolean lock(long lockTimeoutMS) throws InterruptedException {
-        long beginTime = System.currentTimeMillis();
-        boolean isLocked = lock.tryLock(lockTimeoutMS, TimeUnit.MILLISECONDS);
+    public boolean lock(long lockTimeoutMills) throws InterruptedException {
+        long endTime = System.currentTimeMillis() + lockTimeoutMills;
+
+        boolean isLocked = lock.tryLock(lockTimeoutMills, TimeUnit.MILLISECONDS);
         if (isLocked) {
-            while (System.currentTimeMillis() - beginTime < lockTimeoutMS) {
+            while (System.currentTimeMillis() < endTime) {
                 if (setNX()) {
                     return true;
                 }
                 Thread.sleep(sleepTime);
             }
+
             lock.unlock();
         }
         return false;

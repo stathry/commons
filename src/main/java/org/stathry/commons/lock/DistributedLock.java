@@ -8,7 +8,7 @@ public interface DistributedLock {
 
     boolean lock() throws InterruptedException;
 
-    boolean lock(long lockTimeoutMS) throws InterruptedException;
+    boolean lock(long lockTimeoutMills) throws InterruptedException;
 
     void unlock();
 

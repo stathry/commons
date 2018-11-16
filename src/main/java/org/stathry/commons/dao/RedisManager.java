@@ -74,6 +74,10 @@ public class RedisManager {
         stringRedisTemplate.opsForValue().set(key, value, timeout, unit);
     }
 
+    public Boolean setNX(String key) {
+        return redisTemplate.opsForValue().setIfAbsent(key, 1, DEFAULT_EXPIRE_MS, TimeUnit.MILLISECONDS);
+    }
+
     public Boolean setNX(String key, Object value, long expireMs) {
         return redisTemplate.opsForValue().setIfAbsent(key, value, expireMs, TimeUnit.MILLISECONDS);
     }
