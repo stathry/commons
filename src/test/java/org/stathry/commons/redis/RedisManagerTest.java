@@ -1,6 +1,7 @@
 package org.stathry.commons.redis;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,6 +33,20 @@ public class RedisManagerTest {
 
     @Autowired
     private RedisManager redisManager;
+
+    @Test
+    public void testSetNX() {
+        String key = "nx:" + System.currentTimeMillis();
+        redisManager.delete(key);
+        Assert.assertTrue(redisManager.setNX(key, 1, 30000));
+        Assert.assertFalse(redisManager.setNX(key, 1, 30000));
+    }
+
+    @Test
+    public void testSetRandomExp() {
+        redisManager.set("random:" + RandomStringUtils.randomNumeric(8), 1);
+        redisManager.set("random:" + RandomStringUtils.randomNumeric(8), 1);
+    }
 
     @Test
     public void testSetGet1() {
@@ -182,7 +197,7 @@ public class RedisManagerTest {
     public void testInc() throws Exception {
         int tn = 8;
         ExecutorService exec = Executors.newFixedThreadPool(tn);
-        int limit = 10_0000;
+        int limit = 1_00;
         String k = UUID.randomUUID().toString();
         System.out.println("inc key:" + k);
         for (int i = 0; i < tn; i++) {
@@ -213,7 +228,7 @@ public class RedisManagerTest {
     public void testGetListByPattern() {
         redisManager.set("rule:p1", "rp1");
         redisManager.set("rule:p2", "rp2");
-        List<String> list = redisManager.getListByPattern("rule*");
+        List<String> list = redisManager.keysList("rule*");
         System.out.println(list);
         Assert.assertEquals(2, list.size());
     }
@@ -252,7 +267,7 @@ public class RedisManagerTest {
     public void testConcurrentAddList() throws InterruptedException {
         int tn = 8;
         ExecutorService exec = Executors.newFixedThreadPool(tn);
-        int limit = 10000;
+        int limit = 100;
         int unit = 10;
         String key = UUID.randomUUID().toString();
         System.out.println("list key:" + key);

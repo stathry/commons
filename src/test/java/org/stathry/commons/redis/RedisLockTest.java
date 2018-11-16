@@ -38,7 +38,7 @@ public class RedisLockTest {
 
     @Test
     public void testOriginalSingleInc() throws InterruptedException {
-        int limit = 1_00;
+        int limit = 1_0000;
         Inc inc = new Inc();
         String key = "k_inc";
         ValueOperations<String, Long> ops = redisTemplate.opsForValue();
@@ -56,8 +56,8 @@ public class RedisLockTest {
         long start = System.currentTimeMillis();
         int limit = 10_0000;
         Inc inc = new Inc();
-        String key = DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS");
-        DistributedLock lock = new RedisLock(redisTemplate, key);
+        String key = "dist1:" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS");
+        DistributedLock lock = new RedisLock(key);
         redisTemplate.delete(key);
         for (int i = 0; i < limit; i++) {
             if (lock.lock()) {
@@ -72,13 +72,13 @@ public class RedisLockTest {
     @Test
     public void testConcurrentInc() throws InterruptedException {
         long start = System.currentTimeMillis();
-        int limit = 10_0000;
+        int limit = 1_0000;
         Inc inc = new Inc();
-        String key = DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS");
-        DistributedLock lock = new RedisLock(redisTemplate, key);
+        String key = "dist1:" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS");
+        DistributedLock lock = new RedisLock(key);
         System.out.println(key);
         redisTemplate.delete(key);
-        int tn = 2;
+        int tn = 4;
         ExecutorService exec = Executors.newFixedThreadPool(tn);
         for (int i = 0; i < tn; i++) {
             exec.execute(() -> {

@@ -23,7 +23,7 @@ public class OrderService implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        int dataCenterId = Math.abs(redisManager.increment("app.inc.order").intValue()) % 31;
-        snowflake = new Snowflake(dataCenterId, 1);
+//        int dataCenterId = Math.abs(redisManager.increment("app.inc.order").intValue()) % 31;
+//        snowflake = new Snowflake(dataCenterId, 1);
     }
 }

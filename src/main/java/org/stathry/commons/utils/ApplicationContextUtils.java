@@ -4,6 +4,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * spring容器访问
+ */
 public class ApplicationContextUtils implements ApplicationContextAware {
 
     private static ApplicationContext context;

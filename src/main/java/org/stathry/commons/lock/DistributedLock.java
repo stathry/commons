@@ -6,21 +6,10 @@ package org.stathry.commons.lock;
  */
 public interface DistributedLock {
 
-    /**
-     * 获取锁(阻塞式)
-     * @return 是否锁定成功
-     */
     boolean lock() throws InterruptedException;
 
-    /**
-     * 获取锁(非阻塞式)
-     * @return
-     */
-    boolean tryLock();
+    boolean lock(long lockTimeoutMS) throws InterruptedException;
 
-    /**
-     * 解锁
-     */
     void unlock();
 
 }

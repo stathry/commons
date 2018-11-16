@@ -23,21 +23,22 @@ public class BatchDAOTest {
 
     @Test
     public void testBatchSaveOrders() {
-        int limit = 100_0000;
+        int limit = 500_0000;
+//        int limit = 50;
+        int batchSize = 200;
         List<Order> list = new ArrayList<>(limit);
-        String sql = "insert into orders (order_status, order_no, order_time, user_id, product_id, amount) values (?, ?, ?, ?, ?, ?);";
+        String sql = "insert into main_order (order_status, order_no, order_time, uid, amount) values (?, ?, ?, ?, ?);";
         Order o;
         for (int i = 0; i < limit; i++) {
             o = new Order();
-            o.setProductId(i % 2);
             o.setUserId(i % 50L);
             o.setOrderNo(String.valueOf(snowflake.nextId()));
-            o.setOrderTime(DateUtils.addDays(new Date(), -1 * i));
+            o.setOrderTime(DateUtils.addSeconds(new Date(),  i));
             o.setAmount(i * 100L + i);
             o.setOrderStatus(i % 4);
             list.add(o);
         }
-        BatchDAOSkeleton.batchSave(list, sql, 100);
+        BatchDAOSkeleton.batchSave(list, sql, batchSize);
     }
 
     private static class Order implements BatchDAOSkeleton.BatchInsertion {
@@ -53,9 +54,6 @@ public class BatchDAOTest {
 
         /**  */
         private Long userId;
-
-        /**  */
-        private Integer productId;
 
         /**  */
         private Long amount;
@@ -92,13 +90,7 @@ public class BatchDAOTest {
             this.userId = userId;
         }
 
-        public Integer getProductId() {
-            return productId;
-        }
 
-        public void setProductId(Integer productId) {
-            this.productId = productId;
-        }
 
         public Long getAmount() {
             return amount;
@@ -115,14 +107,13 @@ public class BatchDAOTest {
                     ", orderNo='" + orderNo + '\'' +
                     ", orderTime=" + orderTime +
                     ", userId=" + userId +
-                    ", productId=" + productId +
                     ", amount=" + amount +
                     '}';
         }
 
         @Override
         public Object[] toArgArray() {
-            return new Object[] {orderStatus, orderNo, orderTime, userId, productId, amount};
+            return new Object[] {orderStatus, orderNo, orderTime, userId, amount};
         }
     }
 }

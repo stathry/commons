@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * TODO
+ * Executors2
  * Created by dongdaiming on 2018-06-05 16:49
  */
 public class Executors2 {
@@ -62,7 +62,7 @@ public class Executors2 {
                 CustomizableThreadFactory factory1 = (CustomizableThreadFactory)factory;
                 threadNamePrefix = factory1.getThreadNamePrefix();
             }
-            LOGGER.warn("threadNamePrefix {}, corePoolSize {}, maxPoolSize {}, workQueueSize {}, rejected task {}." ,
+            LOGGER.error("threadNamePrefix {}, corePoolSize {}, maxPoolSize {}, workQueueSize {}, rejected task {}." ,
                     new Object[]{threadNamePrefix, executor.getCorePoolSize(), executor.getMaximumPoolSize(), executor.getQueue().size(), r.toString()});
         }
     }

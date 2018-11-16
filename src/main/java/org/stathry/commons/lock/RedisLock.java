@@ -1,108 +1,77 @@
 package org.stathry.commons.lock;
 
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
+import org.stathry.commons.dao.RedisManager;
+import org.stathry.commons.utils.ApplicationContextUtils;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 分布式锁
+ * redis分布式锁
  * Created by dongdaiming on 2018-07-28 12:50
  */
 // https://blog.csdn.net/lpayit/article/details/71525905
-public class RedisLock implements DistributedLock{
+public class RedisLock implements DistributedLock {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RedisLock.class);
+    private static final RedisManager redisManager = ApplicationContextUtils.getBean(RedisManager.class);
 
-    private RedisTemplate<String, Long> redisTemplate;
+    private static final long DEFAULT_LOCK_EXPIRE = 30 * 1000;
+    private static final long DEFAULT_LOCK_TIMEOUT = 10 * 1000;
+    private static final long DEFAULT_SLEEP = 50;
+    private static final boolean DEFAULT_FAIR_LOCK = false;
 
-    private final long LOCK_EXPIRE_MS_MAX = TimeUnit.SECONDS.toMillis(180);
-
-    private long lockExpireMS = 10 * 1000;
-    private long lockTimeoutMS = 30 * 1000;
-
-    private final int SLEEP_MS = 10;
     private final String key;
-    private final Lock lock = new ReentrantLock();
-    private final AtomicLong counter = new AtomicLong();
+    private final long lockExpire;
+    private final long lockTimeout;
+    private final long sleepTime;
+    private final Lock lock;
 
-    public RedisLock(RedisTemplate redisTemplate, String key) {
-        checkKeyAndTime(redisTemplate, lockExpireMS, lockTimeoutMS, key);
-        this.redisTemplate = redisTemplate;
+    public RedisLock(String key) {
         this.key = key;
+        this.lockExpire = DEFAULT_LOCK_EXPIRE;
+        this.lockTimeout = DEFAULT_LOCK_TIMEOUT;
+        this.lock = new ReentrantLock(DEFAULT_FAIR_LOCK);
+        this.sleepTime = DEFAULT_SLEEP;
     }
 
-    public RedisLock(RedisTemplate redisTemplate, long lockExpireMS, long lockTimeoutMS, String key) {
-        checkKeyAndTime(redisTemplate, lockExpireMS, lockTimeoutMS, key);
-        this.lockExpireMS = lockExpireMS;
-        this.lockTimeoutMS = lockTimeoutMS;
-        this.redisTemplate = redisTemplate;
+    public RedisLock(String key, long lockExpire, long lockTimeout, long sleep, boolean fair) {
         this.key = key;
+        this.lockExpire = lockExpire;
+        this.lockTimeout = lockTimeout;
+        this.sleepTime = sleep;
+        this.lock = new ReentrantLock(fair);
+    }
+
+    private boolean setNX() {
+        return redisManager.setNX(key, 1, lockExpire);
     }
 
     @Override
     public boolean lock() throws InterruptedException {
-        long begin = System.currentTimeMillis();
-        long curMS;
-        Long oldValue;
-        ValueOperations<String, Long> ops = redisTemplate.opsForValue();
-        if (lock.tryLock(lockTimeoutMS, TimeUnit.MILLISECONDS)) {
-            for (; ((curMS = System.currentTimeMillis()) - begin) < lockTimeoutMS; ) {
-                if (ops.setIfAbsent(key, curMS)) {
-                    ops.set(key, curMS, lockExpireMS, TimeUnit.MILLISECONDS);
-                    return true;
-                }
-                oldValue = ops.get(key);
-                if (oldValue == null) {
-                    ops.set(key, curMS, lockExpireMS, TimeUnit.MILLISECONDS);
-                    return true;
-                } else if (curMS > oldValue) {
-                    if (oldValue == ops.getAndSet(key, curMS)) {
-                        ops.set(key, curMS, lockExpireMS, TimeUnit.MILLISECONDS);
-                        return true;
-                    }
-                }
-                try {
-                    Thread.sleep(SLEEP_MS);
-                } catch (InterruptedException e) {
-                    // ignore
-                }
-            }
-        }
-
-        return false;
+        return lock(lockTimeout);
     }
 
     @Override
-    public boolean tryLock() {
-        if(redisTemplate.opsForValue().setIfAbsent(key, System.currentTimeMillis())) {
-            redisTemplate.expire(key, lockExpireMS, TimeUnit.MILLISECONDS);
-            return true;
+    public boolean lock(long lockTimeoutMS) throws InterruptedException {
+        long beginTime = System.currentTimeMillis();
+        boolean isLocked = lock.tryLock(lockTimeoutMS, TimeUnit.MILLISECONDS);
+        if (isLocked) {
+            while (System.currentTimeMillis() - beginTime < lockTimeoutMS) {
+                if (setNX()) {
+                    return true;
+                }
+                Thread.sleep(sleepTime);
+            }
+            lock.unlock();
         }
         return false;
     }
 
     @Override
     public void unlock() {
-        redisTemplate.delete(key);
+        redisManager.delete(key);
         lock.unlock();
-        long c = counter.incrementAndGet();
-        if(c % 1000 == 0) {
-        LOGGER.info("thread {} released lock, counter {}.", Thread.currentThread().getName(), c);
-        }
     }
 
-    private void checkKeyAndTime(RedisTemplate redisTemplate, long lockExpireMS, long lockTimeoutMS, String key) {
-        if(redisTemplate == null || StringUtils.isBlank(key) || lockExpireMS <= 0 || lockTimeoutMS <= 0
-                || lockExpireMS > LOCK_EXPIRE_MS_MAX || lockTimeoutMS > LOCK_EXPIRE_MS_MAX) {
-            throw new IllegalArgumentException("illegal arguments: redisTemplate=" + redisTemplate
-                    +  ", key =" + key + ", lockExpireMS=" + lockExpireMS + ", lockTimeoutMS=" + lockTimeoutMS);
-        }
-    }
 }

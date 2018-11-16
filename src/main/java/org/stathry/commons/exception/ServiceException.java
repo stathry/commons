@@ -5,7 +5,7 @@ package org.stathry.commons.exception;
 
 import java.text.MessageFormat;
 
-import org.stathry.commons.enums.ErrorEnums;
+import org.stathry.commons.enums.ErrorEnum;
 
 /**
  * @author Demon
@@ -15,7 +15,7 @@ public class ServiceException extends Exception {
 
 	private static final long serialVersionUID = -5308631704209507793L;
 	
-	private int code;
+	private String code;
 	
 	public ServiceException() {
 		super();
@@ -25,17 +25,17 @@ public class ServiceException extends Exception {
 		super(message);
 	}
 	
-	public ServiceException(int code, String message) {
+	public ServiceException(String code, String message) {
 		super(message);
 		this.code = code;
 	}
 	
-	public ServiceException(ErrorEnums e) {
+	public ServiceException(ErrorEnum e) {
 		super(e.msg());
 		this.code = e.code();
 	}
 	
-	public ServiceException(ErrorEnums e, String params) {
+	public ServiceException(ErrorEnum e, String params) {
 		super(new MessageFormat(e.msg()).format(new Object[]{params}));
 		this.code = e.code();
 	}
@@ -48,7 +48,7 @@ public class ServiceException extends Exception {
 		super(message, cause);
 	}
 
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 	

@@ -7,10 +7,12 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 import org.stathry.commons.utils.ConfigManager;
 
+import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 public class RedisManager {
 
     private static final long DEFAULT_EXPIRE_MS = ConfigManager.getSysObj("cache.default.expireMS", Long.class);
-    //    private static final long DEFAULT_EXPIRE_MS = 5 * 60 * 1000;
 
     @Autowired
     protected RedisTemplate<String, Object> redisTemplate;
@@ -31,6 +32,7 @@ public class RedisManager {
     @Autowired
     protected StringRedisTemplate stringRedisTemplate;
 
+    private SecureRandom random = new SecureRandom();
 
     public RedisTemplate<String, Object> getRedisTemplate() {
         return redisTemplate;
@@ -58,7 +60,9 @@ public class RedisManager {
 
     // 建议设置过期时间
     public void set(String key, Object value) {
-        redisTemplate.opsForValue().set(key, value, DEFAULT_EXPIRE_MS, TimeUnit.MILLISECONDS);
+        long exp = random.nextInt((int)DEFAULT_EXPIRE_MS);
+        exp = exp <= 1000 ? DEFAULT_EXPIRE_MS : exp;
+        redisTemplate.opsForValue().set(key, value, exp, TimeUnit.MILLISECONDS);
     }
 
     public void set(String key, Object value, long timeout, TimeUnit unit) {
@@ -68,6 +72,10 @@ public class RedisManager {
     // 适用于value为JSONString,含转义字符等复杂格式
     public void setString(String key, String value, long timeout, TimeUnit unit) {
         stringRedisTemplate.opsForValue().set(key, value, timeout, unit);
+    }
+
+    public Boolean setNX(String key, Object value, long expireMs) {
+        return redisTemplate.opsForValue().setIfAbsent(key, value, expireMs, TimeUnit.MILLISECONDS);
     }
 
     public Boolean expire(String key, long timeout, TimeUnit unit) {
@@ -87,7 +95,7 @@ public class RedisManager {
     }
 
     public Long increment(String key) {
-        return redisTemplate.opsForValue().increment(key, 1);
+        return redisTemplate.opsForValue().increment(key, 1L);
     }
 
     public Long increment(String key, long delta) {
@@ -105,7 +113,10 @@ public class RedisManager {
         return (List<T>) ops.range(key, 0, ops.size(key));
     }
 
-    public <T> List<T> getListByPattern(String pattern) {
+    public <T> List<T> keysList(String pattern) {
+        if(pattern == null || pattern.length() < 3 || pattern.startsWith("*")) {
+            throw new IllegalArgumentException(pattern);
+        }
         return (List<T>) redisTemplate.opsForValue().multiGet(redisTemplate.keys(pattern));
     }
 

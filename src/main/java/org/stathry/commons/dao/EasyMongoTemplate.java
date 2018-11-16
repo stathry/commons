@@ -127,7 +127,8 @@ public class EasyMongoTemplate {
         Assert.notEmpty(params, "required params.");
         DBObject qdb = new BasicDBObject(params);
 
-        Query query = fdb == null ? new BasicQuery(qdb) : new BasicQuery(qdb, fdb);
+//        Query query = fdb == null ? new BasicQuery(qdb) : new BasicQuery(qdb, fdb);
+        Query query = null;
 
         Sort sort = (orders != null && !orders.isEmpty()) ? new Sort(orders) :
                 (sortProperties != null && !sortProperties.isEmpty() ? new Sort(sortDirection, sortProperties) : null);

@@ -2,8 +2,6 @@ package org.stathry.commons.crypto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -54,7 +52,8 @@ public class BaofooSecurityUtil {
      * Base64加密
      */
     public static String Base64Encode(String str) throws UnsupportedEncodingException {
-        return new BASE64Encoder().encode(str.getBytes("UTF-8"));
+//        return new BASE64Encoder().encode(str.getBytes("UTF-8"));
+        return null;
     }
 
     /**
@@ -62,7 +61,8 @@ public class BaofooSecurityUtil {
      */
     public static String Base64Decode(String str) throws UnsupportedEncodingException, IOException {
 //		str = str.replaceAll(" ", "+");
-        return new String(new BASE64Decoder().decodeBuffer(str), "UTF-8");
+//        return new String(new BASE64Decoder().decodeBuffer(str), "UTF-8");
+        return null;
     }
 
     // ==Aes加解密==================================================================

@@ -1,29 +1,21 @@
 package org.stathry.commons.model.dto;
 
+import java.io.Serializable;
+
 /**
  * ResponseEntity
  *
  */
-public class ResponseEntity<T> {
+public class ResponseEntity<T> implements Serializable {
 
+    /** 请求标识 */
+    private String transId;
+    /** 请求处理标识 */
+    private String bizNo;
 	private boolean success;
 	private String code;
 	private String msg;
 	private T data;
-	private long size;
-	private long total;
-
-    @Override
-    public String toString() {
-        return "ResponseEntity{" +
-                "success=" + success +
-                ", code='" + code + '\'' +
-                ", msg='" + msg + '\'' +
-                ", data=" + data +
-                ", size=" + size +
-                ", total=" + total +
-                '}';
-    }
 
     public boolean isSuccess() {
         return success;
@@ -57,19 +49,19 @@ public class ResponseEntity<T> {
         this.data = data;
     }
 
-    public long getSize() {
-        return size;
+    public String getTransId() {
+        return transId;
     }
 
-    public void setSize(long size) {
-        this.size = size;
+    public void setTransId(String transId) {
+        this.transId = transId;
     }
 
-    public long getTotal() {
-        return total;
+    public String getBizNo() {
+        return bizNo;
     }
 
-    public void setTotal(long total) {
-        this.total = total;
+    public void setBizNo(String bizNo) {
+        this.bizNo = bizNo;
     }
 }
