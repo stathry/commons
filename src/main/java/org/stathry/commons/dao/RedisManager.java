@@ -24,7 +24,8 @@ import java.util.concurrent.TimeUnit;
 @Repository
 public class RedisManager {
 
-    private static final long DEFAULT_EXPIRE_MS = ConfigManager.getSysObj("cache.default.expireMS", Long.class);
+    private static final long DEFAULT_EXPIRE_MS = ConfigManager.getObj("cache.default.expireMS.base", Long.class);
+    private static final int EXPIRE_MS_BOUND = ConfigManager.getObj("cache.default.expireMS.bound", Integer.class);
 
     @Autowired
     protected RedisTemplate<String, Object> redisTemplate;
@@ -40,6 +41,10 @@ public class RedisManager {
 
     public StringRedisTemplate getStringRedisTemplate() {
         return stringRedisTemplate;
+    }
+
+    private long randomExpireMS() {
+        return DEFAULT_EXPIRE_MS + random.nextInt(EXPIRE_MS_BOUND);
     }
 
     public Object get(String key) {
@@ -60,9 +65,7 @@ public class RedisManager {
 
     // 建议设置过期时间
     public void set(String key, Object value) {
-        long exp = random.nextInt((int)DEFAULT_EXPIRE_MS);
-        exp = exp <= 1000 ? DEFAULT_EXPIRE_MS : exp;
-        redisTemplate.opsForValue().set(key, value, exp, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(key, value, randomExpireMS(), TimeUnit.MILLISECONDS);
     }
 
     public void set(String key, Object value, long timeout, TimeUnit unit) {
@@ -75,7 +78,7 @@ public class RedisManager {
     }
 
     public Boolean setNX(String key) {
-        return redisTemplate.opsForValue().setIfAbsent(key, 1, DEFAULT_EXPIRE_MS, TimeUnit.MILLISECONDS);
+        return redisTemplate.opsForValue().setIfAbsent(key, 1, randomExpireMS(), TimeUnit.MILLISECONDS);
     }
 
     public Boolean setNX(String key, Object value, long expireMs) {
@@ -106,7 +109,7 @@ public class RedisManager {
         return redisTemplate.opsForValue().increment(key, delta);
     }
 
-    // SECONDS
+    /** get expire SECONDS */
     public Long getExpire(String key) {
         return redisTemplate.getExpire(key);
     }

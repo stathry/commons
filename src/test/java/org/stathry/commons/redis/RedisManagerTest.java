@@ -16,8 +16,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,8 +47,20 @@ public class RedisManagerTest {
 
     @Test
     public void testSetRandomExp() {
-        redisManager.set("random:" + RandomStringUtils.randomNumeric(8), 1);
-        redisManager.set("random:" + RandomStringUtils.randomNumeric(8), 1);
+        String k;
+        int n = 20;
+        Map<String, Long> exp = new LinkedHashMap<>();
+        for (int i = 0; i < n; i++) {
+            k = "random:" + RandomStringUtils.randomNumeric(8);
+            redisManager.set(k, 1);
+            exp.put(k, redisManager.getExpire(k));
+        }
+
+        System.out.println(JSON.toJSONString(exp));
+        Set<Long> values = new HashSet<>(exp.values());
+        int vs = values.size();
+        System.out.println(vs);
+        Assert.assertEquals(vs * 1.0,  5.0, 5.0);
     }
 
     @Test
