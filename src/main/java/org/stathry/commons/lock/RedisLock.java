@@ -26,6 +26,7 @@ public class RedisLock implements DistributedLock {
     private final long lockTimeout;
     private final long sleepTime;
     private final Lock lock;
+    private boolean isLocked = false;
 
     public RedisLock(String key) {
         this.key = key;
@@ -56,10 +57,11 @@ public class RedisLock implements DistributedLock {
     public boolean lock(long lockTimeoutMills) throws InterruptedException {
         long endTime = System.currentTimeMillis() + lockTimeoutMills;
 
-        boolean isLocked = lock.tryLock(lockTimeoutMills, TimeUnit.MILLISECONDS);
-        if (isLocked) {
+        boolean jLocked = lock.tryLock(lockTimeoutMills, TimeUnit.MILLISECONDS);
+        if (jLocked) {
             while (System.currentTimeMillis() < endTime) {
                 if (setNX()) {
+                    isLocked = true;
                     return true;
                 }
                 Thread.sleep(sleepTime);
@@ -72,7 +74,10 @@ public class RedisLock implements DistributedLock {
 
     @Override
     public void unlock() {
-        redisManager.delete(key);
+        if (isLocked) {
+            redisManager.delete(key);
+            isLocked = false;
+        }
         lock.unlock();
     }
 
