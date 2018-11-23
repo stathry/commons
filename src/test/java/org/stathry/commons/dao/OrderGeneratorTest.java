@@ -3,10 +3,7 @@ package org.stathry.commons.dao;
 import org.bson.types.ObjectId;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.stathry.commons.utils.ConfigManager;
 import org.stathry.commons.utils.OrderGenerator;
 import org.stathry.commons.utils.Snowflake;
@@ -95,7 +92,7 @@ public class OrderGeneratorTest {
         long dataCenterId = redisManager.increment("order.host.flag") % 31;
         long workerId = ConfigManager.getSysObj("order.type.loan", Long.class) % 31;
         final Snowflake snowflake = new Snowflake(dataCenterId, workerId);
-        final Map<String,Integer> all = new ConcurrentHashMap<>();
+        final Map<String, Integer> all = new ConcurrentHashMap<>();
         ExecutorService exec = Executors.newFixedThreadPool(n);
         long start = System.currentTimeMillis();
         for (int i = 0; i < n; i++) {
@@ -103,7 +100,7 @@ public class OrderGeneratorTest {
                 @Override
                 public void run() {
                     String o;
-                    for(int j = 0; j < limit; j++) {
+                    for (int j = 0; j < limit; j++) {
                         o = String.valueOf(snowflake.nextId());
                         all.put(o, Z);
                     }

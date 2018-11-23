@@ -12,7 +12,7 @@ public class HelloMethodReplacer implements MethodReplacer {
     @Override
     public Object reimplement(Object obj, Method method, Object[] args) throws Throwable {
         String hi = "hi ";
-        if(args != null && args.length > 0) {
+        if (args != null && args.length > 0) {
             hi = hi + args[0];
         }
         System.out.println(hi);

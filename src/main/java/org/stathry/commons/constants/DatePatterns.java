@@ -6,7 +6,8 @@ package org.stathry.commons.constants;
  */
 public class DatePatterns {
 
-    private DatePatterns() {}
+    private DatePatterns() {
+    }
 
     public static final String DATETIME1 = "yyyy-MM-dd HH:mm:ss";
     public static final String DATETIME2 = "yyyy/MM/dd HH:mm:ss";

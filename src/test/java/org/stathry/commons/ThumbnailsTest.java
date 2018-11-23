@@ -1,7 +1,6 @@
 package org.stathry.commons;
 
 import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.filters.Watermark;
 import net.coobird.thumbnailator.geometry.Positions;
 import org.junit.Test;
 

@@ -53,7 +53,7 @@ public class ExcelWriting {
 
     public static boolean writeMapsToExcel(String path, List<? extends Map> maps, List<String> keys, List<String> header) {
         File file = createNewFile(path);
-        if(file == null || !file.exists()) {
+        if (file == null || !file.exists()) {
             LOGGER.error("create new excel failed, path {}.", path);
             return false;
         }
@@ -75,7 +75,7 @@ public class ExcelWriting {
             r = false;
             LOGGER.error("write data of maps error.", e);
         } finally {
-            if(book != null) {
+            if (book != null) {
                 try {
                     book.close();
                 } catch (IOException e) {
@@ -96,10 +96,10 @@ public class ExcelWriting {
         Object value;
         CellStyle dateStyle = ExcelUtils.createDateStyle(book);
         CellStyle floatStyle = ExcelUtils.createFloatStyle(book);
-        if(keys != null && !keys.isEmpty()) {
+        if (keys != null && !keys.isEmpty()) {
             cols = keys.size();
             for (int i = 0; i < rows; i++, ir++) {
-                if(i % 50 == 0) {
+                if (i % 50 == 0) {
                     LOGGER.info("write excel rows index {}.", i);
                 }
                 row = sheet.createRow(ir);
@@ -112,7 +112,7 @@ public class ExcelWriting {
         } else {
             int j;
             for (int i = 0; i < rows; i++, ir++) {
-                if(i % 50 == 0) {
+                if (i % 50 == 0) {
                     LOGGER.info("write excel rows index {}.", i);
                 }
                 row = sheet.createRow(ir);
@@ -126,7 +126,7 @@ public class ExcelWriting {
     }
 
     private static void writeHeader(Sheet sheet, List<String> header) {
-        if(header == null || header.isEmpty()) {
+        if (header == null || header.isEmpty()) {
             return;
         }
         Row row = sheet.createRow(0);
@@ -141,7 +141,7 @@ public class ExcelWriting {
         File file = new File(path);
         try {
             file.getParentFile().mkdirs();
-            if(file.exists()) {
+            if (file.exists()) {
                 file.delete();
             }
             file.createNewFile();

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.stathry.commons.exception;
 
@@ -9,22 +9,22 @@ package org.stathry.commons.exception;
  */
 public class DAOException extends Exception {
 
-	private static final long serialVersionUID = -5308631704209507793L;
-	
-	public DAOException() {
-		super();
-	}
-	
-	public DAOException(String message) {
-		super(message);
-	}
-	
-	public DAOException(Throwable cause) {
-		super(cause);
-	}
-	
-	public DAOException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    private static final long serialVersionUID = -5308631704209507793L;
+
+    public DAOException() {
+        super();
+    }
+
+    public DAOException(String message) {
+        super(message);
+    }
+
+    public DAOException(Throwable cause) {
+        super(cause);
+    }
+
+    public DAOException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

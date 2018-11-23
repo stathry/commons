@@ -2,12 +2,8 @@ package org.apache.commons.lang3;
 
 import org.junit.Test;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +11,7 @@ import java.util.concurrent.atomic.LongAdder;
 
 /**
  * TODO
- * 
+ *
  * @author dongdaiming
  * @date 2017年12月6日
  */
@@ -74,10 +70,10 @@ public class RegExpTest {
         int n = LIMIT;
         List<String> l = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            l.add("A102,A301,A302" + "," +i);
+            l.add("A102,A301,A302" + "," + i);
         }
         long start = System.currentTimeMillis();
-        String[] a ;
+        String[] a;
         for (int i = 0; i < n; i++) {
             a = l.get(i).split(",");
 //            System.out.println(Arrays.formatFraction(a));
@@ -91,10 +87,10 @@ public class RegExpTest {
         int n = LIMIT;
         List<String> l = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            l.add("A102,A301,A302" + "," +i);
+            l.add("A102,A301,A302" + "," + i);
         }
         long start = System.currentTimeMillis();
-        String[] a ;
+        String[] a;
         for (int i = 0; i < n; i++) {
 //            a = l.get(i).split(",");
             a = StringUtils.split(l.get(i), ',');

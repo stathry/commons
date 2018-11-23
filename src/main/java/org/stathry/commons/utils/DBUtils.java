@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.stathry.commons.excel.ExcelReading;
 import org.stathry.commons.excel.ExcelWriting;
-import org.stathry.commons.model.dto.TableArea;
+import org.stathry.commons.model.dto.TableRange;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,32 +34,32 @@ public class DBUtils {
     private DBUtils() {
     }
 
-    public static <K extends Comparable<K>> List<Map<String, Object>> listData(String table, TableArea<K> area) {
+    public static <K extends Comparable<K>> List<Map<String, Object>> listData(String table, TableRange<K> area) {
         checkListArea(table, area);
         StringBuilder sql = new StringBuilder("select * from ").append(table);
         List<Object> args = new ArrayList<>(8);
-        if(area.getBeginKey() != null && area.getEndKey() != null) {
+        if (area.getBeginKey() != null && area.getEndKey() != null) {
             sql.append(" where ").append(area.getPrimaryKey()).append(" between ? and ? ");
             args.add(area.getBeginKey());
             args.add(area.getEndKey());
-        } else if(area.getBeginKey() != null && area.getEndKey() == null) {
+        } else if (area.getBeginKey() != null && area.getEndKey() == null) {
             sql.append(" where ").append(area.getPrimaryKey()).append(" >= ? ");
             args.add(area.getBeginKey());
-        } else if(area.getBeginKey() == null && area.getEndKey() != null) {
+        } else if (area.getBeginKey() == null && area.getEndKey() != null) {
             sql.append(" where ").append(area.getPrimaryKey()).append(" <= ? ");
             args.add(area.getEndKey());
         }
 
-        if(area.getBeginTime() != null && area.getEndTime() != null) {
+        if (area.getBeginTime() != null && area.getEndTime() != null) {
             whereOrAnd(sql);
             sql.append(area.getTimeColumn()).append(" between ? and ? ");
             args.add(area.getBeginTime());
             args.add(area.getEndTime());
-        } else if(area.getBeginTime() != null && area.getEndTime() == null){
+        } else if (area.getBeginTime() != null && area.getEndTime() == null) {
             whereOrAnd(sql);
             sql.append(area.getTimeColumn()).append(" >= ? ");
             args.add(area.getBeginTime());
-        } else if(area.getBeginTime() == null && area.getEndTime() != null){
+        } else if (area.getBeginTime() == null && area.getEndTime() != null) {
             whereOrAnd(sql);
             sql.append(area.getTimeColumn()).append(" <= ? ");
             args.add(area.getEndTime());
@@ -71,26 +71,26 @@ public class DBUtils {
     }
 
     private static void whereOrAnd(StringBuilder sql) {
-        if(!sql.toString().contains("where")) {
+        if (!sql.toString().contains("where")) {
             sql.append(" where ");
         } else {
             sql.append(" and ");
         }
     }
 
-    private static <K extends Comparable<K>> void checkListArea(String table, TableArea area) {
-        if(area == null || StringUtils.isBlank(area.getPrimaryKey()) || StringUtils.isBlank(table)) {
+    private static <K extends Comparable<K>> void checkListArea(String table, TableRange area) {
+        if (area == null || StringUtils.isBlank(area.getPrimaryKey()) || StringUtils.isBlank(table)) {
             throw new IllegalArgumentException("required primaryKey.");
         }
-        if(area.getLimit() < 0 || (area.getBeginKey() != null && area.getEndKey() != null && area.getEndKey().compareTo(area.getBeginKey()) < 0)) {
+        if (area.getLimit() < 0 || (area.getBeginKey() != null && area.getEndKey() != null && area.getEndKey().compareTo(area.getBeginKey()) < 0)) {
             throw new IllegalArgumentException("illegal limit, beginKey, or endKey.");
-        } else if(StringUtils.isNotBlank(area.getTimeColumn()) && area.getBeginTime() != null
+        } else if (StringUtils.isNotBlank(area.getTimeColumn()) && area.getBeginTime() != null
                 && area.getEndTime() != null && area.getEndTime().before(area.getBeginTime())) {
             throw new IllegalArgumentException("illegal beginTime, or endTime.");
         }
     }
 
-    public static int exportToExcel(String path, String table, TableArea area) {
+    public static int exportToExcel(String path, String table, TableRange area) {
         List<String> header = queryColumns(table);
         List<Map<String, Object>> list = listData(table, area);
         ExcelWriting.writeLinkedMaps(path, list, header);
@@ -103,6 +103,7 @@ public class DBUtils {
 
     /**
      * 从excel读取数据并批量导入至mysql
+     *
      * @param path
      * @param table
      * @return
@@ -112,7 +113,7 @@ public class DBUtils {
         int size = list == null ? 0 : list.size();
 
         LOGGER.info("read data from excel, size {}.", size);
-        if(size == 0) {
+        if (size == 0) {
             return 0;
         }
 
@@ -125,18 +126,18 @@ public class DBUtils {
         int bs = batchSize < size ? batchSize : size;
         List<Object[]> args = new ArrayList<>(bs);
         Map<String, String> r;
-        for(int i = 0, last = size - 1; i < size; i++) {
+        for (int i = 0, last = size - 1; i < size; i++) {
             r = list.get(i);
-            if((i != 0 && i % bs == 0)) {
+            if ((i != 0 && i % bs == 0)) {
                 LOGGER.info("batch insert data to table {}, index {}, rows {}.", table, i, args.size());
                 jdbcTemplate.batchUpdate(sql, args);
-            } else if(i == last) {
+            } else if (i == last) {
                 args.add(mapToArgArray(r, cols));
                 LOGGER.info("batch insert data to table {}, index {}, rows {}.", table, i, args.size());
                 jdbcTemplate.batchUpdate(sql, args);
             }
 
-            if(i != 0 && i % bs == 0) {
+            if (i != 0 && i % bs == 0) {
                 args = new ArrayList<>(bs);
             }
 
@@ -145,7 +146,7 @@ public class DBUtils {
         return size;
     }
 
-    private static Object[] mapToArgArray(Map<String,String> map, Set<String> cols) {
+    private static Object[] mapToArgArray(Map<String, String> map, Set<String> cols) {
         int len = cols.size();
         Object[] args = new Object[len];
         Iterator<String> it = cols.iterator();

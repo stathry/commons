@@ -29,7 +29,7 @@ public class RedissonLockTest {
     @Autowired
     private RedisManager redisManager;
 
-//    https://github.com/redisson/redisson#quick-start
+    //    https://github.com/redisson/redisson#quick-start
 //    https://redisson.org/
 //    https://github.com/redisson/redisson/issues/967
 //    https://github.com/redisson/redisson/wiki/8.-distributed-locks-and-synchronizers#81-lock
@@ -81,7 +81,7 @@ public class RedissonLockTest {
         exec.awaitTermination(5, TimeUnit.MINUTES);
         long inc = c.getC();
         System.out.println(inc);
-        Assert.assertEquals(tn * (long)limit, (long)inc);
+        Assert.assertEquals(tn * (long) limit, (long) inc);
     }
 
     private static class Counter {

@@ -12,16 +12,16 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * TODO
- * 
+ *
  * @date 2018年1月30日
  */
 public class DatetimeUtilsTest {
 
-	private static final String FMT = "yyyy-MM-dd HH:mm:ss";
-	private static final String FMT_MON = "yyyy-MM";
-	private static final String FMT_YEAR = "yyyy";
+    private static final String FMT = "yyyy-MM-dd HH:mm:ss";
+    private static final String FMT_MON = "yyyy-MM";
+    private static final String FMT_YEAR = "yyyy";
 
-	@Test
+    @Test
     public void testInterval() throws ParseException {
         Assert.assertEquals(-1, yearInterval("2019", "2018"));
         Assert.assertEquals(0, yearInterval("2018", "2018"));
@@ -51,29 +51,29 @@ public class DatetimeUtilsTest {
     }
 
     public static long monInterval(String startTime, String endTime) throws ParseException {
-	    return DatetimeUtils.intervalOfMonths(DatetimeUtils.parse(startTime, FMT_MON), DatetimeUtils.parse(endTime, FMT_MON));
+        return DatetimeUtils.intervalOfMonths(DatetimeUtils.parse(startTime, FMT_MON), DatetimeUtils.parse(endTime, FMT_MON));
     }
 
     public static long yearInterval(String startTime, String endTime) throws ParseException {
-	    return DatetimeUtils.intervalOfYears(DatetimeUtils.parse(startTime, FMT_YEAR), DatetimeUtils.parse(endTime, FMT_YEAR));
+        return DatetimeUtils.intervalOfYears(DatetimeUtils.parse(startTime, FMT_YEAR), DatetimeUtils.parse(endTime, FMT_YEAR));
     }
 
     public static long timeInterval(String startTime, String endTime, String pattern, TimeUnit unit) throws ParseException {
         return DatetimeUtils.intervalOfDatetime(DatetimeUtils.parse(startTime, pattern), DatetimeUtils.parse(endTime, pattern), unit);
     }
 
-	@Test
-	public void testParse() throws ParseException {
-		Date date = DatetimeUtils.parse("2018-01-30", "yyyy-MM-dd");
-		Assert.assertEquals("2018-01-30 00:00:00", DateFormatUtils.format(date, FMT));
+    @Test
+    public void testParse() throws ParseException {
+        Date date = DatetimeUtils.parse("2018-01-30", "yyyy-MM-dd");
+        Assert.assertEquals("2018-01-30 00:00:00", DateFormatUtils.format(date, FMT));
 
-		Date date2 = DatetimeUtils.parse("2018-01-30 10:36:00", FMT);
-		Assert.assertEquals("2018-01-30 10:36:00", DateFormatUtils.format(date2, FMT));
+        Date date2 = DatetimeUtils.parse("2018-01-30 10:36:00", FMT);
+        Assert.assertEquals("2018-01-30 10:36:00", DateFormatUtils.format(date2, FMT));
 
         Date date21 = DatetimeUtils.parse("2018-10-30 10:36:00", null);
         Assert.assertEquals("2018-10-30 10:36:00", DateFormatUtils.format(date21, FMT));
 
-		Date date3 = null;
+        Date date3 = null;
         try {
             date3 = DatetimeUtils.parse("2018-02-30", "yyyy-MM-dd");
         } catch (ParseException e) {
@@ -89,14 +89,14 @@ public class DatetimeUtilsTest {
     }
 
     @Test
-	public void testParseQuietly() {
+    public void testParseQuietly() {
         Assert.assertNull(DatetimeUtils.parseQuietly("2018-02-30 10:36:00", FMT));
         Assert.assertNull(DatetimeUtils.parseQuietly("2018/10/30 10:36:00", FMT));
 
         Assert.assertNotNull(DatetimeUtils.parseQuietly("2018-10-30", "yyyy-MM-dd"));
         Assert.assertNotNull(DatetimeUtils.parseQuietly("2018-10-30 10:36:00", FMT));
         Assert.assertEquals("2018-10-30 10:36:00", DatetimeUtils.format(DatetimeUtils.parseQuietly("2018-10-30 10:36:00", FMT)));
-	}
+    }
 
     @Test
     public void testNextClearDate() {

@@ -4,18 +4,21 @@ import java.io.Serializable;
 
 /**
  * ResponseEntity
- *
  */
 public class ResponseEntity<T> implements Serializable {
 
-    /** 请求标识 */
+    /**
+     * 请求标识
+     */
     private String transId;
-    /** 请求处理标识 */
+    /**
+     * 请求处理标识
+     */
     private String bizNo;
-	private boolean success;
-	private String code;
-	private String msg;
-	private T data;
+    private boolean success;
+    private String code;
+    private String msg;
+    private T data;
 
     public boolean isSuccess() {
         return success;

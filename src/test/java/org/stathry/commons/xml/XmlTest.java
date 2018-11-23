@@ -63,32 +63,32 @@ public class XmlTest {
         for (Object o : strategyE.elements()) {
             e = (Element) o;
             strategy = e.attributeValue("code");
-            if((orgMap = CRIF_STRATEGY_PARAMS_MAPPING.get(strategy)) == null) {
+            if ((orgMap = CRIF_STRATEGY_PARAMS_MAPPING.get(strategy)) == null) {
                 orgMap = new HashMap<>(2);
                 CRIF_STRATEGY_PARAMS_MAPPING.put(strategy, orgMap);
             }
 
             // 遍历机构列表
             for (Object orgO : e.elements()) {
-                orgE = (Element)orgO;
+                orgE = (Element) orgO;
                 org = orgE.attributeValue("code");
-                if((prodMap = orgMap.get(org)) == null) {
+                if ((prodMap = orgMap.get(org)) == null) {
                     prodMap = new HashMap<>(2);
                     orgMap.put(org, prodMap);
                 }
 
                 // 遍历产品列表
                 for (Object prodO : orgE.elements()) {
-                    prodE = (Element)prodO;
+                    prodE = (Element) prodO;
                     prod = prodE.attributeValue("code");
-                    if((pMap = prodMap.get(prod)) == null) {
+                    if ((pMap = prodMap.get(prod)) == null) {
                         pMap = new HashMap<>(2);
                         prodMap.put(prod, pMap);
                     }
 
                     // 遍历参数列表
-                    for(Object pO : prodE.elements()) {
-                        pE = (Element)pO;
+                    for (Object pO : prodE.elements()) {
+                        pE = (Element) pO;
                         p = pE.attributeValue("crifParam");
                         kMap = new HashMap<>(2);
                         kMap.put("realParam", pE.attributeValue("realParam"));

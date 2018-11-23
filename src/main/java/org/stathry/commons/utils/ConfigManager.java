@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ConfigManager {
 
-    private static final String NAME_BASE = "conf" ;
+    private static final String NAME_BASE = "conf";
     public static final String NAME_CONF = "config";
     public static final String NAME_SYS = "system";
     private static final ConcurrentHashMap<String, ConcurrentHashMap<String, String>> PROPS = new ConcurrentHashMap<>(4);
@@ -23,7 +23,8 @@ public class ConfigManager {
         getMap(NAME_SYS);
     }
 
-    private ConfigManager() {}
+    private ConfigManager() {
+    }
 
     public static void main(String[] args) {
         System.out.println("1:" + get("order.desc"));
@@ -40,28 +41,28 @@ public class ConfigManager {
     }
 
     public static String get(String key) {
-        if(StringUtils.isBlank(key)) return "";
+        if (StringUtils.isBlank(key)) return "";
         return StringUtils.trimToEmpty(getMap(NAME_CONF).get(key));
     }
 
     public static <T> T getObj(String key, Class<T> clazz) {
-        if(StringUtils.isBlank(key)) return null;
+        if (StringUtils.isBlank(key)) return null;
         return JSON.parseObject(getMap(NAME_CONF).get(key), clazz);
     }
 
     public static String get(String resourceName, String key) {
-        if(StringUtils.isBlank(key) || StringUtils.isBlank(resourceName)) return "";
+        if (StringUtils.isBlank(key) || StringUtils.isBlank(resourceName)) return "";
         return StringUtils.trimToEmpty(getMap(resourceName).get(key));
     }
 
     public static String get(String resourceName, String key, String defaultValue) {
-        if(StringUtils.isBlank(key) || StringUtils.isBlank(resourceName)) return "";
+        if (StringUtils.isBlank(key) || StringUtils.isBlank(resourceName)) return "";
         String v = getMap(resourceName).get(key);
         return v == null ? defaultValue : v;
     }
 
     public static <T> T getObj(String resourceName, String key, Class<T> clazz) {
-        if(StringUtils.isBlank(key) || StringUtils.isBlank(resourceName)) return null;
+        if (StringUtils.isBlank(key) || StringUtils.isBlank(resourceName)) return null;
         return JSON.parseObject(getMap(resourceName).get(key), clazz);
     }
 
@@ -79,17 +80,17 @@ public class ConfigManager {
 
     public static ConcurrentHashMap<String, String> getMap(String name) {
         ConcurrentHashMap p = PROPS.get(name);
-        if(p != null) {
+        if (p != null) {
             return p;
         }
 
         synchronized (ConfigManager.class) {
             p = PROPS.get(name);
-            if(p != null) {
+            if (p != null) {
                 return p;
             }
             Properties pp = loadProperties(name);
-            if(pp == null) {
+            if (pp == null) {
                 return new ConcurrentHashMap();
             }
             ConcurrentHashMap pn = new ConcurrentHashMap(pp);
@@ -101,8 +102,8 @@ public class ConfigManager {
     private static Properties loadProperties(String name) {
         Properties prop = new Properties();
         String resourceName = NAME_BASE + "/" + name + ".properties";
-        try(InputStream in = ConfigManager.class.getClassLoader().getResourceAsStream(resourceName);
-            Reader r = new InputStreamReader(in, "UTF-8")) {
+        try (InputStream in = ConfigManager.class.getClassLoader().getResourceAsStream(resourceName);
+             Reader r = new InputStreamReader(in, "UTF-8")) {
             prop.load(r);
         } catch (Exception e) {
         }

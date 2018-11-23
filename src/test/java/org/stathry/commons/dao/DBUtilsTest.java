@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.stathry.commons.model.dto.TableArea;
+import org.stathry.commons.model.dto.TableRange;
 import org.stathry.commons.utils.DBUtils;
 
 import java.io.File;
@@ -32,34 +32,34 @@ public class DBUtilsTest {
     @Test
     public void testExportToExcel1() throws IOException {
         String path = File.createTempFile("users-", ".xlsx", new File("/temp")).getPath();
-        int n = DBUtils.exportToExcel(path, "users", new TableArea<Integer>());
+        int n = DBUtils.exportToExcel(path, "users", new TableRange<Integer>());
         System.out.println(n);
         Assert.assertTrue(n > 0);
     }
 
     @Test
     public void testListDataFromDB1() {
-        List<Map<String, Object>> list = DBUtils.listData("users", new TableArea<Integer>());
+        List<Map<String, Object>> list = DBUtils.listData("users", new TableRange<Integer>());
         System.out.println(JSON.toJSONString(list));
 
-        list = DBUtils.listData("users", new TableArea<Integer>("id", 5, 10));
+        list = DBUtils.listData("users", new TableRange<Integer>("id", 5, 10));
         System.out.println("1:" + JSON.toJSONString(list));
 
-        list = DBUtils.listData("users", new TableArea<Integer>("id", 5, null));
+        list = DBUtils.listData("users", new TableRange<Integer>("id", 5, null));
         System.out.println("2:" + JSON.toJSONString(list));
 
-        list = DBUtils.listData("users", new TableArea<Integer>("id", null, 10));
+        list = DBUtils.listData("users", new TableRange<Integer>("id", null, 10));
         System.out.println("3:" + JSON.toJSONString(list));
 
-        list = DBUtils.listData("users", new TableArea<Integer>("birth",
+        list = DBUtils.listData("users", new TableRange<Integer>("birth",
                 DateUtils.addDays(new Date(), 1), DateUtils.addDays(new Date(), 3)));
         System.out.println("4:" + JSON.toJSONString(list));
 
-        list = DBUtils.listData("users", new TableArea<Integer>("birth",
+        list = DBUtils.listData("users", new TableRange<Integer>("birth",
                 DateUtils.addDays(new Date(), 1), null));
         System.out.println("5:" + JSON.toJSONString(list));
 
-        list = DBUtils.listData("users", new TableArea<Integer>("birth",
+        list = DBUtils.listData("users", new TableRange<Integer>("birth",
                 null, DateUtils.addDays(new Date(), 3)));
         System.out.println("6:" + JSON.toJSONString(list));
 

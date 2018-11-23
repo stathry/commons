@@ -30,7 +30,8 @@ public class ExcelUtils {
 
     private static final DecimalUtils DECIMAL_UTILS = new DecimalUtils(22, 2, RoundingMode.HALF_UP);
 
-    private ExcelUtils() {}
+    private ExcelUtils() {
+    }
 
     public static String cellValue(Cell cell) {
         return cellValue(cell, ExcelConstant.READ_DATE_PATTERN);
@@ -38,12 +39,13 @@ public class ExcelUtils {
 
     /**
      * 读取单元格value
+     *
      * @param cell
      * @param datePattern
      * @return
      */
     public static String cellValue(Cell cell, String datePattern) {
-        if(cell == null) {
+        if (cell == null) {
             return "";
         }
         CellType type = cell.getCellType();
@@ -83,37 +85,38 @@ public class ExcelUtils {
 
     /**
      * 根据数据类型创建单元格并赋值
+     *
      * @param row
      * @param i
      * @param value
      */
     public static Cell createCell(Row row, int i, Object value, CellStyle dateStyle, CellStyle floatStyle) {
         Cell cell;
-        if(value == null) {
+        if (value == null) {
             return row.createCell(i, CellType.BLANK);
         }
 
         Class c = value.getClass();
-        if(c == String.class) {
+        if (c == String.class) {
             cell = row.createCell(i, CellType.STRING);
             cell.setCellValue((String) value);
-        } else if(value instanceof Number) {
+        } else if (value instanceof Number) {
             cell = row.createCell(i, CellType.NUMERIC);
-            if(c == Double.class || c == Float.class || c == BigDecimal.class) {
-             cell.setCellStyle(floatStyle);
-             cell.setCellValue(Double.parseDouble(DECIMAL_UTILS.format(value)));
+            if (c == Double.class || c == Float.class || c == BigDecimal.class) {
+                cell.setCellStyle(floatStyle);
+                cell.setCellValue(Double.parseDouble(DECIMAL_UTILS.format(value)));
             } else {
                 cell.setCellValue(((Number) value).doubleValue());
             }
-        } else if(value instanceof Date) {
+        } else if (value instanceof Date) {
             cell = row.createCell(i, CellType.NUMERIC);
             cell.setCellValue(((Date) value));
             cell.setCellStyle(dateStyle);
-        } else if(c == Calendar.class) {
+        } else if (c == Calendar.class) {
             cell = row.createCell(i, CellType.NUMERIC);
             cell.setCellValue(((Calendar) value));
             cell.setCellStyle(dateStyle);
-        } else if(c == Boolean.class) {
+        } else if (c == Boolean.class) {
             cell = row.createCell(i, CellType.BOOLEAN);
             cell.setCellValue(((Boolean) value));
         } else {
@@ -127,11 +130,11 @@ public class ExcelUtils {
         if (StringUtils.isBlank(filename)) {
             return "";
         }
-        String name =FilenameUtils.getExtension(filename);
+        String name = FilenameUtils.getExtension(filename);
         String type = "";
-        if(name.endsWith("xls")) {
+        if (name.endsWith("xls")) {
             type = "xls";
-        } else if(name.endsWith("xlsx")) {
+        } else if (name.endsWith("xlsx")) {
             type = "xlsx";
         }
         return type;
@@ -141,11 +144,11 @@ public class ExcelUtils {
         if (StringUtils.isBlank(filename)) {
             return false;
         }
-        String name =FilenameUtils.getExtension(filename);
+        String name = FilenameUtils.getExtension(filename);
         boolean is = false;
-        if(name.endsWith("xls")) {
+        if (name.endsWith("xls")) {
             is = true;
-        } else if(name.endsWith("xlsx")) {
+        } else if (name.endsWith("xlsx")) {
             is = true;
         }
         return is;

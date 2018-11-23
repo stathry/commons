@@ -7,108 +7,108 @@ import java.util.Date;
 
 /**
  * @author dongdaiming@free.com
- *
- *         2016年8月18日
+ * <p>
+ * 2016年8月18日
  */
 public class DocInfo {
 
-	private String content;
+    private String content;
 
-	private String title;
+    private String title;
 
-	private String creator;
+    private String creator;
 
-	private String lastModifiedBy;
+    private String lastModifiedBy;
 
-	private String company;
+    private String company;
 
-	private Date createdDate;
+    private Date createdDate;
 
-	private Date lastModifiedDate;
+    private Date lastModifiedDate;
 
-	private int characters;
+    private int characters;
 
-	private long size;
+    private long size;
 
-	@Override
-	public String toString() {
-		return "WordEntity [title=" + title + ", creator=" + creator
-				+ ", lastModifiedBy=" + lastModifiedBy + ", company=" + company
-				+ ", createdDate=" + createdDate + ", lastModifiedDate="
-				+ lastModifiedDate + ", characters=" + characters + ", size="
-				+ size + "]";
-	}
+    @Override
+    public String toString() {
+        return "WordEntity [title=" + title + ", creator=" + creator
+                + ", lastModifiedBy=" + lastModifiedBy + ", company=" + company
+                + ", createdDate=" + createdDate + ", lastModifiedDate="
+                + lastModifiedDate + ", characters=" + characters + ", size="
+                + size + "]";
+    }
 
-	public long getSize() {
-		return size;
-	}
+    public long getSize() {
+        return size;
+    }
 
-	public void setSize(long size) {
-		this.size = size;
-	}
+    public void setSize(long size) {
+        this.size = size;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getCreator() {
-		return creator;
-	}
+    public String getCreator() {
+        return creator;
+    }
 
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
-	public String getLastModifiedBy() {
-		return lastModifiedBy;
-	}
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
 
-	public void setLastModifiedBy(String lastModifiedBy) {
-		this.lastModifiedBy = lastModifiedBy;
-	}
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
+    public Date getCreatedDate() {
+        return createdDate;
+    }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
-	public Date getLastModifiedDate() {
-		return lastModifiedDate;
-	}
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
 
-	public void setLastModifiedDate(Date lastModifiedDate) {
-		this.lastModifiedDate = lastModifiedDate;
-	}
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
-	public int getCharacters() {
-		return characters;
-	}
+    public int getCharacters() {
+        return characters;
+    }
 
-	public void setCharacters(int characters) {
-		this.characters = characters;
-	}
+    public void setCharacters(int characters) {
+        this.characters = characters;
+    }
 
-	public String getCompany() {
-		return company;
-	}
+    public String getCompany() {
+        return company;
+    }
 
-	public void setCompany(String company) {
-		this.company = company;
-	}
+    public void setCompany(String company) {
+        this.company = company;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
 }

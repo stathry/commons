@@ -10,7 +10,7 @@ import java.math.RoundingMode;
  * Created by dongdaiming on 2018-08-14 17:17
  */
 public class DecimalUtilsTest {
-    
+
     @Test
     public void testFormat1() {
         // DecimalUtils.formatFraction

@@ -19,15 +19,15 @@
         </property>
     </bean>
 
-    <bean class="org.stathry.commons.utils.ApplicationContextUtils" />
+    <bean class="org.stathry.commons.utils.ApplicationContextUtils"/>
 
-    <bean id="helloMethodReplacer" class="org.stathry.commons.data.HelloMethodReplacer" />
+    <bean id="helloMethodReplacer" class="org.stathry.commons.data.HelloMethodReplacer"/>
     <bean id="replaceableBean1" class="org.stathry.commons.data.ReplaceableBean">
-        <replaced-method name="hello" replacer="helloMethodReplacer" />
+        <replaced-method name="hello" replacer="helloMethodReplacer"/>
     </bean>
-    <bean id="replaceableBean2" class="org.stathry.commons.data.ReplaceableBean" />
+    <bean id="replaceableBean2" class="org.stathry.commons.data.ReplaceableBean"/>
 
-    <import resource="classpath:spring/*.xml" />
+    <import resource="classpath:spring/*.xml"/>
 
-    <context:component-scan base-package="org.stathry.commons" />
+    <context:component-scan base-package="org.stathry.commons"/>
 </beans>

@@ -9,51 +9,51 @@ package org.stathry.commons.exception;
  */
 public class DataConvertException extends Exception {
 
-	private static final long serialVersionUID = -2530396868104807601L;
+    private static final long serialVersionUID = -2530396868104807601L;
 
-	/**
-	 * 
-	 */
-	public DataConvertException() {
-		super();
+    /**
+     *
+     */
+    public DataConvertException() {
+        super();
 
-	}
+    }
 
-	/**
-	 * @param message
-	 * @param cause
-	 * @param enableSuppression
-	 * @param writableStackTrace
-	 */
-	public DataConvertException(String message, Throwable cause, boolean enableSuppression,
-			boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
+    /**
+     * @param message
+     * @param cause
+     * @param enableSuppression
+     * @param writableStackTrace
+     */
+    public DataConvertException(String message, Throwable cause, boolean enableSuppression,
+                                boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
 
-	}
+    }
 
-	/**
-	 * @param message
-	 * @param cause
-	 */
-	public DataConvertException(String message, Throwable cause) {
-		super(message, cause);
+    /**
+     * @param message
+     * @param cause
+     */
+    public DataConvertException(String message, Throwable cause) {
+        super(message, cause);
 
-	}
+    }
 
-	/**
-	 * @param message
-	 */
-	public DataConvertException(String message) {
-		super(message);
+    /**
+     * @param message
+     */
+    public DataConvertException(String message) {
+        super(message);
 
-	}
+    }
 
-	/**
-	 * @param cause
-	 */
-	public DataConvertException(Throwable cause) {
-		super(cause);
+    /**
+     * @param cause
+     */
+    public DataConvertException(Throwable cause) {
+        super(cause);
 
-	}
+    }
 
 }

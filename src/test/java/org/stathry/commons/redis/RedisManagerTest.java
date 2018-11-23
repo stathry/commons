@@ -60,7 +60,7 @@ public class RedisManagerTest {
         Set<Long> values = new HashSet<>(exp.values());
         int vs = values.size();
         System.out.println(vs);
-        Assert.assertEquals(vs * 1.0,  5.0, 5.0);
+        Assert.assertEquals(vs * 1.0, 5.0, 5.0);
     }
 
     @Test
@@ -178,7 +178,7 @@ public class RedisManagerTest {
         String key = UUID.randomUUID().toString();
         redisManager.set(key, UUID.randomUUID().toString());
         Assert.assertTrue(redisManager.exists(key));
-        Assert.assertFalse(redisManager.exists( UUID.randomUUID().toString()));
+        Assert.assertFalse(redisManager.exists(UUID.randomUUID().toString()));
     }
 
     @Test
@@ -199,7 +199,7 @@ public class RedisManagerTest {
         List<String> keys = new ArrayList<>(10);
         for (int i = 0; i < 10; i++) {
             keys.add(key + i);
-        redisManager.set(key + i, i);
+            redisManager.set(key + i, i);
         }
         Assert.assertTrue(redisManager.exists(key + 0));
 
@@ -293,7 +293,7 @@ public class RedisManagerTest {
             exec.execute(() -> {
                 List<Long> list;
                 for (int j = 0; j < limit; j++) {
-                        list = new ArrayList<>(unit);
+                    list = new ArrayList<>(unit);
                     for (int k = 0; k < unit; k++) {
                         list.add(System.nanoTime());
                     }
@@ -305,7 +305,7 @@ public class RedisManagerTest {
         exec.awaitTermination(5, TimeUnit.MINUTES);
 
         List<Long> list1 = redisManager.getList(key);
-        Assert.assertEquals((tn * limit * unit) + list0.size(),list1.size());
+        Assert.assertEquals((tn * limit * unit) + list0.size(), list1.size());
     }
 
     @Test
@@ -315,7 +315,7 @@ public class RedisManagerTest {
         for (int i = 0; i < 10; i++) {
             map.put(k + i, i);
         }
-        redisManager.setMap(k, map,3, TimeUnit.MINUTES);
+        redisManager.setMap(k, map, 3, TimeUnit.MINUTES);
         Map<String, Integer> map2 = redisManager.getMap(k);
         System.out.println(map2);
         Assert.assertTrue(map.equals(map2));
@@ -328,7 +328,7 @@ public class RedisManagerTest {
         for (int i = 0; i < 10; i++) {
             map.put(k + i, i);
         }
-        redisManager.setMap(k, map,3, TimeUnit.MINUTES);
+        redisManager.setMap(k, map, 3, TimeUnit.MINUTES);
 
         Map<String, Integer> mapT = new HashMap<>(4);
         mapT.put("k1", 11);

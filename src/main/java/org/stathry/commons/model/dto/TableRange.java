@@ -3,10 +3,11 @@ package org.stathry.commons.model.dto;
 import java.util.Date;
 
 /**
- * DB数据范围
+ * 数据库表数据范围
+ *
  * @param <K>
  */
-public class TableArea<K extends Comparable<K>> {
+public class TableRange<K extends Comparable<K>> {
 
     private String primaryKey = "id";
     private K beginKey;
@@ -16,22 +17,22 @@ public class TableArea<K extends Comparable<K>> {
     private Date endTime;
     private int limit = 5000;
 
-    public TableArea() {
+    public TableRange() {
     }
 
-    public TableArea(String primaryKey, K beginKey, K endKey) {
+    public TableRange(String primaryKey, K beginKey, K endKey) {
         this.primaryKey = primaryKey;
         this.beginKey = beginKey;
         this.endKey = endKey;
     }
 
-    public TableArea(String timeColumn, Date beginTime, Date endTime) {
+    public TableRange(String timeColumn, Date beginTime, Date endTime) {
         this.timeColumn = timeColumn;
         this.beginTime = beginTime;
         this.endTime = endTime;
     }
 
-    public TableArea(String primaryKey, K beginKey, K endKey, String timeColumn, Date beginTime, Date endTime) {
+    public TableRange(String primaryKey, K beginKey, K endKey, String timeColumn, Date beginTime, Date endTime) {
         this.primaryKey = primaryKey;
         this.beginKey = beginKey;
         this.endKey = endKey;
@@ -42,7 +43,7 @@ public class TableArea<K extends Comparable<K>> {
 
     @Override
     public String toString() {
-        return "TableArea{" +
+        return "TableRange{" +
                 "primaryKey='" + primaryKey + '\'' +
                 ", beginKey=" + beginKey +
                 ", endKey=" + endKey +

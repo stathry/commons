@@ -2,106 +2,105 @@ package org.stathry.commons.model.dto;
 
 /**
  * Hello world!
- *
  */
 public class ResponseBody {
 
-	private boolean success;
-	private String responseCode;
-	private String responseMessage;
-	private Object responseData;
-	private String timestamp;
-	private String dataType;
-	private Long size;
-	private Long total;
-	private Integer pageSize;
-	private Integer pageNo;
-	
-	@Override
-	public String toString() {
-		return "ResponseBody [success=" + success + ", responseCode=" + responseCode + ", responseMessage="
-				+ responseMessage + ", responseData=" + responseData + ", timestamp=" + timestamp + ", dataType="
-				+ dataType + "]";
-	}
+    private boolean success;
+    private String responseCode;
+    private String responseMessage;
+    private Object responseData;
+    private String timestamp;
+    private String dataType;
+    private Long size;
+    private Long total;
+    private Integer pageSize;
+    private Integer pageNo;
 
-	public String getDataType() {
-		return dataType;
-	}
+    @Override
+    public String toString() {
+        return "ResponseBody [success=" + success + ", responseCode=" + responseCode + ", responseMessage="
+                + responseMessage + ", responseData=" + responseData + ", timestamp=" + timestamp + ", dataType="
+                + dataType + "]";
+    }
 
-	public void setDataType(String dataType) {
-		this.dataType = dataType;
-	}
+    public String getDataType() {
+        return dataType;
+    }
 
-	public Long getSize() {
-		return size;
-	}
+    public void setDataType(String dataType) {
+        this.dataType = dataType;
+    }
 
-	public void setSize(Long size) {
-		this.size = size;
-	}
+    public Long getSize() {
+        return size;
+    }
 
-	public Long getTotal() {
-		return total;
-	}
+    public void setSize(Long size) {
+        this.size = size;
+    }
 
-	public void setTotal(Long total) {
-		this.total = total;
-	}
+    public Long getTotal() {
+        return total;
+    }
 
-	public Integer getPageSize() {
-		return pageSize;
-	}
+    public void setTotal(Long total) {
+        this.total = total;
+    }
 
-	public void setPageSize(Integer pageSize) {
-		this.pageSize = pageSize;
-	}
+    public Integer getPageSize() {
+        return pageSize;
+    }
 
-	public Integer getPageNo() {
-		return pageNo;
-	}
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
 
-	public void setPageNo(Integer pageNo) {
-		this.pageNo = pageNo;
-	}
+    public Integer getPageNo() {
+        return pageNo;
+    }
 
-	public String getTimestamp() {
-		return timestamp;
-	}
+    public void setPageNo(Integer pageNo) {
+        this.pageNo = pageNo;
+    }
 
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
-	}
+    public String getTimestamp() {
+        return timestamp;
+    }
 
-	public boolean getSuccess() {
-		return success;
-	}
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
+    public boolean getSuccess() {
+        return success;
+    }
 
-	public String getResponseCode() {
-		return responseCode;
-	}
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 
-	public void setResponseCode(String responseCode) {
-		this.responseCode = responseCode;
-	}
+    public String getResponseCode() {
+        return responseCode;
+    }
 
-	public String getResponseMessage() {
-		return responseMessage;
-	}
+    public void setResponseCode(String responseCode) {
+        this.responseCode = responseCode;
+    }
 
-	public void setResponseMessage(String responseMessage) {
-		this.responseMessage = responseMessage;
-	}
+    public String getResponseMessage() {
+        return responseMessage;
+    }
 
-	public Object getResponseData() {
-		return responseData;
-	}
+    public void setResponseMessage(String responseMessage) {
+        this.responseMessage = responseMessage;
+    }
 
-	public void setResponseData(Object responseData) {
-		this.responseData = responseData;
-	}
+    public Object getResponseData() {
+        return responseData;
+    }
+
+    public void setResponseData(Object responseData) {
+        this.responseData = responseData;
+    }
 
 }

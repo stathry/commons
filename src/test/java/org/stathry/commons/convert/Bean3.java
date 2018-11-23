@@ -12,26 +12,26 @@ import org.stathry.commons.annotation.validation.VDate;
  * @date 2017年5月21日
  */
 public class Bean3 {
-	@VDate
-	@Email
-	private String birth;
-	
-	@NotEmpty
-	private String name;
+    @VDate
+    @Email
+    private String birth;
 
-	public String getBirth() {
-		return birth;
-	}
+    @NotEmpty
+    private String name;
 
-	public void setBirth(String birth) {
-		this.birth = birth;
-	}
+    public String getBirth() {
+        return birth;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

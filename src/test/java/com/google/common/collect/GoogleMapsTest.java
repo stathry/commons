@@ -1,12 +1,10 @@
 package com.google.common.collect;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.collections.MultiHashMap;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;

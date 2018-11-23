@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import java.io.FileInputStream;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -130,7 +129,7 @@ public class DigestTest {
 
     @Test
     public void testSUUID() throws Exception {
-        String uuid =  UUID.randomUUID().toString();
+        String uuid = UUID.randomUUID().toString();
         System.out.println(uuid);
         System.out.println(uuid.length());
         Assert.assertEquals(36, uuid.length());

@@ -19,5 +19,6 @@ public class ExcelConstant {
     public static int FLOAT_SCALE = 2;
     public static RoundingMode FLOAT_MODE = RoundingMode.HALF_UP;
 
-    private ExcelConstant() {}
+    private ExcelConstant() {
+    }
 }

@@ -7,131 +7,131 @@ import org.stathry.commons.constants.DefaultWordConfig;
 
 /**
  * @author dongdaiming@free.com
- *
- *         2016年8月18日
+ * <p>
+ * 2016年8月18日
  */
 
 public class WordConfig {
 
-	private String fileType = DefaultWordConfig.FILE_TYPE_DOCX;
-	private String filePath = DefaultWordConfig.FILE_PATH;
-	private String creator = DefaultWordConfig.CREATOR;
-	private String company = DefaultWordConfig.COMPANY;
+    private String fileType = DefaultWordConfig.FILE_TYPE_DOCX;
+    private String filePath = DefaultWordConfig.FILE_PATH;
+    private String creator = DefaultWordConfig.CREATOR;
+    private String company = DefaultWordConfig.COMPANY;
 
-	private int headerFontSize = DefaultWordConfig.HEADER_FONT_SIZE;
-	private String headerFont = DefaultWordConfig.HEADER_FONT;
-	private String headerColor = "black";
-	
-	private int fontSize = DefaultWordConfig.FONT_SIZE;
-	private String font = DefaultWordConfig.FONT;
-	private String color = "black";
+    private int headerFontSize = DefaultWordConfig.HEADER_FONT_SIZE;
+    private String headerFont = DefaultWordConfig.HEADER_FONT;
+    private String headerColor = "black";
 
-	private String varPattern = DefaultWordConfig.VAR_PATTERN;
-	private String varPrefix = DefaultWordConfig.VAR_PREFIX;
-	private String varSuffix = DefaultWordConfig.VAR_SUFFIX;
+    private int fontSize = DefaultWordConfig.FONT_SIZE;
+    private String font = DefaultWordConfig.FONT;
+    private String color = "black";
 
-	public String getFileType() {
-		return fileType;
-	}
+    private String varPattern = DefaultWordConfig.VAR_PATTERN;
+    private String varPrefix = DefaultWordConfig.VAR_PREFIX;
+    private String varSuffix = DefaultWordConfig.VAR_SUFFIX;
 
-	public void setFileType(String fileType) {
-		this.fileType = fileType;
-	}
+    public String getFileType() {
+        return fileType;
+    }
 
-	public String getFilePath() {
-		return filePath;
-	}
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
 
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
+    public String getFilePath() {
+        return filePath;
+    }
 
-	public String getCreator() {
-		return creator;
-	}
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
+    public String getCreator() {
+        return creator;
+    }
 
-	public String getCompany() {
-		return company;
-	}
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
-	public void setCompany(String company) {
-		this.company = company;
-	}
+    public String getCompany() {
+        return company;
+    }
 
-	public int getHeaderFontSize() {
-		return headerFontSize;
-	}
+    public void setCompany(String company) {
+        this.company = company;
+    }
 
-	public void setHeaderFontSize(int headerFontSize) {
-		this.headerFontSize = headerFontSize;
-	}
+    public int getHeaderFontSize() {
+        return headerFontSize;
+    }
 
-	public String getHeaderFont() {
-		return headerFont;
-	}
+    public void setHeaderFontSize(int headerFontSize) {
+        this.headerFontSize = headerFontSize;
+    }
 
-	public void setHeaderFont(String headerFont) {
-		this.headerFont = headerFont;
-	}
+    public String getHeaderFont() {
+        return headerFont;
+    }
 
-	public int getFontSize() {
-		return fontSize;
-	}
+    public void setHeaderFont(String headerFont) {
+        this.headerFont = headerFont;
+    }
 
-	public void setFontSize(int fontSize) {
-		this.fontSize = fontSize;
-	}
+    public int getFontSize() {
+        return fontSize;
+    }
 
-	public String getHeaderColor() {
-		return headerColor;
-	}
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
+    }
 
-	public void setHeaderColor(String headerColor) {
-		this.headerColor = headerColor;
-	}
+    public String getHeaderColor() {
+        return headerColor;
+    }
 
-	public String getColor() {
-		return color;
-	}
+    public void setHeaderColor(String headerColor) {
+        this.headerColor = headerColor;
+    }
 
-	public void setColor(String color) {
-		this.color = color;
-	}
+    public String getColor() {
+        return color;
+    }
 
-	public String getFont() {
-		return font;
-	}
+    public void setColor(String color) {
+        this.color = color;
+    }
 
-	public void setFont(String font) {
-		this.font = font;
-	}
+    public String getFont() {
+        return font;
+    }
 
-	public String getVarPattern() {
-		return varPattern;
-	}
+    public void setFont(String font) {
+        this.font = font;
+    }
 
-	public void setVarPattern(String varPattern) {
-		this.varPattern = varPattern;
-	}
+    public String getVarPattern() {
+        return varPattern;
+    }
 
-	public String getVarPrefix() {
-		return varPrefix;
-	}
+    public void setVarPattern(String varPattern) {
+        this.varPattern = varPattern;
+    }
 
-	public void setVarPrefix(String varPrefix) {
-		this.varPrefix = varPrefix;
-	}
+    public String getVarPrefix() {
+        return varPrefix;
+    }
 
-	public String getVarSuffix() {
-		return varSuffix;
-	}
+    public void setVarPrefix(String varPrefix) {
+        this.varPrefix = varPrefix;
+    }
 
-	public void setVarSuffix(String varSuffix) {
-		this.varSuffix = varSuffix;
-	}
+    public String getVarSuffix() {
+        return varSuffix;
+    }
+
+    public void setVarSuffix(String varSuffix) {
+        this.varSuffix = varSuffix;
+    }
 
 }

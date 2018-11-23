@@ -3,16 +3,15 @@
  */
 package org.stathry.commons.annotation.validation;
 
+import org.stathry.commons.core.validation.DateValidator;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import javax.validation.Constraint;
-import javax.validation.Payload;
-
-import org.stathry.commons.core.validation.DateValidator;
 
 /**
  * @author stathry@126.com
@@ -23,14 +22,14 @@ import org.stathry.commons.core.validation.DateValidator;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = DateValidator.class)
 public @interface VDate {
-	
-	Class<?>[] groups() default {};
 
-	String message() default "{com.pingan.commons.components.annotation.validation.VDate.message}";
+    Class<?>[] groups() default {};
 
-	String pattern() default "yyyy-MM-dd HH:mm:ss";
+    String message() default "{com.pingan.commons.components.annotation.validation.VDate.message}";
 
-	boolean lenient() default false;
-	
-	Class<? extends Payload>[] payload() default { };
+    String pattern() default "yyyy-MM-dd HH:mm:ss";
+
+    boolean lenient() default false;
+
+    Class<? extends Payload>[] payload() default {};
 }

@@ -3,13 +3,12 @@
  */
 package org.stathry.commons.core.validation;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import org.stathry.commons.annotation.validation.VDate;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-
-import org.stathry.commons.annotation.validation.VDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * @author stathry@126.com
@@ -17,33 +16,33 @@ import org.stathry.commons.annotation.validation.VDate;
  */
 public class DateValidator implements ConstraintValidator<VDate, String> {
 
-	private boolean lenient;
-	private String pattern;
+    private boolean lenient;
+    private String pattern;
 
-	@Override
-	public void initialize(VDate an) {
-		lenient = an.lenient();
-		pattern = an.pattern();
-	}
+    @Override
+    public void initialize(VDate an) {
+        lenient = an.lenient();
+        pattern = an.pattern();
+    }
 
-	@Override
-	public boolean isValid(String value, ConstraintValidatorContext context) {
-		if (value == null) {
-			return true;
-		}
-		if (value.trim().equals("") || pattern == null || pattern.trim().equals("")) {
-			return false;
-		}
+    @Override
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        if (value == null) {
+            return true;
+        }
+        if (value.trim().equals("") || pattern == null || pattern.trim().equals("")) {
+            return false;
+        }
 
-		SimpleDateFormat formatter = new SimpleDateFormat(pattern);
-		formatter.setLenient(lenient);
-		try {
-			formatter.parse(value);
-		} catch (ParseException e) {
-			return false;
-		}
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        formatter.setLenient(lenient);
+        try {
+            formatter.parse(value);
+        } catch (ParseException e) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
 }

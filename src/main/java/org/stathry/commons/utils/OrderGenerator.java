@@ -1,15 +1,12 @@
 package org.stathry.commons.utils;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.util.Assert;
 
 import java.security.SecureRandom;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * OrderGenerator
@@ -21,7 +18,7 @@ public class OrderGenerator {
     private final String timePattern;
 
     private final String prefix;
-    
+
     private final int seqLen;
     private final int maxSeq;
     private final int randomLen;
@@ -44,8 +41,8 @@ public class OrderGenerator {
         this.prefix = prefix == null ? "" : prefix;
         randomLen = orderLength / 5;
         this.seqLen = orderLength - this.timePattern.length() - randomLen - this.prefix.length();
-        this.maxSeq = (int)Math.pow(10, seqLen) - 1;
-        this.maxRandom = (int)Math.pow(10, randomLen) - 1;
+        this.maxSeq = (int) Math.pow(10, seqLen) - 1;
+        this.maxRandom = (int) Math.pow(10, randomLen) - 1;
     }
 
     public String order() {

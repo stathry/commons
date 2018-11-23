@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.RandomAccess;
-import java.util.Set;
 
 /**
  * @author dongdaiming@free.com
@@ -17,47 +16,49 @@ import java.util.Set;
 
 @SuppressWarnings("all")
 public class CollectionUtils {
-	
-	/**
-	 * 泛型list转换为数组
-	 * @param src List<T> 原List
-	 * @return T[] 转换后的数组
-	 */
-	public static <T> T[] listToArray(List<T> src, Class<T> type) {
-		if (src == null || src.isEmpty()) {
-			return null;
-		}
-		// 初始化泛型数组
-		// JAVA中不允许这样初始化泛型数组： T[] dest = new T[src.size()];
-		T[] dest = (T[]) Array.newInstance(type, src.size());
-		for (int i = 0; i < src.size(); i++) {
-			dest[i] = src.get(i);
-		}
-		return (T[]) dest;
-	}
-	
-	/**
-	 * 泛型嵌套list转换为二维数组
-	 * @param src List<List<T>> 原嵌套list （子list的长度必须相等）
-	 * @return T[][] 转换后的二维数组
-	 */
-	public static <T> T[][] listsToArrays(List<List<T>> src, Class<T> type) {
-		if (src == null || src.isEmpty()) {
-			return null;
-		}
 
-		// 初始化泛型二维数组
-		// JAVA中不允许这样初始化泛型二维数组： T[][] dest = new T[src.size()][];
-		T[][] dest = dest = (T[][]) Array.newInstance(type, src.size(), src.get(0).size());
+    /**
+     * 泛型list转换为数组
+     *
+     * @param src List<T> 原List
+     * @return T[] 转换后的数组
+     */
+    public static <T> T[] listToArray(List<T> src, Class<T> type) {
+        if (src == null || src.isEmpty()) {
+            return null;
+        }
+        // 初始化泛型数组
+        // JAVA中不允许这样初始化泛型数组： T[] dest = new T[src.size()];
+        T[] dest = (T[]) Array.newInstance(type, src.size());
+        for (int i = 0; i < src.size(); i++) {
+            dest[i] = src.get(i);
+        }
+        return (T[]) dest;
+    }
 
-		for (int i = 0; i < src.size(); i++) {
-			for (int j = 0; j < src.get(i).size(); j++) {
-				dest[i][j] = src.get(i).get(j);
-			}
-		}
+    /**
+     * 泛型嵌套list转换为二维数组
+     *
+     * @param src List<List<T>> 原嵌套list （子list的长度必须相等）
+     * @return T[][] 转换后的二维数组
+     */
+    public static <T> T[][] listsToArrays(List<List<T>> src, Class<T> type) {
+        if (src == null || src.isEmpty()) {
+            return null;
+        }
 
-		return dest;
-	}
+        // 初始化泛型二维数组
+        // JAVA中不允许这样初始化泛型二维数组： T[][] dest = new T[src.size()][];
+        T[][] dest = dest = (T[][]) Array.newInstance(type, src.size(), src.get(0).size());
+
+        for (int i = 0; i < src.size(); i++) {
+            for (int j = 0; j < src.get(i).size(); j++) {
+                dest[i][j] = src.get(i).get(j);
+            }
+        }
+
+        return dest;
+    }
 
     public static <E> int countSameElementsOf(Collection<E> c1, Collection<E> c2) {
         if (c1 == null || c1.isEmpty() || c2 == null || c2.isEmpty()) {
@@ -78,10 +79,10 @@ public class CollectionUtils {
 
     private static <E> int countByCollectionType(Collection<E> c1, Collection<E> c2, int c, int size1) {
         Iterator<E> it;
-        if(c1 instanceof RandomAccess && c1 instanceof List) {
+        if (c1 instanceof RandomAccess && c1 instanceof List) {
             List<E> c11 = (List<E>) c1;
             for (int i = 0; i < size1; i++) {
-                if(c2.contains(c11.get(i))) {
+                if (c2.contains(c11.get(i))) {
                     c++;
                 }
             }

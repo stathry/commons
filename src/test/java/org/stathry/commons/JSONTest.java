@@ -108,10 +108,10 @@ public class JSONTest {
             @Override
             public Object process(Object object, String name, Object value) {
                 String r;
-                if(value != null && value.getClass().equals(Date.class)) {
+                if (value != null && value.getClass().equals(Date.class)) {
                     r = new SimpleDateFormat("yyyy-MM-dd HH:mm").format((Date) value);
                 } else {
-                 r = value == null ? "" : value.toString();
+                    r = value == null ? "" : value.toString();
                 }
                 return r;
             }
@@ -167,7 +167,7 @@ public class JSONTest {
     }
 
     static class User2 {
-        @JSONField(name = "uid",ordinal = 3)
+        @JSONField(name = "uid", ordinal = 3)
         private Integer id;
         private String name;
         @JSONField(format = "yyyy-MM-dd", ordinal = 2)

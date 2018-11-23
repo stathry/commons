@@ -9,12 +9,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 
  * @author Demon
  * @date 2016年12月10日
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CDate {
-	String pattern() default "yyyy-MM-dd";
+    String pattern() default "yyyy-MM-dd";
 }

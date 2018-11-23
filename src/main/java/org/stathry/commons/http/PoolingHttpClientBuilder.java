@@ -36,20 +36,20 @@ import java.security.cert.X509Certificate;
  */
 
 @Component
-public class PoolingHttpClientBuilder implements InitializingBean,DisposableBean {
+public class PoolingHttpClientBuilder implements InitializingBean, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PoolingHttpClientBuilder.class);
 
     private static final SimpleConnectionKeepAliveStrategy DEFAULT_ALIVE_STRATEGY = new SimpleConnectionKeepAliveStrategy();
 
     private static final int DEFAULT_KEEP_ALIVE_TIME = 5000;
-//    连接池最大连接数
-    private int maxTotal = 128;
-//    每个路由最大连接数
-    private int maxPerRoute = 8;
-//    连接超时时间
+    //    连接池最大连接数
+    private int maxConnTotal = 128;
+    //    每个路由最大连接数
+    private int maxConnPerRoute = 8;
+    //    连接超时时间
     private int connectionTimeout = 5000;
-//    等待数据超时时间
+    //    等待数据超时时间
     private int socketTimeout = 10000;
 
     private PoolingHttpClientConnectionManager pool = null;
@@ -58,9 +58,9 @@ public class PoolingHttpClientBuilder implements InitializingBean,DisposableBean
     public PoolingHttpClientBuilder() {
     }
 
-    public PoolingHttpClientBuilder(int maxTotal, int maxPerRoute, int connectionTimeout, int socketTimeout) {
-        this.maxTotal = maxTotal;
-        this.maxPerRoute = maxPerRoute;
+    public PoolingHttpClientBuilder(int maxConnTotal, int maxConnPerRoute, int connectionTimeout, int socketTimeout) {
+        this.maxConnTotal = maxConnTotal;
+        this.maxConnPerRoute = maxConnPerRoute;
         this.connectionTimeout = connectionTimeout;
         this.socketTimeout = socketTimeout;
     }
@@ -97,11 +97,11 @@ public class PoolingHttpClientBuilder implements InitializingBean,DisposableBean
         schemeRegistry.register("https", sf);
 
         pool = new PoolingHttpClientConnectionManager(schemeRegistry.build());
-        pool.setMaxTotal(maxTotal);
-        pool.setDefaultMaxPerRoute(maxPerRoute);
+        pool.setMaxTotal(maxConnTotal);
+        pool.setDefaultMaxPerRoute(maxConnPerRoute);
         pool.setDefaultSocketConfig(SocketConfig.custom().setSoTimeout(socketTimeout).build());
-        LOGGER.info("http connection pool is created, maxTotal {}, maxPerRoute {}, socketTimeout {} ms, connectionTimeout {} ms.",
-                maxTotal, maxPerRoute, socketTimeout, connectionTimeout);
+        LOGGER.info("http connection pool is created, maxConnTotal {}, maxConnPerRoute {}, socketTimeout {} ms, connectionTimeout {} ms.",
+                maxConnTotal, maxConnPerRoute, socketTimeout, connectionTimeout);
     }
 
     @Override
@@ -113,20 +113,20 @@ public class PoolingHttpClientBuilder implements InitializingBean,DisposableBean
         LOGGER.info("Http connection pool destroyed!");
     }
 
-    public int getMaxTotal() {
-        return maxTotal;
+    public int getMaxConnTotal() {
+        return maxConnTotal;
     }
 
-    public void setMaxTotal(int maxTotal) {
-        this.maxTotal = maxTotal;
+    public void setMaxConnTotal(int maxConnTotal) {
+        this.maxConnTotal = maxConnTotal;
     }
 
-    public int getMaxPerRoute() {
-        return maxPerRoute;
+    public int getMaxConnPerRoute() {
+        return maxConnPerRoute;
     }
 
-    public void setMaxPerRoute(int maxPerRoute) {
-        this.maxPerRoute = maxPerRoute;
+    public void setMaxConnPerRoute(int maxConnPerRoute) {
+        this.maxConnPerRoute = maxConnPerRoute;
     }
 
     public int getConnectionTimeout() {
@@ -158,7 +158,7 @@ public class PoolingHttpClientBuilder implements InitializingBean,DisposableBean
                 if (value != null && param.equalsIgnoreCase("timeout")) {
                     try {
                         return Long.parseLong(value) * 1000;
-                    } catch(final NumberFormatException ignore) {
+                    } catch (final NumberFormatException ignore) {
                     }
                 }
             }

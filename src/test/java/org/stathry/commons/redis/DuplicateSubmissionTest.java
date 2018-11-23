@@ -25,18 +25,19 @@ public class DuplicateSubmissionTest {
     private RedisManager redisManager;
 
     private AtomicLong c = new AtomicLong();
+
     @Test
     public void testSingleOneSub() {
         int tn = 3;
         int limit = 1000;
         for (int i = 0; i < tn; i++) {
             for (int j = 0; j < limit; j++) {
-                if(redisManager.setNX("user:" + j)) {
+                if (redisManager.setNX("user:" + j)) {
                     c.incrementAndGet();
                 }
             }
         }
-        Assert.assertEquals((long)limit, c.get());
+        Assert.assertEquals((long) limit, c.get());
     }
 
     @Test
@@ -51,7 +52,7 @@ public class DuplicateSubmissionTest {
         for (int i = 0; i < tn; i++) {
             exec.execute(() -> {
                 for (int j = 0; j < limit; j++) {
-                    if(redisManager.setNX("user2:" + j)) {
+                    if (redisManager.setNX("user2:" + j)) {
                         c.incrementAndGet();
                     }
                 }
@@ -59,6 +60,6 @@ public class DuplicateSubmissionTest {
         }
         exec.shutdown();
         exec.awaitTermination(3, TimeUnit.MINUTES);
-        Assert.assertEquals((long)limit, c.get());
+        Assert.assertEquals((long) limit, c.get());
     }
 }

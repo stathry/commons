@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.stathry.commons.utils.NumberUtils;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -40,6 +39,6 @@ public class StringUtilsTest {
 
         System.out.println(StringUtils.join("今天是", new Date()));
         Assert.assertEquals("今年是2018", StringUtils.join("今年是", "2018"));
-        Assert.assertEquals("1,2,3", StringUtils.join(new int[]{1,2,3}, ','));
+        Assert.assertEquals("1,2,3", StringUtils.join(new int[]{1, 2, 3}, ','));
     }
 }

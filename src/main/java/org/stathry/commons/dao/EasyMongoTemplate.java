@@ -3,11 +3,9 @@ package org.stathry.commons.dao;
 import com.alibaba.fastjson.JSONObject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.util.Assert;
@@ -121,8 +119,8 @@ public class EasyMongoTemplate {
     }
 
     private static <T> List<T> findWithSort(String collectionName, Class<T> resultType, Map<String, Object> params,
-                                    List<String> selectFields, List<Sort.Order> orders,
-                                    Sort.Direction sortDirection, List<String> sortProperties) {
+                                            List<String> selectFields, List<Sort.Order> orders,
+                                            Sort.Direction sortDirection, List<String> sortProperties) {
         DBObject fdb = (selectFields == null || selectFields.isEmpty()) ? null : toDBObject(selectFields);
         Assert.notEmpty(params, "required params.");
         DBObject qdb = new BasicDBObject(params);

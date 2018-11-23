@@ -33,17 +33,17 @@ public class JdbcTemplateTest {
         String s = "INSERT INTO mx_bank_bill2 (order_no, bank_card, trans_date) VALUES (?, ?, NOW())";
         int limit = 1000;
         List<Object[]> args = new ArrayList<>(100);
-        for(int i = 0, last = limit - 1; i < limit; i++) {
-            if((i != 0 && i % 100 == 0) || i == last) {
-            jdbcTemplate.batchUpdate(s, args);
+        for (int i = 0, last = limit - 1; i < limit; i++) {
+            if ((i != 0 && i % 100 == 0) || i == last) {
+                jdbcTemplate.batchUpdate(s, args);
             }
 
-            if(i != 0 && i % 100 == 0) {
+            if (i != 0 && i % 100 == 0) {
                 Thread.sleep(100);
                 args = new ArrayList<>(100);
             }
 
-            args.add(new Object[] {"o" + i / 10, "bc" + i / 5});
+            args.add(new Object[]{"o" + i / 10, "bc" + i / 5});
         }
     }
 

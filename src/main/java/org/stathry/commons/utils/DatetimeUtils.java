@@ -19,9 +19,8 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * 
  * @author Demon@free.com
- *
+ * <p>
  * 2016年8月5日
  */
 public final class DatetimeUtils {
@@ -33,10 +32,11 @@ public final class DatetimeUtils {
     public static final String TIME_PATTERN1 = "HH:mm:ss";
 
     public static final String T00 = "00:00:00.000";
-    public static final String T06= "08:00:00.000";
+    public static final String T06 = "08:00:00.000";
 
-    private DatetimeUtils() {}
-	
+    private DatetimeUtils() {
+    }
+
     public static String format(Date date) {
         return FastDateFormat.getInstance(DATETIME_PATTERN1, null, null).format(date);
     }
@@ -65,7 +65,7 @@ public final class DatetimeUtils {
     }
 
     public static Date parse(String source, String pattern, boolean lenient) throws ParseException {
-        if(StringUtils.isBlank(source)) {
+        if (StringUtils.isBlank(source)) {
             return null;
         }
         pattern = StringUtils.isBlank(pattern) ? DATETIME_PATTERN1 : pattern;
@@ -75,35 +75,36 @@ public final class DatetimeUtils {
         return f.parse(source);
     }
 
-	/**
-	 * 计算间隔年，按每年365天计算
-	 * 
-	 * @param startTime
-	 * @param endTime
-	 * @return
-	 */
-	public static long intervalOfYears(Date startTime, Date endTime) {
+    /**
+     * 计算间隔年，按每年365天计算
+     *
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public static long intervalOfYears(Date startTime, Date endTime) {
         return intervalOfDatetime(startTime, endTime, TimeUnit.DAYS) / 365;
-	}
-	
-	/**
-	 * 计算间隔月，按每月30天计算
-	 * 
-	 * @param startTime
-	 * @param endTime
-	 * @return
-	 */
-	public static long intervalOfMonths(Date startTime, Date endTime) {
-	    return intervalOfDatetime(startTime, endTime, TimeUnit.DAYS) / 30;
-	}
-	
-	/**
-	 * intervalOfDatetime
-	 * @param startTime
-	 * @param endTime
-	 * @param timeUnit
-	 * @return
-	 */
+    }
+
+    /**
+     * 计算间隔月，按每月30天计算
+     *
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public static long intervalOfMonths(Date startTime, Date endTime) {
+        return intervalOfDatetime(startTime, endTime, TimeUnit.DAYS) / 30;
+    }
+
+    /**
+     * intervalOfDatetime
+     *
+     * @param startTime
+     * @param endTime
+     * @param timeUnit
+     * @return
+     */
     public static long intervalOfDatetime(Date startTime, Date endTime, TimeUnit timeUnit) {
         if (startTime == null || endTime == null || timeUnit == null) {
             throw new NullPointerException();
@@ -159,7 +160,7 @@ public final class DatetimeUtils {
                 d = DateUtils.truncate(date, Calendar.HOUR_OF_DAY);
                 d = DateUtils.addHours(d, amount);
                 break;
-                case Calendar.MINUTE:
+            case Calendar.MINUTE:
                 d = DateUtils.truncate(date, Calendar.MINUTE);
                 d = DateUtils.addMinutes(d, amount);
                 break;
@@ -174,7 +175,7 @@ public final class DatetimeUtils {
     }
 
     public static int compareTime(Date date1, String time2, String pattern) {
-        if(date1 == null || StringUtils.isBlank(time2) || StringUtils.isBlank(pattern)) {
+        if (date1 == null || StringUtils.isBlank(time2) || StringUtils.isBlank(pattern)) {
             throw new IllegalArgumentException("required date1, time2, pattern");
         }
         String time1 = format(date1, pattern);
@@ -182,7 +183,7 @@ public final class DatetimeUtils {
     }
 
     public static boolean isInTime(Date date, String time1, String time2, String pattern) {
-        if(date == null || StringUtils.isBlank(time1) || StringUtils.isBlank(time2) || StringUtils.isBlank(pattern)) {
+        if (date == null || StringUtils.isBlank(time1) || StringUtils.isBlank(time2) || StringUtils.isBlank(pattern)) {
             throw new IllegalArgumentException("required date1, time2, pattern");
         }
         String time = format(date, pattern);

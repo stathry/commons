@@ -12,14 +12,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
  * redis缓存管理服务
- * @see <p><a href="https://yq.aliyun.com/articles/531067">阿里云Redis开发规范</a></p>
  *
  * @author stathry
+ * @see <p><a href="https://yq.aliyun.com/articles/531067">阿里云Redis开发规范</a></p>
  */
 @Repository
 public class RedisManager {
@@ -63,9 +62,13 @@ public class RedisManager {
         return redisTemplate.opsForValue().get(key) != null;
     }
 
-    // 建议设置过期时间
+    // 设置过期时间为:默认过期时间+随机数
     public void set(String key, Object value) {
         redisTemplate.opsForValue().set(key, value, randomExpireMS(), TimeUnit.MILLISECONDS);
+    }
+
+    public void set(String key, Object value, long timeoutMS) {
+        redisTemplate.opsForValue().set(key, value, timeoutMS, TimeUnit.MILLISECONDS);
     }
 
     public void set(String key, Object value, long timeout, TimeUnit unit) {
@@ -109,7 +112,9 @@ public class RedisManager {
         return redisTemplate.opsForValue().increment(key, delta);
     }
 
-    /** get expire SECONDS */
+    /**
+     * get expire SECONDS
+     */
     public Long getExpire(String key) {
         return redisTemplate.getExpire(key);
     }
@@ -121,7 +126,7 @@ public class RedisManager {
     }
 
     public <T> List<T> keysList(String pattern) {
-        if(pattern == null || pattern.length() < 3 || pattern.startsWith("*")) {
+        if (pattern == null || pattern.length() < 3 || pattern.startsWith("*")) {
             throw new IllegalArgumentException(pattern);
         }
         return (List<T>) redisTemplate.opsForValue().multiGet(redisTemplate.keys(pattern));

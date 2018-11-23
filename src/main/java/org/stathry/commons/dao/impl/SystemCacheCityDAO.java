@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class SystemCacheCityDAO implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SystemCacheCityDAO.class);
+
     private static final long CITY_CACHE_MS = TimeUnit.MINUTES.toMillis(30);
 
     private volatile long lastUpdateTime = System.currentTimeMillis();
@@ -27,7 +27,7 @@ public class SystemCacheCityDAO implements InitializingBean {
     private Set<String> citySet = new HashSet<>(600);
 
     public Set<String> queryCitySet() {
-         ifReloadCities(false);
+        ifReloadCities(false);
         return citySet;
     }
 
@@ -39,7 +39,7 @@ public class SystemCacheCityDAO implements InitializingBean {
                     List<String> list = new ArrayList<>();
 //                    Assert.notEmpty(list, "not found city list in table 'dict_prelevel_city'.");
                     LOGGER.info("list cities, size {}.", list.size());
-                    if(list == null || list.isEmpty()) {
+                    if (list == null || list.isEmpty()) {
                         return;
                     }
                     citySet.clear();

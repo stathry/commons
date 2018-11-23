@@ -23,7 +23,7 @@ public class DistLockServer {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
 
         concurrentInc(context.getBean(RedisManager.class));
-        	
+
         context.stop();
         context.close();
     }

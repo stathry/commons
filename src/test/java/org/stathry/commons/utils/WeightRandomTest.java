@@ -1,6 +1,5 @@
 package org.stathry.commons.utils;
 
-import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -26,7 +25,7 @@ public class WeightRandomTest {
         weight.put("C", 3);
         weight.put("D", 4);
         TreeWeightRandom<String, Integer> random = new TreeWeightRandom<>(weight);
-        
+
         count(LIMIT, random, "TreeWeightRandom1");
     }
 
@@ -35,7 +34,7 @@ public class WeightRandomTest {
         List<String> keys = Arrays.asList("A", "B", "C", "D");
         List<Integer> values = Arrays.asList(1, 2, 3, 4);
         TreeWeightRandom<String, Integer> random = new TreeWeightRandom<>(keys, values);
-        
+
         count(LIMIT, random, "TreeWeightRandom2");
     }
 

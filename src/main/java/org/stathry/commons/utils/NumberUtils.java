@@ -1,10 +1,7 @@
 package org.stathry.commons.utils;
 
-import org.springframework.util.Assert;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 
 /**
  * NumberUtils
@@ -12,7 +9,8 @@ import java.text.DecimalFormat;
  */
 public class NumberUtils {
 
-    private NumberUtils() {}
+    private NumberUtils() {
+    }
 
     public static String divide(String num1, String num2, int scale, RoundingMode mode) {
         BigDecimal n1 = new BigDecimal(num1);
@@ -40,7 +38,7 @@ public class NumberUtils {
 
     public static boolean isNum(String num) {
         num = num == null ? null : num.trim();
-        if(num == null || num.length() == 0) {
+        if (num == null || num.length() == 0) {
             return false;
         }
         BigDecimal n = null;

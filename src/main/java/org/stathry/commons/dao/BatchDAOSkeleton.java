@@ -26,18 +26,18 @@ public class BatchDAOSkeleton {
         int size = list.size();
         List<Object[]> args = new ArrayList<>(batchSize);
         T c;
-        for(int i = 0, last = size - 1; i < size; i++) {
+        for (int i = 0, last = size - 1; i < size; i++) {
             c = list.get(i);
-            if((i != 0 && i % batchSize == 0)) {
+            if ((i != 0 && i % batchSize == 0)) {
                 jdbcTemplate.batchUpdate(sql, args);
                 LOGGER.info("insertList, index {}", i);
-            } else if(i == last) {
+            } else if (i == last) {
                 args.add(c.toArgArray());
                 jdbcTemplate.batchUpdate(sql, args);
                 LOGGER.info("insertList, index {}", i);
             }
 
-            if(i != 0 && i % batchSize == 0) {
+            if (i != 0 && i % batchSize == 0) {
                 args = new ArrayList<>(batchSize);
             }
 
@@ -51,7 +51,9 @@ public class BatchDAOSkeleton {
      */
     public static interface BatchInsertion {
 
-        /** javaBean转换为insert value对应的参数数组 */
+        /**
+         * javaBean转换为insert value对应的参数数组
+         */
         Object[] toArgArray();
     }
 }

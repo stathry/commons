@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * TODO
+ *
  * @author dongdaiming
  * @date 2017年12月22日
  */
@@ -36,9 +37,9 @@ public class ExecutorServiceTest {
                 TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(2000),
                 new NamedThreadFactory("exec-testR1-"), new ThreadPoolExecutor.AbortPolicy());
 
-        for(int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1000; i++) {
             int n = i;
-            exec.execute( () -> {
+            exec.execute(() -> {
                 System.out.println(Thread.currentThread().getName() + "___" + n + ", " + System.currentTimeMillis());
                 try {
                     Thread.sleep(100);
@@ -113,9 +114,9 @@ public class ExecutorServiceTest {
         }).start();
 
         int listSize = 100;
-        for(int i = 0; i < 10_0000_0000; i++) {
+        for (int i = 0; i < 10_0000_0000; i++) {
             int n = i;
-            exec.execute( () -> {
+            exec.execute(() -> {
                 System.out.println(Thread.currentThread().getName() + "___" + n + ", " + System.currentTimeMillis());
                 ArrayList<Integer> list = new ArrayList<Integer>(listSize);
                 for (int j = 0; j < listSize; j++) {
@@ -131,30 +132,30 @@ public class ExecutorServiceTest {
         exec.shutdown();
         exec.awaitTermination(300, TimeUnit.SECONDS);
     }
-	
-	@Test(expected = RejectedExecutionException.class)
-	public void testRejectedExecFullQ1() throws InterruptedException, ExecutionException {
-	    int maxQueueSize = 2000;
-		ExecutorService exec = new ThreadPoolExecutor(8, 16, 60,
+
+    @Test(expected = RejectedExecutionException.class)
+    public void testRejectedExecFullQ1() throws InterruptedException, ExecutionException {
+        int maxQueueSize = 2000;
+        ExecutorService exec = new ThreadPoolExecutor(8, 16, 60,
                 TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(maxQueueSize),
-				new NamedThreadFactory("exec-testR1-"), new ThreadPoolExecutor.AbortPolicy());
-		for(int i = 0; i < 4000; i++) {
-		    int n = i;
-			exec.submit(new Runnable() {
-				@Override
-				public void run() {
-					System.out.println(Thread.currentThread().getName() + "___" + n + ", " + System.currentTimeMillis());
+                new NamedThreadFactory("exec-testR1-"), new ThreadPoolExecutor.AbortPolicy());
+        for (int i = 0; i < 4000; i++) {
+            int n = i;
+            exec.submit(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println(Thread.currentThread().getName() + "___" + n + ", " + System.currentTimeMillis());
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-			});
-		}
-		exec.shutdown();
-		exec.awaitTermination(60, TimeUnit.SECONDS);
-	}
+            });
+        }
+        exec.shutdown();
+        exec.awaitTermination(60, TimeUnit.SECONDS);
+    }
 
     @Test
     public void testRejectedExecFullQ2() throws InterruptedException, ExecutionException {
@@ -163,7 +164,7 @@ public class ExecutorServiceTest {
         ExecutorService exec = new ThreadPoolExecutor(8, 16, 60,
                 TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(maxQueueSize),
                 new NamedThreadFactory("exec-testR1-"), new ThreadPoolExecutor.AbortPolicy());
-        for(int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 10000; i++) {
             int n = i;
             exec.submit(new Runnable() {
                 @Override
@@ -181,25 +182,25 @@ public class ExecutorServiceTest {
         exec.awaitTermination(120, TimeUnit.SECONDS);
     }
 
-	// newFixedThreadPool使用的队列大小为Integer.MAX_VALUE,容易造成请求堆积，内存溢出
-	@Test
-	public void testOOMFullQ() throws Exception {
-		ExecutorService exec = Executors.newFixedThreadPool(1);
-		long max = (long)Integer.MAX_VALUE * 2L;
-		for(long i = 0; i < max; i++) {
-		    long n = i;
-			exec.submit(new Runnable() {
-				@Override
-				public void run() {
-					System.out.println(Thread.currentThread().getName() + "___" + n + ", " + System.currentTimeMillis());
+    // newFixedThreadPool使用的队列大小为Integer.MAX_VALUE,容易造成请求堆积，内存溢出
+    @Test
+    public void testOOMFullQ() throws Exception {
+        ExecutorService exec = Executors.newFixedThreadPool(1);
+        long max = (long) Integer.MAX_VALUE * 2L;
+        for (long i = 0; i < max; i++) {
+            long n = i;
+            exec.submit(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println(Thread.currentThread().getName() + "___" + n + ", " + System.currentTimeMillis());
                 }
-			});
-		}
-		exec.shutdown();
-		exec.awaitTermination(300, TimeUnit.SECONDS);
-	}
+            });
+        }
+        exec.shutdown();
+        exec.awaitTermination(300, TimeUnit.SECONDS);
+    }
 
-	@Test
+    @Test
     public void testSubmitRun12() throws InterruptedException, ExecutionException {
         int maxQueueSize = 5000;
         ExecutorService exec = new ThreadPoolExecutor(10, 16, 60,
@@ -230,111 +231,111 @@ public class ExecutorServiceTest {
         exec2.shutdown();
         exec2.awaitTermination(60, TimeUnit.SECONDS);
     }
-	
-	@Test
-	public void testSubmitRun2() throws InterruptedException, ExecutionException {
-		ExecutorService exec = new ThreadPoolExecutor(10, 16, 60,
+
+    @Test
+    public void testSubmitRun2() throws InterruptedException, ExecutionException {
+        ExecutorService exec = new ThreadPoolExecutor(10, 16, 60,
                 TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(1000),
-				Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
-		List<Future<?>> futures = new ArrayList<>(3);
-		for(int i = 0; i < 3; i++) {
-			futures.add(exec.submit(new Runnable() {
-				@Override
-				public void run() {
-					System.out.println(Thread.currentThread().getName() + "___" + System.currentTimeMillis());
-				}
-			}, i));
-		}
-		exec.shutdown();
-		exec.awaitTermination(60, TimeUnit.SECONDS);
-		for (Future<?> future : futures) {
-			System.out.println(future + "___" + future.get());
-		}
-	}
+                Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
+        List<Future<?>> futures = new ArrayList<>(3);
+        for (int i = 0; i < 3; i++) {
+            futures.add(exec.submit(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println(Thread.currentThread().getName() + "___" + System.currentTimeMillis());
+                }
+            }, i));
+        }
+        exec.shutdown();
+        exec.awaitTermination(60, TimeUnit.SECONDS);
+        for (Future<?> future : futures) {
+            System.out.println(future + "___" + future.get());
+        }
+    }
 
-	@Test
-	public void testSubmitCall() throws InterruptedException, ExecutionException {
-		ExecutorService exec = new ThreadPoolExecutor(10, 16, 60,
+    @Test
+    public void testSubmitCall() throws InterruptedException, ExecutionException {
+        ExecutorService exec = new ThreadPoolExecutor(10, 16, 60,
                 TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(2000),
-				Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
-		List<Future<Integer>> futures = new ArrayList<>(5);
-		for(int i = 0; i < 5; i++) {
-			final int n = i;
-			futures.add(exec.submit(new Callable<Integer>() {
+                Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
+        List<Future<Integer>> futures = new ArrayList<>(5);
+        for (int i = 0; i < 5; i++) {
+            final int n = i;
+            futures.add(exec.submit(new Callable<Integer>() {
 
-				@Override
-				public Integer call() throws Exception {
-					return (int) Math.pow(n, 2);
-				}
-			}));
-		}
-		exec.shutdown();
-		exec.awaitTermination(60, TimeUnit.SECONDS);
+                @Override
+                public Integer call() throws Exception {
+                    return (int) Math.pow(n, 2);
+                }
+            }));
+        }
+        exec.shutdown();
+        exec.awaitTermination(60, TimeUnit.SECONDS);
 //        System.out.println(futures.size());
-		for (Future<Integer> future : futures) {
-			System.out.println(future.get());
-		}
-	}
+        for (Future<Integer> future : futures) {
+            System.out.println(future.get());
+        }
+    }
 
-	@Test
-	public void testCancelTask() throws InterruptedException, ExecutionException {
-		ExecutorService exec = new ThreadPoolExecutor(10, 16, 60,
+    @Test
+    public void testCancelTask() throws InterruptedException, ExecutionException {
+        ExecutorService exec = new ThreadPoolExecutor(10, 16, 60,
                 TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(2000),
-				Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
-		List<Future<Integer>> futures = new ArrayList<>(5);
-		for(int i = 0; i < 5; i++) {
-			final int n = i;
-			futures.add(exec.submit(new Callable<Integer>() {
+                Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
+        List<Future<Integer>> futures = new ArrayList<>(5);
+        for (int i = 0; i < 5; i++) {
+            final int n = i;
+            futures.add(exec.submit(new Callable<Integer>() {
 
-				@Override
-				public Integer call() throws Exception {
-				    Thread.sleep(1000);
-					return (int) Math.pow(n, 2);
-				}
-			}));
-		}
+                @Override
+                public Integer call() throws Exception {
+                    Thread.sleep(1000);
+                    return (int) Math.pow(n, 2);
+                }
+            }));
+        }
         futures.get(futures.size() - 1).cancel(false);
-		exec.shutdown();
-		exec.awaitTermination(3, TimeUnit.MINUTES);
+        exec.shutdown();
+        exec.awaitTermination(3, TimeUnit.MINUTES);
         System.out.println("futures.size:" + futures.size());
-		for (Future<Integer> future : futures) {
-			System.out.println("future isCancel:" + future.isCancelled() + ", result:" + (future.isCancelled() ? 0 : future.get()));
-		}
-	}
+        for (Future<Integer> future : futures) {
+            System.out.println("future isCancel:" + future.isCancelled() + ", result:" + (future.isCancelled() ? 0 : future.get()));
+        }
+    }
 
-	@Test
-	public void testCompletionService() throws InterruptedException, ExecutionException {
-	    int tn = 4;
-	    int times = 32;
-		ExecutorService exec = Executors.newFixedThreadPool(tn);
+    @Test
+    public void testCompletionService() throws InterruptedException, ExecutionException {
+        int tn = 4;
+        int times = 32;
+        ExecutorService exec = Executors.newFixedThreadPool(tn);
         CompletionService<Long> ce = new ExecutorCompletionService(exec);
-		for(int i = 1; i <= tn; i++) {
-		    final int n = i;
-			ce.submit(new Callable<Long>() {
+        for (int i = 1; i <= tn; i++) {
+            final int n = i;
+            ce.submit(new Callable<Long>() {
 
-				@Override
-				public Long call() throws Exception {
-				    long sum = 0;
+                @Override
+                public Long call() throws Exception {
+                    long sum = 0;
                     for (int j = 0; j < times; j++) {
                         sum += (long) Math.pow(n, j);
                     }
                     System.out.println(Thread.currentThread().getName() + ", " + ", time " + System.currentTimeMillis() + ", cur " + n + ", sum " + sum);
-					return sum;
-				}
-			});
-		}
-		exec.shutdown();
-		long total = 0;
-		long cur = 0;
-        for (int i = 0; i < tn ; i++) {
+                    return sum;
+                }
+            });
+        }
+        exec.shutdown();
+        long total = 0;
+        long cur = 0;
+        for (int i = 0; i < tn; i++) {
             cur = ce.poll(3, TimeUnit.MINUTES).get();
             total += cur;
             System.out.println("cur:" + i + ", time " + System.currentTimeMillis() + ", sum " + cur);
         }
         System.out.println("total:" + total);
-	}
+    }
 
-	private static class NamedThreadFactory implements ThreadFactory {
+    private static class NamedThreadFactory implements ThreadFactory {
 
         private static final AtomicInteger poolNumber = new AtomicInteger(1);
         private final ThreadGroup group;
@@ -351,7 +352,7 @@ public class ExecutorServiceTest {
             SecurityManager s = System.getSecurityManager();
             group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
             this.namePrefix = namePrefix == null || namePrefix.trim().length() == 0
-                    ? "pool-" + poolNumber.getAndIncrement() + "-thread-" : namePrefix ;
+                    ? "pool-" + poolNumber.getAndIncrement() + "-thread-" : namePrefix;
         }
 
         public Thread newThread(Runnable r) {

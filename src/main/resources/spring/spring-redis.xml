@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
          http://www.springframework.org/schema/beans/spring-beans.xsd
          ">
-         
-	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-		<property name="maxIdle" value="${redis.maxIdle}" />
-		<property name="minIdle" value="${redis.minIdle}" />
-		<property name="maxTotal" value="${redis.maxTotal}" />
-		<property name="testOnBorrow" value="${redis.testOnBorrow}" />
-		<property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
-		<property name="testOnReturn" value="${redis.testOnReturn}" />
-		<property name="testWhileIdle" value="${redis.testWhileIdle}" />
-	</bean>
 
-	<bean id="jedisConnectionFactory"
-		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-		<property name="usePool" value="true"></property>
-		<property name="hostName" value="${redis.host}" />
-		<property name="port" value="${redis.port}" />
-		<property name="password" value="${redis.pass}" />
-		<property name="timeout" value="${redis.timeout}" />
-		<property name="database" value="${redis.default.db}"></property>
-		<constructor-arg index="0" ref="jedisPoolConfig" />
-	</bean>
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="minIdle" value="${redis.minIdle}"/>
+        <property name="maxConnTotal" value="${redis.maxConnTotal}"/>
+        <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
+        <property name="maxWaitMillis" value="${redis.maxWaitMillis}"/>
+        <property name="testOnReturn" value="${redis.testOnReturn}"/>
+        <property name="testWhileIdle" value="${redis.testWhileIdle}"/>
+    </bean>
 
-	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
-		<property name="connectionFactory" ref="jedisConnectionFactory" />
-		<property name="keySerializer">
-			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
-		</property>
-		<property name="hashKeySerializer">
-			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
-		</property>
-		<property name="valueSerializer">
-			<bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer" />
-		</property>
-		<property name="hashValueSerializer">
-			<bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer" />
-		</property>
-	</bean>
+    <bean id="jedisConnectionFactory"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="usePool" value="true"></property>
+        <property name="hostName" value="${redis.host}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="password" value="${redis.pass}"/>
+        <property name="timeout" value="${redis.timeout}"/>
+        <property name="database" value="${redis.default.db}"></property>
+        <constructor-arg index="0" ref="jedisPoolConfig"/>
+    </bean>
 
-	<bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
-		<property name="connectionFactory" ref="jedisConnectionFactory" />
-	</bean>
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"/>
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+        </property>
+        <property name="hashKeySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+        </property>
+        <property name="valueSerializer">
+            <bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"/>
+        </property>
+        <property name="hashValueSerializer">
+            <bean class="org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer"/>
+        </property>
+    </bean>
+
+    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory"/>
+    </bean>
 
 </beans>

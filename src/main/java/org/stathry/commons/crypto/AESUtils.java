@@ -11,6 +11,7 @@ import java.security.SecureRandom;
 /**
  * TODO
  * Created by dongdaiming on 2018-08-06 16:29
+ *
  * @see <p><a href="https://blog.csdn.net/hbcui1984/article/details/5201247">csdn</a></p>
  */
 public class AESUtils {
@@ -18,8 +19,8 @@ public class AESUtils {
     /**
      * 加密
      *
-     * @param content 需要加密的内容
-     * @param password  加密密码
+     * @param content  需要加密的内容
+     * @param password 加密密码
      * @return
      */
     public static byte[] encrypt(String content, String password) {
@@ -45,7 +46,9 @@ public class AESUtils {
         return byte2HexStr(encrypt(content, password));
     }
 
-    /**解密
+    /**
+     * 解密
+     *
      * @param content  待解密内容
      * @param password 解密密钥
      * @return
@@ -76,7 +79,7 @@ public class AESUtils {
     }
 
     public static String byte2HexStr(byte[] srcBytes) {
-        if(srcBytes == null || srcBytes.length == 0) {
+        if (srcBytes == null || srcBytes.length == 0) {
             return "";
         }
         StringBuilder hexRetSB = new StringBuilder();
@@ -88,7 +91,9 @@ public class AESUtils {
         return hexRetSB.toString();
     }
 
-    /**16进制转换为二进制
+    /**
+     * 16进制转换为二进制
+     *
      * @param hexStr
      * @return
      */

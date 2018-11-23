@@ -5,10 +5,10 @@
 <mapper namespace="org.stathry.commons.dao.CityDAO">
     <resultMap id="BaseResultMap" type="org.stathry.commons.model.City">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="name" jdbcType="CHAR" property="name" />
-        <result column="countrycode" jdbcType="CHAR" property="countryCode" />
-        <result column="district" jdbcType="CHAR" property="district" />
-        <result column="population" jdbcType="INTEGER" property="population" />
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="countrycode" jdbcType="CHAR" property="countryCode"/>
+        <result column="district" jdbcType="CHAR" property="district"/>
+        <result column="population" jdbcType="INTEGER" property="population"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -17,7 +17,7 @@
 
     <select id="queryById" parameterType="integer" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM city
         WHERE id = #{id, jdbcType=INTEGER}
     </select>
@@ -27,7 +27,8 @@
         WHERE id = #{id, jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" useGeneratedKeys="true" parameterType="org.stathry.commons.model.City" keyProperty="id" keyColumn="id">
+    <insert id="insert" useGeneratedKeys="true" parameterType="org.stathry.commons.model.City" keyProperty="id"
+            keyColumn="id">
         INSERT INTO city (name, countrycode, district, population)
         VALUES ( #{name, jdbcType=CHAR}, #{countryCode, jdbcType=CHAR}, #{district, jdbcType=CHAR}, #{population, jdbcType=INTEGER} )
     </insert>

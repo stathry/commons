@@ -8,7 +8,7 @@ import java.util.List;
 public class CollectionUtilsTest {
 
     @Test
-    public  void testListToArray() {
+    public void testListToArray() {
         List<String> list = new ArrayList<String>();
         list.add("aa");
         list.add("bb");
@@ -19,7 +19,7 @@ public class CollectionUtilsTest {
     }
 
     @Test
-    public  void testListsToArrays() {
+    public void testListsToArrays() {
         List<String> list = new ArrayList<String>();
         list.add("aa");
         list.add("bb");

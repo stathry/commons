@@ -31,7 +31,7 @@ public class RedisLockTest {
     @Test
     public void testSetNXAndExpire() {
         String key = DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS");
-        if(redisTemplate.opsForValue().setIfAbsent(key, 1L)) {
+        if (redisTemplate.opsForValue().setIfAbsent(key, 1L)) {
             redisTemplate.expire(key, 30, TimeUnit.SECONDS);
         }
     }
@@ -103,6 +103,7 @@ public class RedisLockTest {
     private static class Inc {
 
         private int i = 0;
+
         public int inc() {
             return ++i;
         }

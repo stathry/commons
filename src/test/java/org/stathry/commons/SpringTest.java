@@ -4,18 +4,10 @@ import com.alibaba.druid.pool.DruidDataSource;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.stathry.commons.data.ReplaceableBean;
 import org.stathry.commons.utils.ApplicationContextUtils;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 /**
  * TODO
@@ -30,7 +22,7 @@ public class SpringTest {
         System.out.println("spring started.");
     }
 
-//    @Test
+    //    @Test
     public void testGetBeanByNameAndType() {
         DruidDataSource bean = ApplicationContextUtils.getBean("dataSource", DruidDataSource.class);
         System.out.println(bean);

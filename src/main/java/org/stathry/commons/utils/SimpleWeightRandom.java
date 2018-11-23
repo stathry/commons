@@ -1,11 +1,8 @@
 package org.stathry.commons.utils;
 
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * 权重随机
@@ -13,7 +10,7 @@ import java.util.TreeMap;
 public class SimpleWeightRandom<K extends Comparable, W extends Number> implements WeightRandom {
 
     private final Map<K, WeightEntry<K, W>> weightMap;
-    
+
     private double sum = 0.0d;
 
     public SimpleWeightRandom(Map<K, W> keyWeightMap) {
@@ -38,11 +35,11 @@ public class SimpleWeightRandom<K extends Comparable, W extends Number> implemen
         W w;
         double value, min, max;
         WeightEntry<K, W> entry;
-        for(Map.Entry<K,W> e : keyWeightMap.entrySet()) {
+        for (Map.Entry<K, W> e : keyWeightMap.entrySet()) {
             k = e.getKey();
             w = e.getValue();
             value = w.doubleValue();
-            if(value < 0) {
+            if (value < 0) {
                 throw new IllegalArgumentException("weight < 0.");
             }
             min = sum;
@@ -66,7 +63,7 @@ public class SimpleWeightRandom<K extends Comparable, W extends Number> implemen
             k = keyList.get(i);
             w = weightList.get(i);
             value = w.doubleValue();
-            if(value < 0) {
+            if (value < 0) {
                 throw new IllegalArgumentException("weight < 0.");
             }
             min = sum;

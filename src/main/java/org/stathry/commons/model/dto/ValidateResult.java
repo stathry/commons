@@ -11,60 +11,60 @@ import java.util.Map;
  */
 public class ValidateResult {
 
-	private boolean success;
-	private String invalidFields;
-	private Map<String, Map<String,String>> failedDetailItems;
-	private Map<String, StringBuffer> failedItems;
-	
-	public static final ValidateResult DEFAULT = new ValidateResult(false);
-	public static final ValidateResult SUCCESS = new ValidateResult(true);
-	
-	public ValidateResult() {
-	}
+    private boolean success;
+    private String invalidFields;
+    private Map<String, Map<String, String>> failedDetailItems;
+    private Map<String, StringBuffer> failedItems;
 
-	public ValidateResult(boolean success) {
-		this.success = success;
-	}
+    public static final ValidateResult DEFAULT = new ValidateResult(false);
+    public static final ValidateResult SUCCESS = new ValidateResult(true);
 
-	public ValidateResult(boolean success, String invalidFields) {
-		this.success = success;
-		this.invalidFields = invalidFields;
-	}
+    public ValidateResult() {
+    }
 
-	@Override
-	public String toString() {
-		return "ValidateResult [success=" + success + ", invalidFields=" + invalidFields + "]";
-	}
+    public ValidateResult(boolean success) {
+        this.success = success;
+    }
 
-	public boolean isSuccess() {
-		return success;
-	}
+    public ValidateResult(boolean success, String invalidFields) {
+        this.success = success;
+        this.invalidFields = invalidFields;
+    }
 
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
+    @Override
+    public String toString() {
+        return "ValidateResult [success=" + success + ", invalidFields=" + invalidFields + "]";
+    }
 
-	public String getInvalidFields() {
-		return invalidFields;
-	}
+    public boolean isSuccess() {
+        return success;
+    }
 
-	public void setInvalidFields(String invalidFields) {
-		this.invalidFields = invalidFields;
-	}
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 
-	public Map<String, Map<String, String>> getFailedDetailItems() {
-		return failedDetailItems;
-	}
+    public String getInvalidFields() {
+        return invalidFields;
+    }
 
-	public void setFailedDetailItems(Map<String, Map<String, String>> failedDetailItems) {
-		this.failedDetailItems = failedDetailItems;
-	}
+    public void setInvalidFields(String invalidFields) {
+        this.invalidFields = invalidFields;
+    }
 
-	public Map<String, StringBuffer> getFailedItems() {
-		return failedItems;
-	}
+    public Map<String, Map<String, String>> getFailedDetailItems() {
+        return failedDetailItems;
+    }
 
-	public void setFailedItems(Map<String, StringBuffer> failedItems) {
-		this.failedItems = failedItems;
-	}
+    public void setFailedDetailItems(Map<String, Map<String, String>> failedDetailItems) {
+        this.failedDetailItems = failedDetailItems;
+    }
+
+    public Map<String, StringBuffer> getFailedItems() {
+        return failedItems;
+    }
+
+    public void setFailedItems(Map<String, StringBuffer> failedItems) {
+        this.failedItems = failedItems;
+    }
 }

@@ -2,7 +2,6 @@ package org.stathry.commons.dao;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.math.IntMath;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -87,7 +86,7 @@ public class MongoTest {
         EasyMongoTemplate.save(COLL_NAME, player2);
     }
 
-   @Test
+    @Test
     public void testInsertAll() {
         List<Player> list = new ArrayList<>(5);
         for (int i = 0; i < 5; i++) {
@@ -96,7 +95,7 @@ public class MongoTest {
                     RandomStringUtils.random(3, LAST_NAMES.toCharArray()),
                     new Date()));
         }
-       System.out.println(JSON.toJSONString(list));
+        System.out.println(JSON.toJSONString(list));
         EasyMongoTemplate.insertAll(list);
     }
 
@@ -158,7 +157,7 @@ public class MongoTest {
         Integer hid = new Random().nextInt(10000);
         String lastName = RandomStringUtils.random(3, LAST_NAMES.toCharArray());
         insertAllWithSize(size, list, hid, lastName);
-        
+
         Map<String, Object> param = new HashMap<>();
         param.put("playId", hid);
         param.put("lastName", lastName);
@@ -260,35 +259,35 @@ public class MongoTest {
         public Player() {
         }
 
-        public Integer getPlayId(){
+        public Integer getPlayId() {
             return playId;
         }
 
-        public void setPlayId(Integer playId){
+        public void setPlayId(Integer playId) {
             this.playId = playId;
         }
 
-        public String getFirstName(){
+        public String getFirstName() {
             return firstName;
         }
 
-        public void setFirstName(String firstName){
+        public void setFirstName(String firstName) {
             this.firstName = firstName;
         }
 
-        public String getLastName(){
+        public String getLastName() {
             return lastName;
         }
 
-        public void setLastName(String lastName){
+        public void setLastName(String lastName) {
             this.lastName = lastName;
         }
 
-        public Date getLastUpdate(){
+        public Date getLastUpdate() {
             return lastUpdate;
         }
 
-        public void setLastUpdate(Date lastUpdate){
+        public void setLastUpdate(Date lastUpdate) {
             this.lastUpdate = lastUpdate;
         }
 

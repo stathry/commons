@@ -16,14 +16,15 @@ import java.security.SecureRandom;
 
 
 /**
- *  @Description 宝付工具类
- *  @author aaden
- *  @date 2017年12月25日
+ * @author aaden
+ * @Description 宝付工具类
+ * @date 2017年12月25日
  */
 @SuppressWarnings("restriction")
 public class BaofooSecurityUtil {
 
     private static Logger LOGGER = LoggerFactory.getLogger(BaofooSecurityUtil.class);
+
     /***
      * MD5 加密
      */
@@ -48,6 +49,7 @@ public class BaofooSecurityUtil {
     }
 
     // ==Base64加解密==================================================================
+
     /**
      * Base64加密
      */
@@ -66,6 +68,7 @@ public class BaofooSecurityUtil {
     }
 
     // ==Aes加解密==================================================================
+
     /**
      * aes解密-128位
      */
@@ -241,7 +244,9 @@ public class BaofooSecurityUtil {
         String str = "数据加密的基本过程就是对原来为明文的文件或数据按某种算法进行处理，使其成为不可读的一段代码，通常称为“密文”，"
                 + "使其只能在输入相应的密钥之后才能显示出本来内容，通过这样的途径来达到保护数据不被非法人窃取、阅读的目的。 "
                 + "该过程的逆过程为解密，即将该编码信息转化为其原来数据的过程。";
-        str+=str;str+=str;str+=str;
+        str += str;
+        str += str;
+        str += str;
         String PWD = "SecurityUtil.PWD";
         System.out.println("原文:[" + str.length() + "]" + str);
         System.out.println("==MD5===============");
@@ -265,43 +270,43 @@ public class BaofooSecurityUtil {
 
         //==========================================
 
-        long t1=System.currentTimeMillis();
+        long t1 = System.currentTimeMillis();
         for (int i = 0; i < 10000; i++)
             MD5(str);
-        System.out.println("\nMD5:"+(System.currentTimeMillis()-t1));
-        t1=System.currentTimeMillis();
+        System.out.println("\nMD5:" + (System.currentTimeMillis() - t1));
+        t1 = System.currentTimeMillis();
         for (int i = 0; i < 10000; i++)
             Base64Encode(str);
-        System.out.println("Base64:"+(System.currentTimeMillis()-t1));
-        t1=System.currentTimeMillis();
+        System.out.println("Base64:" + (System.currentTimeMillis() - t1));
+        t1 = System.currentTimeMillis();
         for (int i = 0; i < 10000; i++)
             aesEncrypt(str, PWD);
-        System.out.println("Aes:"+(System.currentTimeMillis()-t1));
-        t1=System.currentTimeMillis();
+        System.out.println("Aes:" + (System.currentTimeMillis() - t1));
+        t1 = System.currentTimeMillis();
         for (int i = 0; i < 10000; i++)
             desEncrypt(str, PWD);
-        System.out.println("Des:"+(System.currentTimeMillis()-t1));
-        t1=System.currentTimeMillis();
+        System.out.println("Des:" + (System.currentTimeMillis() - t1));
+        t1 = System.currentTimeMillis();
         for (int i = 0; i < 10000; i++)
             threeDesEncrypt(str, PWD);
-        System.out.println("3Des:"+(System.currentTimeMillis()-t1));
+        System.out.println("3Des:" + (System.currentTimeMillis() - t1));
         //=======================================
-        t1=System.currentTimeMillis();
+        t1 = System.currentTimeMillis();
         for (int i = 0; i < 10000; i++)
             Base64Decode(strBase64);
-        System.out.println("\nBase64:"+(System.currentTimeMillis()-t1));
-        t1=System.currentTimeMillis();
+        System.out.println("\nBase64:" + (System.currentTimeMillis() - t1));
+        t1 = System.currentTimeMillis();
         for (int i = 0; i < 10000; i++)
             aesDecrypt(strAes, PWD);
-        System.out.println("Aes:"+(System.currentTimeMillis()-t1));
-        t1=System.currentTimeMillis();
+        System.out.println("Aes:" + (System.currentTimeMillis() - t1));
+        t1 = System.currentTimeMillis();
         for (int i = 0; i < 10000; i++)
             desDecrypt(strDes, PWD);
-        System.out.println("Des:"+(System.currentTimeMillis()-t1));
-        t1=System.currentTimeMillis();
+        System.out.println("Des:" + (System.currentTimeMillis() - t1));
+        t1 = System.currentTimeMillis();
         for (int i = 0; i < 10000; i++)
             threeDesDecrypt(str3Des, PWD);
-        System.out.println("3Des:"+(System.currentTimeMillis()-t1));
+        System.out.println("3Des:" + (System.currentTimeMillis() - t1));
 
 
     }

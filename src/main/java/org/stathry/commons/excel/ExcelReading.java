@@ -63,6 +63,7 @@ public class ExcelReading {
 
     /**
      * 读取excel数据到map
+     *
      * @param path excel文件路径
      * @return
      */
@@ -75,6 +76,7 @@ public class ExcelReading {
 
     /**
      * 读取excel数据到map
+     *
      * @param path excel文件路径
      * @param keys 生成map的key
      * @return
@@ -88,6 +90,7 @@ public class ExcelReading {
 
     /**
      * 读取excel数据到map
+     *
      * @param path excel文件路径
      * @param keys 生成map的key
      * @param area 读取数据的行列范围
@@ -102,9 +105,10 @@ public class ExcelReading {
 
     /**
      * 读取excel数据到map
-     * @param path excel文件路径
-     * @param keys 生成map的key
-     * @param area 读取数据的行列范围
+     *
+     * @param path       excel文件路径
+     * @param keys       生成map的key
+     * @param area       读取数据的行列范围
      * @param sheetIndex sheet索引
      * @return
      */
@@ -117,9 +121,10 @@ public class ExcelReading {
 
     /**
      * 读取excel数据到map
-     * @param path excel文件路径
-     * @param keys 生成map的key
-     * @param area 读取数据的行列范围
+     *
+     * @param path      excel文件路径
+     * @param keys      生成map的key
+     * @param area      读取数据的行列范围
      * @param sheetName sheet名称
      * @return
      */
@@ -162,7 +167,7 @@ public class ExcelReading {
             // https://blog.csdn.net/csnewdn/article/details/53641308
             book = StringUtils.isBlank(password) ? WorkbookFactory.create(bin) : WorkbookFactory.create(bin, password);
             Sheet sheet = getBookSheet(null, null, book);
-            if(sheet == null) {
+            if (sheet == null) {
                 LOGGER.warn("sheet is empty, path {}.", path);
                 return "";
             }
@@ -193,24 +198,24 @@ public class ExcelReading {
             rowValue = new StringBuilder();
             row = sheet.getRow(i);
             continuousEmptyCols = 0;
-            if(row == null || continuousEmptyRows >= maxContinuousEmptyRows) {
+            if (row == null || continuousEmptyRows >= maxContinuousEmptyRows) {
                 break;
             }
 
             for (int j = 0, maxCol = ExcelConstant.MAX_COLUMN; j < maxCol; j++) {
                 cell = row.getCell(j);
-                if(cell == null || continuousEmptyCols >= maxContinuousEmptyCols) {
+                if (cell == null || continuousEmptyCols >= maxContinuousEmptyCols) {
                     break;
                 }
                 cellValue = ExcelUtils.cellValue(cell);
-                if(StringUtils.isBlank(cellValue)) {
+                if (StringUtils.isBlank(cellValue)) {
                     continuousEmptyCols++;
                 } else {
                     continuousEmptyCols = 0;
                     rowValue.append(cellValue).append(colSep);
                 }
             }
-            if(rowValue.length() == 0) {
+            if (rowValue.length() == 0) {
                 continuousEmptyRows++;
             } else {
                 rowValue.delete(rowValue.lastIndexOf(colSep), rowValue.length() - 1);
@@ -223,6 +228,7 @@ public class ExcelReading {
 
     /**
      * 读取excel数据到map(默认读取第一个非空sheet,默认以首行作为map的key)
+     *
      * @param path
      * @param sheetIndex
      * @param sheetName
@@ -241,12 +247,12 @@ public class ExcelReading {
             book = WorkbookFactory.create(bin);
 
             Sheet sheet = getBookSheet(sheetIndex, sheetName, book);
-            if(sheet == null) {
+            if (sheet == null) {
                 LOGGER.warn("sheet is empty, path {}.", path);
                 return Collections.emptyList();
             }
 
-            if(keys == null || keys.isEmpty()) {
+            if (keys == null || keys.isEmpty()) {
                 keys = readHeader(sheet);
                 area.setRowStart(area.getRowStart() == 0 ? 1 : area.getRowStart());
             }
@@ -285,7 +291,7 @@ public class ExcelReading {
             book = WorkbookFactory.create(bin);
 
             Sheet sheet = getBookSheet(sheetIndex, sheetName, book);
-            if(sheet == null) {
+            if (sheet == null) {
                 LOGGER.warn("sheet is empty, path {}.", path);
                 return Collections.emptyList();
             }
@@ -378,7 +384,7 @@ public class ExcelReading {
     private static Sheet getBookSheet(Integer sheetIndex, String sheetName, Workbook book) {
         if (sheetIndex != null) {
             return book.getSheetAt(sheetIndex);
-        } else if(StringUtils.isNotBlank(sheetName)) {
+        } else if (StringUtils.isNotBlank(sheetName)) {
             return book.getSheet(sheetName);
         } else {
             Sheet sheet = null;

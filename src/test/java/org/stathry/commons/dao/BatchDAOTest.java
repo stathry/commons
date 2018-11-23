@@ -33,7 +33,7 @@ public class BatchDAOTest {
             o = new Order();
             o.setUserId(i % 50L);
             o.setOrderNo(String.valueOf(snowflake.nextId()));
-            o.setOrderTime(DateUtils.addSeconds(new Date(),  i));
+            o.setOrderTime(DateUtils.addSeconds(new Date(), i));
             o.setAmount(i * 100L + i);
             o.setOrderStatus(i % 4);
             list.add(o);
@@ -91,7 +91,6 @@ public class BatchDAOTest {
         }
 
 
-
         public Long getAmount() {
             return amount;
         }
@@ -113,7 +112,7 @@ public class BatchDAOTest {
 
         @Override
         public Object[] toArgArray() {
-            return new Object[] {orderStatus, orderNo, orderTime, userId, amount};
+            return new Object[]{orderStatus, orderNo, orderTime, userId, amount};
         }
     }
 }

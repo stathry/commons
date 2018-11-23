@@ -58,11 +58,11 @@ public class Executors2 {
         public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
             ThreadFactory factory = executor.getThreadFactory();
             String threadNamePrefix = "";
-            if(factory.getClass() == CustomizableThreadFactory.class) {
-                CustomizableThreadFactory factory1 = (CustomizableThreadFactory)factory;
+            if (factory.getClass() == CustomizableThreadFactory.class) {
+                CustomizableThreadFactory factory1 = (CustomizableThreadFactory) factory;
                 threadNamePrefix = factory1.getThreadNamePrefix();
             }
-            LOGGER.error("threadNamePrefix {}, corePoolSize {}, maxPoolSize {}, workQueueSize {}, rejected task {}." ,
+            LOGGER.error("threadNamePrefix {}, corePoolSize {}, maxPoolSize {}, workQueueSize {}, rejected task {}.",
                     new Object[]{threadNamePrefix, executor.getCorePoolSize(), executor.getMaximumPoolSize(), executor.getQueue().size(), r.toString()});
         }
     }

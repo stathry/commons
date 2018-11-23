@@ -30,10 +30,10 @@ public class Exec2Test {
         ExecutorService exec2 = Executors2.newDefaultExecutorService("biz2-");
         for (int i = 0; i < tasks; i++) {
             final int index = i;
-            if(index % 2 == 0) {
-            exec2.submit(() -> {
-                System.out.println("i:" + index + ", " + Thread.currentThread().getName());
-            });
+            if (index % 2 == 0) {
+                exec2.submit(() -> {
+                    System.out.println("i:" + index + ", " + Thread.currentThread().getName());
+                });
             } else {
                 exec1.submit(() -> {
                     System.out.println("i:" + index + ", " + Thread.currentThread().getName());

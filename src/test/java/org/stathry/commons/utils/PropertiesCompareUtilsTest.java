@@ -3,8 +3,6 @@ package org.stathry.commons.utils;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
-import org.apache.commons.collections.MapUtils;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -12,7 +10,6 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 /**
@@ -65,7 +62,6 @@ public class PropertiesCompareUtilsTest {
         System.out.println("only right:" + JSON.toJSONString(r.entriesOnlyOnRight()));
 
     }
-
 
 
 }
