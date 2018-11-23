@@ -65,6 +65,11 @@ public class PoolingHttpClientBuilder implements InitializingBean, DisposableBea
         this.socketTimeout = socketTimeout;
     }
 
+    /**
+     * @see HttpClients#createDefault()
+     * @see HttpClients#custom()
+     * @return
+     */
     public HttpClient getHttpClient() {
         if (httpClient == null) {
             synchronized (this) {
