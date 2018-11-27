@@ -39,4 +39,11 @@
         WHERE id = #{id, jdbcType=INTEGER}
     </update>
 
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from city
+    </select>
+
 </mapper>

@@ -19,7 +19,24 @@
                 <setting name="defaultStatementTimeout" value="${mybatis.defaultStatementTimeout}" />-->
 
     </settings>
+
     <typeAliases>
-        <typeAlias type="org.stathry.commons.model.Actor" alias="Actor"/>
     </typeAliases>
+
+    <environments default="dev">
+        <environment id="dev">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/world"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="mybatis/mapper/CityMapper.xml"/>
+    </mappers>
+
 </configuration>
