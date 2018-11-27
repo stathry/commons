@@ -13,6 +13,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,6 +94,50 @@ public class HttpUtils {
                     // ignore
                 }
             }
+            httpPost.releaseConnection();
+        }
+        return null;
+    }
+
+    /**
+     * postJSONString
+     *
+     * @param uri
+     * @param requestBody
+     * @return
+     */
+    public static String postJSONString2(String uri, String requestBody) {
+        LOGGER.debug("invoke uri, params {}.", uri, requestBody);
+        HttpPost httpPost = new HttpPost(uri);
+        httpPost.addHeader("User-Agent", COMMON_USER_AGENT);
+        httpPost.addHeader("Content-Type", ContentType.APPLICATION_JSON.getMimeType());
+
+        httpPost.setConfig(RequestConfig.custom().setSocketTimeout(10000).build());
+        HttpResponse response = null;
+        try {
+            HttpEntity entity = new StringEntity(requestBody, DEFAULT_CHARSETS);
+            httpPost.setEntity(entity);
+            response = HttpClients.createDefault().execute(httpPost);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            LOGGER.info("invoke uri {}, response status {}, phrase {}.", uri, statusCode, statusLine.getReasonPhrase());
+            if (statusCode == HttpStatus.SC_OK) {
+                HttpEntity respEntity = response.getEntity();
+                String str = EntityUtils.toString(respEntity, DEFAULT_CHARSETS);
+                LOGGER.debug("invoke uri {}, response body: {}", uri, str);
+                return str;
+            }
+        } catch (Exception e) {
+            LOGGER.error("invoke uri " + uri + " error, with params " + requestBody, e);
+        } finally {
+            if (response != null) {
+                try {
+                    EntityUtils.consume(response.getEntity());
+                } catch (Exception e) {
+                    // ignore
+                }
+            }
+            httpPost.releaseConnection();
         }
         return null;
     }

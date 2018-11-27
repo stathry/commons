@@ -25,6 +25,7 @@
         <dom4j.version>1.6.1</dom4j.version>
         <poi.version>4.0.0</poi.version>
         <easypoi.version>2.3.0.2</easypoi.version>
+        <httpcomponents.version>4.5.2</httpcomponents.version>
     </properties>
 
     <dependencies>
@@ -359,12 +360,12 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.1</version>
+            <version>${httpcomponents.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
-            <version>4.5.1</version>
+            <version>${httpcomponents.version}</version>
         </dependency>
         <dependency>
             <groupId>xyz.downgoon</groupId>

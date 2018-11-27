@@ -8,7 +8,7 @@
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxIdle" value="${redis.maxIdle}"/>
         <property name="minIdle" value="${redis.minIdle}"/>
-        <property name="maxConnTotal" value="${redis.maxConnTotal}"/>
+        <property name="maxTotal" value="${redis.maxConnTotal}"/>
         <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
         <property name="maxWaitMillis" value="${redis.maxWaitMillis}"/>
         <property name="testOnReturn" value="${redis.testOnReturn}"/>

@@ -186,7 +186,7 @@ public class OperatorMatcher implements OperatorMatchable, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        refreshOrgOptMap(true);
+//        refreshOrgOptMap(true);
     }
 
 

@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
@@ -33,9 +32,10 @@ import java.security.cert.X509Certificate;
 
 /**
  * http连接池创建辅助类
+ * @see HttpClients
+ * @see PoolingHttpClientConnectionManager
  */
 
-@Component
 public class PoolingHttpClientBuilder implements InitializingBean, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PoolingHttpClientBuilder.class);
@@ -44,7 +44,7 @@ public class PoolingHttpClientBuilder implements InitializingBean, DisposableBea
 
     private static final int DEFAULT_KEEP_ALIVE_TIME = 5000;
     //    连接池最大连接数
-    private int maxConnTotal = 128;
+    private int maxConnTotal = 1024;
     //    每个路由最大连接数
     private int maxConnPerRoute = 8;
     //    连接超时时间
