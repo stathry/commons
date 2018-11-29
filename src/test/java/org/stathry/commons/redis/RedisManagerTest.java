@@ -9,8 +9,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.stathry.commons.dao.RedisManager;
-import org.stathry.commons.model.Actor;
+import org.stathry.commons.bean.RedisManager;
+import org.stathry.commons.model.Hero;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -94,9 +94,9 @@ public class RedisManagerTest {
 
     @Test
     public void testSetGetNormalJSONString() {
-        Map<Integer, Actor> map = new HashMap<>(2);
-        Actor actor1 = new Actor(666, "迪丽热巴", "迪力木拉提", new Date());
-        Actor actor2 = new Actor(888, "懿", "司马", new Date());
+        Map<Integer, Hero> map = new HashMap<>(2);
+        Hero actor1 = new Hero(666, "迪丽热巴", "迪力木拉提", new Date());
+        Hero actor2 = new Hero(888, "懿", "司马", new Date());
         map.put(666, actor1);
         map.put(888, actor2);
         String json = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd HH:mm:ss.SSS");
@@ -109,8 +109,8 @@ public class RedisManagerTest {
     @Test
     public void testSetGetComplexJSONString() {
         Map<Integer, String> map2 = new HashMap<>(2);
-        Actor actor3 = new Actor(6666, "迪丽热巴", "迪力木拉提", new Date());
-        Actor actor4 = new Actor(888, "懿", "司马", new Date());
+        Hero actor3 = new Hero(6666, "迪丽热巴", "迪力木拉提", new Date());
+        Hero actor4 = new Hero(888, "懿", "司马", new Date());
         map2.put(6666, JSON.toJSONStringWithDateFormat(actor3, "yyyy-MM-dd HH:mm:ss.SSS"));
         map2.put(8888, JSON.toJSONStringWithDateFormat(actor4, "yyyy-MM-dd HH:mm:ss.SSS"));
         String json2 = JSON.toJSONString(map2);
@@ -122,11 +122,11 @@ public class RedisManagerTest {
 
     @Test
     public void testCHKey1() {
-        Actor actor1 = new Actor(6666, "迪丽热巴", "迪力木拉提", new Date());
+        Hero actor1 = new Hero(6666, "迪丽热巴", "迪力木拉提", new Date());
         redisManager.set("迪丽热巴", JSON.toJSONString(actor1));
         String v = (String) redisManager.get("迪丽热巴");
         System.out.println(v);
-        Actor actor2 = JSON.parseObject(v, Actor.class);
+        Hero actor2 = JSON.parseObject(v, Hero.class);
         Assert.assertEquals(actor1, actor2);
     }
 

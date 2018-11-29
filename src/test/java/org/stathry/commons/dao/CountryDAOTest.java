@@ -6,50 +6,55 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.stathry.commons.model.Actor;
-import org.stathry.commons.model.City;
+import org.stathry.commons.model.Country;
 
 import java.util.List;
 
 /**
- * TODO
+ * CityDAOTest
  *
  * @author stathry
  * @date 2018/4/2
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/spring-context.xml")
-public class ActorDAOTest {
+public class CountryDAOTest {
 
     @Autowired
-    private ActorDAO actorDAO;
-
-    @Autowired
-    private CityDAO cityDAO;
+    private CountryDAO countryDAO;
 
     @Test
     public void testQueryAll() {
-        List<Actor> list = actorDAO.queryAll();
+        List<Country> list = countryDAO.queryAll();
         System.out.println(list);
         System.out.println(list.size());
         Assert.assertTrue(list != null);
         Assert.assertTrue(list.size() > 0);
-        Assert.assertTrue(list.size() == 200);
     }
 
     @Test
-    public void testQueryByCityId() {
-        System.out.println(cityDAO.queryById(6));
+    public void testQueryById() {
+        Country country = countryDAO.queryById("CHN");
+        System.out.println(country);
+        Assert.assertNotNull(country);
     }
 
     @Test
     public void testSaveCity() {
-        City t = new City();
-        t.setName("SUOMALI");
-        t.setCountryCode("ABW");
-        t.setDistrict("888");
+        Country t = new Country();
+        t.setCode("NAT");
+        t.setCode2("NS");
+        t.setName("Na Sao");
+        t.setName("Na Sao");
+        t.setContinent("Asia");
+        t.setRegion("rg1");
+        t.setSurfaceArea(6.6f);
         t.setPopulation(999);
-        System.out.println(cityDAO.insert(t));
+        t.setLocalName("na na");
+        t.setGovernmentForm("GCD");
+        int n = countryDAO.insert(t);
+        System.out.println(n);
+        Assert.assertTrue(n > 0);
     }
 
 }

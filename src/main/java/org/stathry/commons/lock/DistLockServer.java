@@ -5,7 +5,7 @@ import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.stathry.commons.dao.RedisManager;
+import org.stathry.commons.bean.RedisManager;
 
 import java.util.Date;
 import java.util.concurrent.ExecutorService;

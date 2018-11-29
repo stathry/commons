@@ -3,11 +3,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="helloMethodReplacer" class="org.stathry.commons.data.HelloMethodReplacer"/>
-    <bean id="replaceableBean1" class="org.stathry.commons.data.ReplaceableBean">
+    <bean id="helloMethodReplacer" class="org.stathry.commons.bean.HelloMethodReplacer"/>
+    <bean id="replaceableBean1" class="org.stathry.commons.bean.ReplaceableBean">
         <replaced-method name="hello" replacer="helloMethodReplacer"/>
     </bean>
-    <bean id="replaceableBean2" class="org.stathry.commons.data.ReplaceableBean"/>
+    <bean id="replaceableBean2" class="org.stathry.commons.bean.ReplaceableBean"/>
 
     <bean id="poolingHttpClientBuilder" class="org.stathry.commons.http.PoolingHttpClientBuilder">
         <property name="maxConnTotal" value="${http.maxConnTotal}"/>

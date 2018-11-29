@@ -1,8 +1,9 @@
-package org.stathry.commons.dao;
+package org.stathry.commons.service;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.stathry.commons.bean.RedisManager;
 import org.stathry.commons.utils.Snowflake;
 
 /**

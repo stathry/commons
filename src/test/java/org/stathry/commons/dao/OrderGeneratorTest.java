@@ -4,6 +4,8 @@ import org.bson.types.ObjectId;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.stathry.commons.bean.RedisManager;
+import org.stathry.commons.service.OrderService;
 import org.stathry.commons.utils.ConfigManager;
 import org.stathry.commons.utils.OrderGenerator;
 import org.stathry.commons.utils.Snowflake;

@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.stathry.commons.data.ReplaceableBean;
+import org.stathry.commons.bean.ReplaceableBean;
 import org.stathry.commons.utils.ApplicationContextUtils;
 
 /**
@@ -22,7 +22,7 @@ public class SpringTest {
         System.out.println("spring started.");
     }
 
-    //    @Test
+        @Test
     public void testGetBeanByNameAndType() {
         DruidDataSource bean = ApplicationContextUtils.getBean("dataSource", DruidDataSource.class);
         System.out.println(bean);

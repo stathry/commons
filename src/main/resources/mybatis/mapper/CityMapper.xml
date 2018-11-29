@@ -39,6 +39,23 @@
         WHERE id = #{id, jdbcType=INTEGER}
     </update>
 
+    <update id="updatePopulation" parameterType="org.stathry.commons.model.City">
+        UPDATE city
+        SET population = #{population, jdbcType=INTEGER}
+        WHERE id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <update id="updatePopulation2" parameterType="java.util.Map">
+        UPDATE city
+        SET population = #{population, jdbcType=INTEGER}
+        WHERE id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <update id="updatePopulation3" parameterType="Map">
+        UPDATE city
+        SET population = #{population}
+        WHERE id = #{id}
+    </update>
 
     <select id="queryAll" resultMap="BaseResultMap">
         select

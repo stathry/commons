@@ -52,6 +52,7 @@ public class GenericDAOImpl<T, ID extends Serializable> extends SqlSessionDaoSup
         return mapper.insert(t);
     }
 
+    // TODO
     @Override
     public int batchInsert(List<T> list) {
         return mapper.batchInsert(list);
@@ -68,6 +69,11 @@ public class GenericDAOImpl<T, ID extends Serializable> extends SqlSessionDaoSup
     }
 
     @Override
+    public int updateStateById(T t) {
+        return mapper.updateStateById(t);
+    }
+
+    @Override
     public int updateList(List<T> list) {
         return mapper.updateList(list);
     }
@@ -80,10 +86,7 @@ public class GenericDAOImpl<T, ID extends Serializable> extends SqlSessionDaoSup
     @Override
     public List<T> queryAll() {
         List<T> list = mapper.queryAll();
-        if (list == null) {
-            list = Collections.emptyList();
-        }
-        return list;
+        return list == null ? Collections.emptyList() : list;
     }
 
     @Override
@@ -109,11 +112,6 @@ public class GenericDAOImpl<T, ID extends Serializable> extends SqlSessionDaoSup
     @Override
     public <T1> T1 getMapper(Class<T1> clazz) {
         return getSqlSession().getMapper(clazz);
-    }
-
-    @Override
-    public int updateStateById(T t) {
-        return mapper.updateStateById(t);
     }
 
 }

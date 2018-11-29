@@ -1,4 +1,4 @@
-package org.stathry.commons.dao;
+package org.stathry.commons.bean;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ListOperations;

@@ -1,6 +1,6 @@
 package org.stathry.commons.lock;
 
-import org.stathry.commons.dao.RedisManager;
+import org.stathry.commons.bean.RedisManager;
 import org.stathry.commons.utils.ApplicationContextUtils;
 
 import java.util.concurrent.TimeUnit;

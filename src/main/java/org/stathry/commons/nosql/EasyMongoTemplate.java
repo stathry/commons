@@ -1,4 +1,4 @@
-package org.stathry.commons.dao;
+package org.stathry.commons.nosql;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mongodb.BasicDBObject;

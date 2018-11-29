@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.stathry.commons.dao.impl.BatchDAOSkeleton;
 import xyz.downgoon.snowflake.Snowflake;
 
 import java.util.ArrayList;

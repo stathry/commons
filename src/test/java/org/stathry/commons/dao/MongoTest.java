@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.stathry.commons.nosql.EasyMongoTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package org.stathry.commons.data;
+package org.stathry.commons.bean;
 
 import org.springframework.beans.factory.support.MethodReplacer;
 

@@ -14,6 +14,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * HttpUtils
@@ -120,7 +123,7 @@ public class HttpUtils {
             response = HttpClients.createDefault().execute(httpPost);
             StatusLine statusLine = response.getStatusLine();
             int statusCode = statusLine.getStatusCode();
-            LOGGER.info("invoke uri {}, response status {}, phrase {}.", uri, statusCode, statusLine.getReasonPhrase());
+            LOGGER.debug("invoke uri {}, response status {}, phrase {}.", uri, statusCode, statusLine.getReasonPhrase());
             if (statusCode == HttpStatus.SC_OK) {
                 HttpEntity respEntity = response.getEntity();
                 String str = EntityUtils.toString(respEntity, DEFAULT_CHARSETS);
@@ -158,6 +161,19 @@ public class HttpUtils {
         }
         return poolingHttpClientBuilder;
     }
+
+    public static String md5(String s) {
+        return DigestUtils.md5Hex(s);
+    }
+
+    public static String base64Encode(String s) {
+        return Base64.encodeBase64String(s.getBytes(DEFAULT_CHARSET));
+    }
+
+    public static String base64Decode(String s) {
+        return new String(Base64.decodeBase64(s), DEFAULT_CHARSET);
+    }
+
 
     public static String urlFormat(final List<? extends NameValuePair> parameters) {
         return URLEncodedUtils.format(parameters, '&', DEFAULT_CHARSETS);
@@ -203,16 +219,25 @@ public class HttpUtils {
         return ds;
     }
 
-    public static String md5(String s) {
-        return DigestUtils.md5Hex(s);
+    private static String concatParams(Map<String, ?> params) {
+        StringBuilder b = new StringBuilder();
+        String vs;
+        for (Map.Entry<String, ?> e : params.entrySet()) {
+            vs = e.getValue() == null ? null : e.getValue().toString();
+            if (vs != null && vs.length() > 0) {
+                b.append(e.getKey()).append('=').append(vs).append('&');
+            }
+        }
+        b.deleteCharAt(b.length() - 1);
+        return b.toString();
     }
 
-    public static String base64Encode(String s) {
-        return Base64.encodeBase64String(s.getBytes(DEFAULT_CHARSET));
-    }
-
-    public static String base64Decode(String s) {
-        return new String(Base64.decodeBase64(s), DEFAULT_CHARSET);
+    public static List<NameValuePair> mapToNameValues(Map<String, ?> params) {
+        List<NameValuePair> list = new ArrayList<>(params.size());
+        for (Map.Entry<String, ?> e : params.entrySet()) {
+            list.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
+        }
+        return list;
     }
 
 }
