@@ -81,11 +81,25 @@ public class RedisManager {
     }
 
     public Boolean setNX(String key) {
-        return redisTemplate.opsForValue().setIfAbsent(key, 1, randomExpireMS(), TimeUnit.MILLISECONDS);
+         return setNX(key, 1, randomExpireMS());
     }
 
     public Boolean setNX(String key, Object value, long expireMs) {
-        return redisTemplate.opsForValue().setIfAbsent(key, value, expireMs, TimeUnit.MILLISECONDS);
+        // spring-data-redis新版新增原子方法
+//        return redisTemplate.opsForValue().setIfAbsent(key, value, expireMs, TimeUnit.MILLISECONDS);
+        boolean nx = redisTemplate.opsForValue().setIfAbsent(key, value);
+        if(nx) {
+            expireRandom(key);
+        }
+        return nx;
+    }
+
+    public Boolean expireRandom(String key) {
+        return redisTemplate.expire(key, randomExpireMS(), TimeUnit.MILLISECONDS);
+    }
+
+    public Boolean expire(String key, long timeout) {
+        return redisTemplate.expire(key, timeout, TimeUnit.MILLISECONDS);
     }
 
     public Boolean expire(String key, long timeout, TimeUnit unit) {

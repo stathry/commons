@@ -1,8 +1,9 @@
 package org.apache.mybatis;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.ibatis.cache.Cache;
+import org.apache.ibatis.cache.decorators.SynchronizedCache;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
@@ -38,7 +39,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * TODO
+ * MybatisTest
  * Created by dongdaiming on 2018-11-09 15:42
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -74,12 +75,17 @@ public class MybatisTest {
     }
 
     //    http://www.mybatis.org/mybatis-3/sqlmap-xml.html 搜索<cache
+//    XMLMapperBuilder.cacheElement
     @Test
     public void testCache() throws IOException, InterruptedException, ParseException {
         Configuration cfg = sqlSessionFactory.getConfiguration();
+        Assert.assertTrue(cfg.getCaches() != null && !cfg.getCaches().isEmpty());
         LOGGER.info("mybatis config, cacheEnabled {}, defaultStatementTimeout {}",
             cfg.isCacheEnabled(), cfg.getDefaultStatementTimeout());
         Assert.assertEquals(30, (int)cfg.getDefaultStatementTimeout());
+
+        Object[] a = cfg.getCaches().toArray();
+        Cache c = (Cache) a[0];
 
         int id = 15491;
 
@@ -93,6 +99,7 @@ public class MybatisTest {
                     city = cityMapper.queryById(id);
                     Assert.assertNotNull(city);
                     LOGGER.info("cityId {}, population {}.", city.getId(), city.getPopulation());
+                    LOGGER.info("cache size {}.", c.getSize());
 
             }
         }, queryTaskRunTime, 10000);
@@ -106,6 +113,13 @@ public class MybatisTest {
         }, DateUtils.addSeconds(queryTaskRunTime, 40));
 
         Thread.sleep(120000);
+
+    }
+
+    @Test
+    public void testSessionCache() throws IOException, InterruptedException, ParseException {
+        SqlSession session1 = sqlSessionFactory.openSession();
+        SqlSession session2 = sqlSessionFactory.openSession();
 
     }
 

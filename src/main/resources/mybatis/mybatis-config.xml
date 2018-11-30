@@ -23,10 +23,10 @@
 
     </settings>
 
-<!--    <typeAliases>
-    </typeAliases>-->
+    <typeAliases>
+    </typeAliases>
 
-    <!--<environments default="dev">
+    <environments default="dev">
         <environment id="dev">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
@@ -45,10 +45,10 @@
                 <property name="password" value="root"/>
             </dataSource>
         </environment>
-    </environments>-->
+    </environments>
 
-<!--    <mappers>
+    <mappers>
         <mapper resource="mybatis/mapper/CityMapper.xml"/>
-    </mappers>-->
+    </mappers>
 
 </configuration>
