@@ -1,13 +1,12 @@
 /*
  * Copyright https://github.com/stathry/generator All rights reserved.
  */
-package org.stathry.commons.dao.impl;
+package org.stathry.commons.mapper.impl;
 
 import org.springframework.stereotype.Repository;
-import org.stathry.commons.dao.CityDAO;
+import org.stathry.commons.mapper.CityMapper;
 import org.stathry.commons.model.City;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,13 +14,13 @@ import java.util.Map;
  * @date 2018-07-20 10:26
  */
 @Repository
-public class CityDAOImpl extends GenericDAOImpl<City, Integer> implements CityDAO {
+public class CityMapperImpl extends GenericMapperImpl<City, Integer> implements CityMapper {
 
-    private CityDAO mapper;
+    private CityMapper mapper;
 
-    public CityDAOImpl() {
+    public CityMapperImpl() {
         super();
-        mapper = getMapper(CityDAO.class);
+        mapper = getMapper(CityMapper.class);
     }
 
     @Override

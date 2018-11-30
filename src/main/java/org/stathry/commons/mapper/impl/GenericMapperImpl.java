@@ -1,18 +1,14 @@
 /*
  * Copyright https://github.com/stathry/generator All rights reserved.
  */
-package org.stathry.commons.dao.impl;
+package org.stathry.commons.mapper.impl;
 
-import org.apache.ibatis.session.ExecutorType;
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
-import org.stathry.commons.dao.GenericDAO;
+import org.stathry.commons.mapper.GenericMapper;
 import org.stathry.commons.utils.ApplicationContextUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -25,18 +21,18 @@ import java.util.Map;
  * @date 2018-07-19 17:46
  */
 
-public class GenericDAOImpl<T, ID extends Serializable> extends SqlSessionDaoSupport implements GenericDAO<T, ID> {
+public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDaoSupport implements GenericMapper<T, ID> {
 
     protected String namespace;
-    protected GenericDAO<T, ID> mapper;
+    protected GenericMapper<T, ID> mapper;
     protected static final int BATCH_SIZE = 200;
 //    protected static final int BATCH_SIZE = ConfigManager.getObj("sql.batchSize", Integer.class);
 
-    public GenericDAOImpl() {
+    public GenericMapperImpl() {
         Class<?> interfaceClass = this.getClass().getInterfaces()[0];
         this.namespace = interfaceClass.getName();
         this.setSqlSessionFactory(ApplicationContextUtils.getBean("sqlSessionFactory", SqlSessionFactory.class));
-        mapper = (GenericDAO<T, ID>) getSqlSession().getMapper(interfaceClass);
+        mapper = (GenericMapper<T, ID>) getSqlSession().getMapper(interfaceClass);
     }
 
     @Override

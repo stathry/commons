@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <bean id="helloMethodReplacer" class="org.stathry.commons.bean.HelloMethodReplacer"/>
     <bean id="replaceableBean1" class="org.stathry.commons.bean.ReplaceableBean">
@@ -14,5 +14,20 @@
         <property name="maxConnPerRoute" value="${http.maxConnPerRoute}" />
         <property name="connectionTimeout" value="${http.connectionTimeout}" />
         <property name="socketTimeout" value="${http.socketTimeout}" />
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject">
+            <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+                <property name="targetClass" value="java.lang.System" />
+                <property name="targetMethod" value="getProperties" />
+            </bean>
+        </property>
+        <property name="targetMethod" value="putAll" />
+        <property name="arguments">
+            <util:properties>
+                <prop key="redis.properties.filename">conf/redis.properties</prop>
+            </util:properties>
+        </property>
     </bean>
 </beans>

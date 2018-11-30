@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.stathry.commons.mapper.CountryMapper;
 import org.stathry.commons.model.Country;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
 public class CountryDAOTest {
 
     @Autowired
-    private CountryDAO countryDAO;
+    private CountryMapper countryDAO;
 
     @Test
     public void testQueryAll() {

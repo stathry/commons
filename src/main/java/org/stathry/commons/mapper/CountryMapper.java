@@ -1,7 +1,7 @@
 /*
  * Copyright https://github.com/stathry/generator All rights reserved.
  */
-package org.stathry.commons.dao;
+package org.stathry.commons.mapper;
 
 import org.stathry.commons.model.Country;
 
@@ -10,7 +10,7 @@ import org.stathry.commons.model.Country;
  * @date 2018-07-20 10:26
  */
 
-public interface CountryDAO extends GenericDAO<Country, String> {
+public interface CountryMapper extends GenericMapper<Country, String> {
 
 
 }  

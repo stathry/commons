@@ -1,31 +1,41 @@
 package org.apache.mybatis;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.stathry.commons.dao.CityDAO;
-import org.stathry.commons.dao.CountryDAO;
-import org.stathry.commons.dao.impl.BatchDAOSkeleton;
+import org.stathry.commons.mapper.CityMapper;
+import org.stathry.commons.mapper.CountryMapper;
+import org.stathry.commons.mapper.impl.BatchDAOSkeleton;
 import org.stathry.commons.model.City;
 import org.stathry.commons.model.Country;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.SecureRandom;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * TODO
@@ -35,11 +45,16 @@ import java.util.Random;
 @ContextConfiguration(locations = "classpath:/spring-context.xml")
 public class MybatisTest {
 
-    @Autowired
-    private CityDAO cityDAO;
+    private static final Logger LOGGER = LoggerFactory.getLogger(MybatisTest.class);
 
     @Autowired
-    private CountryDAO countryDAO;
+    private CityMapper cityMapper;
+
+    @Autowired
+    private CountryMapper countryMapper;
+
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
 
     @Test
     public void testStartMybatisAndQuery() throws IOException {
@@ -48,7 +63,7 @@ public class MybatisTest {
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession session = sqlSessionFactory.openSession();
         try {
-            CityDAO mapper = session.getMapper(CityDAO.class);
+            CityMapper mapper = session.getMapper(CityMapper.class);
             List<City> list = mapper.queryAll();
             System.out.println(list);
             City city = mapper.queryById(6);
@@ -58,8 +73,39 @@ public class MybatisTest {
         }
     }
 
+    //    http://www.mybatis.org/mybatis-3/sqlmap-xml.html 搜索<cache
     @Test
-    public void testCache() throws IOException {
+    public void testCache() throws IOException, InterruptedException, ParseException {
+        Configuration cfg = sqlSessionFactory.getConfiguration();
+        LOGGER.info("mybatis config, cacheEnabled {}, defaultStatementTimeout {}",
+            cfg.isCacheEnabled(), cfg.getDefaultStatementTimeout());
+        Assert.assertEquals(30, (int)cfg.getDefaultStatementTimeout());
+
+        int id = 15491;
+
+        Timer timer = new Timer();
+        Date queryTaskRunTime = DateUtils.truncate(new Date(), Calendar.MINUTE);
+        queryTaskRunTime = DateUtils.addMinutes(queryTaskRunTime, 1);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                City city;
+                    city = cityMapper.queryById(id);
+                    Assert.assertNotNull(city);
+                    LOGGER.info("cityId {}, population {}.", city.getId(), city.getPopulation());
+
+            }
+        }, queryTaskRunTime, 10000);
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                LOGGER.info("will update city!");
+                cityMapper.updatePopulation2(id, new Random().nextInt(1000));
+            }
+        }, DateUtils.addSeconds(queryTaskRunTime, 40));
+
+        Thread.sleep(120000);
 
     }
 
@@ -73,7 +119,7 @@ public class MybatisTest {
 
     @Test
     public void testInterfaceMapper() {
-        Country country = countryDAO.queryById("CHN");
+        Country country = countryMapper.queryById("CHN");
         System.out.println(country);
         Assert.assertNotNull(country);
     }
@@ -83,14 +129,14 @@ public class MybatisTest {
         City city = new City();
         city.setId(4085);
         city.setPopulation(new Random().nextInt(1000));
-        int n = cityDAO.updatePopulation(city);
+        int n = cityMapper.updatePopulation(city);
         System.out.println(n);
         Assert.assertTrue(n > 0);
     }
 
     @Test
     public void testUpdateByFields() {
-        int n2 = cityDAO.updatePopulation2(4084, (int)Math.random());
+        int n2 = cityMapper.updatePopulation2(4084, new Random().nextInt(1000));
         System.out.println(n2);
         Assert.assertTrue(n2 > 0);
     }
@@ -100,7 +146,7 @@ public class MybatisTest {
         Map<String, Object> params = new HashMap<>(4);
         params.put("id", 4083);
         params.put("population", new Random().nextInt(1000));
-        int n2 = cityDAO.updatePopulation3(params);
+        int n2 = cityMapper.updatePopulation3(params);
         System.out.println(n2);
         Assert.assertTrue(n2 > 0);
     }
@@ -110,7 +156,7 @@ public class MybatisTest {
         Map<String, Object> params = new HashMap<>(4);
         params.put("id", 4082);
         params.put("population", new Random().nextInt(1000));
-        int n2 = cityDAO.updateByMap(params);
+        int n2 = cityMapper.updateByMap(params);
         System.out.println(n2);
         Assert.assertTrue(n2 > 0);
     }
@@ -133,13 +179,14 @@ public class MybatisTest {
             list.add(t);
         }
 
-        int n = batch ? BatchDAOSkeleton.mybatisBatchInsert(list, 200, cityDAO) : cityDAO.insertAll(list);
+        int n = batch ? BatchDAOSkeleton.mybatisBatchInsert(list, 200, cityMapper) : cityMapper.insertAll(list);
         Assert.assertEquals(limit, n);
     }
 
     @Test
     public void testBatchInsert() {
-        List<Integer> list = Arrays.asList(34, 100, 200, 201, 300, 400, 401);
+//        List<Integer> list = Arrays.asList(34, 100, 200, 201, 300, 400, 401);
+        List<Integer> list = Arrays.asList( 201);
         int c = 0;
         for (int i = 0, size = list.size(); i < size; i++) {
             insertAll(list.get(i), true);

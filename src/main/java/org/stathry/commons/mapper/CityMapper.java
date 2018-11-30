@@ -1,7 +1,7 @@
 /*
  * Copyright https://github.com/stathry/generator All rights reserved.
  */
-package org.stathry.commons.dao;
+package org.stathry.commons.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.stathry.commons.model.City;
@@ -13,7 +13,7 @@ import java.util.Map;
  * @date 2018-07-20 10:26
  */
 
-public interface CityDAO extends GenericDAO<City, Integer> {
+public interface CityMapper extends GenericMapper<City, Integer> {
 
     int updatePopulation(City city);
 

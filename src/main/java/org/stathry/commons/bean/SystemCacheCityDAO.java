@@ -1,4 +1,4 @@
-package org.stathry.commons.dao.impl;
+package org.stathry.commons.bean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

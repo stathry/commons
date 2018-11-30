@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.stathry.commons.mapper.CityMapper;
 import org.stathry.commons.model.City;
 
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
 public class CityDAOTest {
 
     @Autowired
-    private CityDAO cityDAO;
+    private CityMapper cityDAO;
 
     @Test
     public void testQueryAll() {
