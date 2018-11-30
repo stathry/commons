@@ -120,7 +120,15 @@ public class MybatisTest {
     public void testSessionCache() throws IOException, InterruptedException, ParseException {
         SqlSession session1 = sqlSessionFactory.openSession();
         SqlSession session2 = sqlSessionFactory.openSession();
+        City city1 = session1.selectOne("org.stathry.commons.mapper.CityMapper.queryById", 15491);
+        LOGGER.info("session1 query1, city1 {}", city1);
+        City city2 = session1.selectOne("org.stathry.commons.mapper.CityMapper.queryById", 15491);
+        LOGGER.info("session1 query2, city2 {}", city2);
 
+        City city3 = session2.selectOne("org.stathry.commons.mapper.CityMapper.queryById", 15491);
+        LOGGER.info("session2 query3, city3 {}", city3);
+        City city4 = session2.selectOne("org.stathry.commons.mapper.CityMapper.queryById", 15491);
+        LOGGER.info("session2 query4, city4 {}", city4);
     }
 
     @Test
