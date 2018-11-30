@@ -3,14 +3,19 @@
  */
 package org.stathry.commons.dao.impl;
 
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.stathry.commons.dao.GenericDAO;
 import org.stathry.commons.utils.ApplicationContextUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -24,11 +29,13 @@ public class GenericDAOImpl<T, ID extends Serializable> extends SqlSessionDaoSup
 
     protected String namespace;
     protected GenericDAO<T, ID> mapper;
+    protected static final int BATCH_SIZE = 200;
+//    protected static final int BATCH_SIZE = ConfigManager.getObj("sql.batchSize", Integer.class);
 
     public GenericDAOImpl() {
         Class<?> interfaceClass = this.getClass().getInterfaces()[0];
         this.namespace = interfaceClass.getName();
-        this.setSqlSessionFactory(ApplicationContextUtils.getBean(SqlSessionFactory.class));
+        this.setSqlSessionFactory(ApplicationContextUtils.getBean("sqlSessionFactory", SqlSessionFactory.class));
         mapper = (GenericDAO<T, ID>) getSqlSession().getMapper(interfaceClass);
     }
 
@@ -43,19 +50,14 @@ public class GenericDAOImpl<T, ID extends Serializable> extends SqlSessionDaoSup
     }
 
     @Override
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    @Override
     public int insert(T t) {
         return mapper.insert(t);
     }
 
-    // TODO
+//        SqlSession session = ((SqlSessionTemplate) getSqlSession()).getSqlSessionFactory().openSession(ExecutorType.BATCH, false);
     @Override
-    public int batchInsert(List<T> list) {
-        return mapper.batchInsert(list);
+    public int insertAll(List<T> list) {
+        return mapper.insertAll(list);
     }
 
     @Override
@@ -66,6 +68,11 @@ public class GenericDAOImpl<T, ID extends Serializable> extends SqlSessionDaoSup
     @Override
     public int update(T t) {
         return mapper.update(t);
+    }
+
+    @Override
+    public int updateByMap(Map<String, Object> params) {
+        return mapper.updateByMap(params);
     }
 
     @Override
@@ -102,11 +109,6 @@ public class GenericDAOImpl<T, ID extends Serializable> extends SqlSessionDaoSup
     @Override
     public int countByCond(T t) {
         return mapper.countByCond(t);
-    }
-
-    @Override
-    public GenericDAO<T, ID> getMapper() {
-        return mapper;
     }
 
     @Override

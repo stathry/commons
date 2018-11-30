@@ -4,9 +4,11 @@
 package org.stathry.commons.dao;
 
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.annotation.MapperScan;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 通用数据访问接口
@@ -16,8 +18,6 @@ import java.util.List;
  */
 public interface GenericDAO<T, ID extends Serializable> {
 
-    SqlSession getSqlSession();
-
     /**
      * 包装SQLID
      *
@@ -25,13 +25,6 @@ public interface GenericDAO<T, ID extends Serializable> {
      * @return SQLID
      */
     public String wrapSQLID(String SQLID);
-
-    /**
-     * 获取mapper操作对象
-     *
-     * @return mapper
-     */
-    public GenericDAO<T, ID> getMapper();
 
     /**
      * 根据DAOClass获取mapper操作对象
@@ -48,31 +41,26 @@ public interface GenericDAO<T, ID extends Serializable> {
     public String getNamespace();
 
     /**
-     * 设置命名空间
-     */
-    public void setNamespace(String namespace);
-
-    /**
      * 插入对象
      *
      * @param t 对象
-     * @return 影响记录数(返回ID置于T对象中)
+     * @return 更新记录数(返回ID置于T对象中)
      */
     public int insert(T t);
 
     /**
-     * 批量插入
+     * 插入集合
      *
      * @param list
      * @return
      */
-    public int batchInsert(List<T> list);
+    public int insertAll(List<T> list);
 
     /**
      * 根据ID删除对象
      *
      * @param id 对象唯一编码
-     * @return 影响记录数
+     * @return 更新记录数
      */
     public int deleteById(ID id);
 
@@ -80,15 +68,23 @@ public interface GenericDAO<T, ID extends Serializable> {
      * 更新对象
      *
      * @param t 对象
-     * @return 影响记录数
+     * @return 更新记录数
      */
     public int update(T t);
+
+    /**
+     * 更新对象
+     *
+     * @param params 参数
+     * @return 更新记录数
+     */
+    public int updateByMap(Map<String, Object> params);
 
     /**
      * 根据id更新状态
      *
      * @param t 对象
-     * @return 影响记录数
+     * @return 更新记录数
      */
     public int updateStateById(T t);
 
@@ -96,7 +92,7 @@ public interface GenericDAO<T, ID extends Serializable> {
      * 更新对象列表
      *
      * @param list 对象列表
-     * @return 影响记录数
+     * @return 更新记录数
      */
     public int updateList(List<T> list);
 

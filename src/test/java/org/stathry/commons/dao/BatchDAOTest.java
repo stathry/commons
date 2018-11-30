@@ -1,6 +1,7 @@
 package org.stathry.commons.dao;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -9,6 +10,7 @@ import org.stathry.commons.dao.impl.BatchDAOSkeleton;
 import xyz.downgoon.snowflake.Snowflake;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -24,8 +26,16 @@ public class BatchDAOTest {
 
     @Test
     public void testBatchSaveOrders() {
-        int limit = 500_0000;
-//        int limit = 50;
+        List<Integer> list = Arrays.asList(34, 100, 200, 201, 300, 400, 401);
+        int c = 0;
+        for (int i = 0, size = list.size(); i < size; i++) {
+            bathInsert(list.get(i));
+            c += list.get(i);
+        }
+        System.out.println(c);
+    }
+
+    private void bathInsert(int limit) {
         int batchSize = 200;
         List<Order> list = new ArrayList<>(limit);
         String sql = "insert into main_order (order_status, order_no, order_time, uid, amount) values (?, ?, ?, ?, ?);";
@@ -39,7 +49,8 @@ public class BatchDAOTest {
             o.setOrderStatus(i % 4);
             list.add(o);
         }
-        BatchDAOSkeleton.batchSave(list, sql, batchSize);
+        int n = BatchDAOSkeleton.jdbcBatchInsert(list, sql, batchSize);
+        Assert.assertEquals(limit, n);
     }
 
     private static class Order implements BatchDAOSkeleton.BatchInsertion {

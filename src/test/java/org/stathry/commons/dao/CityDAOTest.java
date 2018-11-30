@@ -48,7 +48,7 @@ public class CityDAOTest {
         t.setPopulation(999);
         int n = cityDAO.insert(t);
         System.out.println(n);
-        Assert.assertTrue(n > 0);
+        Assert.assertTrue(n == 1);
     }
 
 }

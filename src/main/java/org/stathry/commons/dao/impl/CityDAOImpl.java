@@ -3,15 +3,11 @@
  */
 package org.stathry.commons.dao.impl;
 
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Repository;
 import org.stathry.commons.dao.CityDAO;
 import org.stathry.commons.model.City;
-import org.stathry.commons.utils.ApplicationContextUtils;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**

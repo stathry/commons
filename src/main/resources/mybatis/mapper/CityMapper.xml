@@ -27,19 +27,26 @@
         WHERE id = #{id, jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" useGeneratedKeys="true" parameterType="org.stathry.commons.model.City" keyProperty="id"
-            keyColumn="id">
+    <insert id="insert" useGeneratedKeys="true" parameterType="org.stathry.commons.model.City" keyProperty="id" keyColumn="id">
         INSERT INTO city (name, countrycode, district, population)
         VALUES ( #{name, jdbcType=CHAR}, #{countryCode, jdbcType=CHAR}, #{district, jdbcType=CHAR}, #{population, jdbcType=INTEGER} )
     </insert>
 
-    <update id="updateById" parameterType="integer">
+    <insert id="insertAll" useGeneratedKeys="true" >
+        INSERT INTO city (name, countrycode, district, population)
+        VALUES
+        <foreach collection="list" item="obj" open="" separator="," close="">
+            (#{obj.name, jdbcType=CHAR}, #{obj.countryCode, jdbcType=CHAR}, #{obj.district, jdbcType=CHAR}, #{obj.population, jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="City">
         UPDATE city
         SET name = #{name, jdbcType=CHAR}, countrycode = #{countryCode, jdbcType=CHAR}, district = #{district, jdbcType=CHAR}, population = #{population, jdbcType=INTEGER}
         WHERE id = #{id, jdbcType=INTEGER}
     </update>
 
-    <update id="updatePopulation" parameterType="org.stathry.commons.model.City">
+    <update id="updatePopulation" parameterType="City">
         UPDATE city
         SET population = #{population, jdbcType=INTEGER}
         WHERE id = #{id, jdbcType=INTEGER}
@@ -51,7 +58,13 @@
         WHERE id = #{id, jdbcType=INTEGER}
     </update>
 
-    <update id="updatePopulation3" parameterType="Map">
+    <update id="updatePopulation3" parameterType="java.util.Map">
+        UPDATE city
+        SET population = #{population}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateByMap" parameterType="java.util.Map">
         UPDATE city
         SET population = #{population}
         WHERE id = #{id}
