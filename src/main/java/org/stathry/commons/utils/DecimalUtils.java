@@ -54,7 +54,7 @@ public class DecimalUtils {
         return d1.divide(d2, mc);
     }
 
-    public String formatDecimal(Object n) {
+    public String format2(Object n) {
         if (n.getClass() == String.class) {
             n = new BigDecimal(n.toString());
         } else if (!(n instanceof Number)) {

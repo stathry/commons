@@ -4,6 +4,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.RoundingMode;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * TODO
@@ -12,31 +15,67 @@ import java.math.RoundingMode;
 public class DecimalUtilsTest {
 
     @Test
-    public void testFormat1() {
-        // DecimalUtils.formatFraction
-        Assert.assertTrue("500.89".equals(DecimalUtils.format(500.885, 2, RoundingMode.HALF_UP)));
-        Assert.assertTrue("500.89".equals(DecimalUtils.format(500.885f, 2, RoundingMode.HALF_UP)));
+    public void testStaticFormat() {
+        Assert.assertEquals("500.89", DecimalUtils.format(500.885, 2, RoundingMode.HALF_UP));
+        Assert.assertEquals("500.89", DecimalUtils.format(500.885f, 2, RoundingMode.HALF_UP));
 
-        Assert.assertTrue("6.00".equals(DecimalUtils.format(6, 2, RoundingMode.HALF_UP)));
-        Assert.assertTrue("-6.00".equals(DecimalUtils.format(-6, 2, RoundingMode.HALF_UP)));
+        Assert.assertEquals("6.00", DecimalUtils.format(6, 2, RoundingMode.HALF_UP));
+        Assert.assertEquals("-6.00", DecimalUtils.format(-6, 2, RoundingMode.HALF_UP));
 
-        Assert.assertTrue("6.60".equals(DecimalUtils.format(6.6, 2, RoundingMode.HALF_UP)));
-        Assert.assertTrue("-6.60".equals(DecimalUtils.format(-6.6, 2, RoundingMode.HALF_UP)));
+        Assert.assertEquals("6.60", DecimalUtils.format(6.6, 2, RoundingMode.HALF_UP));
+        Assert.assertEquals("-6.60", DecimalUtils.format(-6.6, 2, RoundingMode.HALF_UP));
 
-        Assert.assertTrue("1.66".equals(DecimalUtils.format(1.656, 2, RoundingMode.HALF_UP)));
-        Assert.assertTrue("1.65".equals(DecimalUtils.format(1.654, 2, RoundingMode.HALF_UP)));
-        Assert.assertTrue("-1.66".equals(DecimalUtils.format(-1.656, 2, RoundingMode.HALF_UP)));
-        Assert.assertTrue("-1.65".equals(DecimalUtils.format(-1.654, 2, RoundingMode.HALF_UP)));
+        Assert.assertEquals("1.66", DecimalUtils.format(1.656, 2, RoundingMode.HALF_UP));
+        Assert.assertEquals("1.65", DecimalUtils.format(1.654, 2, RoundingMode.HALF_UP));
+        Assert.assertEquals("-1.66", DecimalUtils.format(-1.656, 2, RoundingMode.HALF_UP));
+        Assert.assertEquals("-1.65", DecimalUtils.format(-1.654, 2, RoundingMode.HALF_UP));
 
-        Assert.assertTrue("6.60".equals(DecimalUtils.format("6.6", 2, RoundingMode.HALF_UP)));
-        Assert.assertTrue("-6.60".equals(DecimalUtils.format("-6.6", 2, RoundingMode.HALF_UP)));
+        Assert.assertEquals("6.60", DecimalUtils.format("6.6", 2, RoundingMode.HALF_UP));
+        Assert.assertEquals("-6.60", DecimalUtils.format("-6.6", 2, RoundingMode.HALF_UP));
 
-        Assert.assertTrue("1.66".equals(DecimalUtils.format("1.656", 2, RoundingMode.HALF_UP)));
-        Assert.assertTrue("-1.66".equals(DecimalUtils.format("-1.656", 2, RoundingMode.HALF_UP)));
+        Assert.assertEquals("1.66", DecimalUtils.format("1.656", 2, RoundingMode.HALF_UP));
+        Assert.assertEquals("-1.66", DecimalUtils.format("-1.656", 2, RoundingMode.HALF_UP));
     }
 
     @Test
-    public void testFormatScaleRoundMode() {
+    public void testNewFormat() throws InterruptedException {
+        DecimalUtils FORMATTER = new DecimalUtils();
+        ExecutorService exec = Executors.newFixedThreadPool(4);
+        for (int n = 0; n < 4; n++) {
+            exec.execute(() -> {
+                long start = System.currentTimeMillis();
+                for (int i = 0; i < 100_0000; i++) {
+
+                    Assert.assertEquals("500.89", FORMATTER.format(500.885, 2, RoundingMode.HALF_UP));
+                    Assert.assertEquals("500.89", FORMATTER.format(500.885f, 2, RoundingMode.HALF_UP));
+
+                    Assert.assertEquals("6.00", FORMATTER.format(6, 2, RoundingMode.HALF_UP));
+                    Assert.assertEquals("-6.00", FORMATTER.format(-6, 2, RoundingMode.HALF_UP));
+
+                    Assert.assertEquals("6.60", FORMATTER.format(6.6, 2, RoundingMode.HALF_UP));
+                    Assert.assertEquals("-6.60", FORMATTER.format(-6.6, 2, RoundingMode.HALF_UP));
+
+                    Assert.assertEquals("1.66", FORMATTER.format(1.656, 2, RoundingMode.HALF_UP));
+                    Assert.assertEquals("1.65", FORMATTER.format(1.654, 2, RoundingMode.HALF_UP));
+                    Assert.assertEquals("-1.66", FORMATTER.format(-1.656, 2, RoundingMode.HALF_UP));
+                    Assert.assertEquals("-1.65", FORMATTER.format(-1.654, 2, RoundingMode.HALF_UP));
+
+                    Assert.assertEquals("6.60", FORMATTER.format("6.6", 2, RoundingMode.HALF_UP));
+                    Assert.assertEquals("-6.60", FORMATTER.format("-6.6", 2, RoundingMode.HALF_UP));
+
+                    Assert.assertEquals("1.66", FORMATTER.format("1.656", 2, RoundingMode.HALF_UP));
+                    Assert.assertEquals("-1.66", FORMATTER.format("-1.656", 2, RoundingMode.HALF_UP));
+                }
+                System.out.println(Thread.currentThread().getName() + ", done. time " + (System.currentTimeMillis() - start));
+            });
+        }
+
+        exec.shutdown();
+        exec.awaitTermination(5, TimeUnit.MINUTES);
+    }
+
+    @Test
+    public void testStaticRoundFormat() {
         // 四舍五入(负数的四舍五入相当于先去掉负号，四舍五入后再加负号)
         Assert.assertEquals("0.12", DecimalUtils.format(0.124, 2, RoundingMode.HALF_UP));
 

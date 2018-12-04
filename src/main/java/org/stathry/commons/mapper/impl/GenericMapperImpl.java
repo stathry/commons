@@ -25,8 +25,6 @@ public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDao
 
     protected String namespace;
     protected GenericMapper<T, ID> mapper;
-    protected static final int BATCH_SIZE = 200;
-//    protected static final int BATCH_SIZE = ConfigManager.getObj("sql.batchSize", Integer.class);
 
     public GenericMapperImpl() {
         Class<?> interfaceClass = this.getClass().getInterfaces()[0];

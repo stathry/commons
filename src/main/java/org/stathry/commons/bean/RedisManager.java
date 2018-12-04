@@ -86,12 +86,12 @@ public class RedisManager {
 
     public Boolean setNX(String key, Object value, long expireMs) {
         // spring-data-redis新版新增原子方法
-//        return redisTemplate.opsForValue().setIfAbsent(key, value, expireMs, TimeUnit.MILLISECONDS);
-        boolean nx = redisTemplate.opsForValue().setIfAbsent(key, value);
-        if(nx) {
-            expireRandom(key);
-        }
-        return nx;
+        return redisTemplate.opsForValue().setIfAbsent(key, value, expireMs, TimeUnit.MILLISECONDS);
+//        boolean nx = redisTemplate.opsForValue().setIfAbsent(key, value);
+//        if(nx) {
+//            expireRandom(key);
+//        }
+//        return nx;
     }
 
     public Boolean expireRandom(String key) {
