@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DataFormatUtilsTest {
 
@@ -17,7 +18,7 @@ public class DataFormatUtilsTest {
         cal.setTime(DateUtils.parseDate("2018-12-04 16:32", "yyyy-MM-dd HH:mm"));
         Assert.assertEquals("2018-12-04 16:32:00", dataFormatUtils.format2(cal));
 
-        Assert.assertEquals("2018-12-04 16:32:00", dataFormatUtils.format2("2018-12-04 16:32:00", DataFormatUtils.TYPE_DATE));
+//        Assert.assertEquals("2018-12-04 16:32:00", dataFormatUtils.format2("2018-12-04 16:32:00", DataFormatUtils.TYPE_DATE));
     }
 
     @Test
@@ -30,11 +31,14 @@ public class DataFormatUtilsTest {
         Assert.assertEquals("-6", dataFormatUtils.format2(-6, DataFormatUtils.TYPE_INT));
     }
 
+//    testNewFormatFloat:		12052/11395/12506
+//    testStaticFormatFloat:	21355/21356/23317
     @Test
     public void testNewFormatFloat() {
         DataFormatUtils dataFormatUtils = new DataFormatUtils();
         long start = System.currentTimeMillis();
         for (int i = 0; i < 100_0000; i++) {
+            dataFormatUtils.format2(new Date());
             Assert.assertEquals("6.00", dataFormatUtils.format(6, DataFormatUtils.TYPE_FLOAT));
             Assert.assertEquals("-6.00", dataFormatUtils.format(-6, DataFormatUtils.TYPE_FLOAT));
 
@@ -86,6 +90,7 @@ public class DataFormatUtilsTest {
     public void testStaticFormatFloat() {
         long start = System.currentTimeMillis();
         for (int i = 0; i < 100_0000; i++) {
+            DataFormatUtils.format(new Date());
             Assert.assertEquals("6.00", DataFormatUtils.format(6, DataFormatUtils.TYPE_FLOAT));
             Assert.assertEquals("-6.00", DataFormatUtils.format(-6, DataFormatUtils.TYPE_FLOAT));
 

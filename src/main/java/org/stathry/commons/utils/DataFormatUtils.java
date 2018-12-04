@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,16 +27,16 @@ public final class DataFormatUtils {
     public static final int TYPE_DATE = 3;
 
     private final DecimalUtils decimalUtils;
-    private final String datePattern;
+    private final SimpleDateFormat dateFormat;
 
     public DataFormatUtils() {
         decimalUtils = new DecimalUtils();
-        this.datePattern = DEFAULT_DATETIME_PATTERN;
+        this.dateFormat = new SimpleDateFormat(DEFAULT_DATETIME_PATTERN);
     }
 
     public DataFormatUtils(int precision, int scale, RoundingMode mode, String datePattern) {
         decimalUtils = new DecimalUtils(precision, scale, mode);
-        this.datePattern = datePattern;
+        this.dateFormat = new SimpleDateFormat(datePattern);
     }
 
     public static String format(Object data) {
@@ -115,15 +116,9 @@ public final class DataFormatUtils {
         } else if (TYPE_INT == type || data instanceof Integer || data instanceof Long) {
             value = data.toString();
         } else if (data instanceof Date) {
-            value = DateFormatUtils.format((Date) data, datePattern);
+            value = dateFormat.format((Date) data);
         } else if (data instanceof Calendar) {
-            value = DateFormatUtils.format((Calendar) data, datePattern);
-        } else if (data instanceof CharSequence && TYPE_DATE == type) {
-            try {
-                value = DateFormatUtils.format(DateUtils.parseDateStrictly(data.toString(), DEFAULT_DATETIME_PATTERN), datePattern);
-            } catch (ParseException e) {
-                throw new IllegalArgumentException("parse date error, str:" + data.toString() + ", pattern:" + DEFAULT_DATETIME_PATTERN, e);
-            }
+            value = dateFormat.format(((Calendar) data).getTime());
         } else if (data instanceof byte[]) {
             value = new String((byte[]) data, DEFAULT_CHARSET);
         } else if (data instanceof char[]) {
