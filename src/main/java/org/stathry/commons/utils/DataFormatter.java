@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public final class DataFormatUtils {
+public final class DataFormatter {
 
     private static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
     private static final String DEFAULT_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
@@ -29,12 +29,12 @@ public final class DataFormatUtils {
     private final DecimalUtils decimalUtils;
     private final SimpleDateFormat dateFormat;
 
-    public DataFormatUtils() {
+    public DataFormatter() {
         decimalUtils = new DecimalUtils();
         this.dateFormat = new SimpleDateFormat(DEFAULT_DATETIME_PATTERN);
     }
 
-    public DataFormatUtils(int precision, int scale, RoundingMode mode, String datePattern) {
+    public DataFormatter(int precision, int scale, RoundingMode mode, String datePattern) {
         decimalUtils = new DecimalUtils(precision, scale, mode);
         this.dateFormat = new SimpleDateFormat(datePattern);
     }
@@ -66,6 +66,7 @@ public final class DataFormatUtils {
      * @param destPattern
      * @return
      */
+    // TODO MULTI, DATE,DOUBLESTR
     public static String format(Object data, int type, int scale, RoundingMode roundingMode, String srcPattern, String destPattern) {
         if (data == null) {
             return "";
@@ -93,7 +94,8 @@ public final class DataFormatUtils {
         } else if (data instanceof char[]) {
             value = new String((char[]) data);
         } else {
-            throw new IllegalArgumentException("data:" + String.valueOf(data) + " , type:" + type);
+//            throw new IllegalArgumentException("data:" + String.valueOf(data) + " , type:" + type);
+            value = data.toString();
         }
 
         return value;
@@ -124,7 +126,8 @@ public final class DataFormatUtils {
         } else if (data instanceof char[]) {
             value = new String((char[]) data);
         } else {
-            throw new IllegalArgumentException("data:" + String.valueOf(data) + " , type:" + type);
+//            throw new IllegalArgumentException("data:" + String.valueOf(data) + " , type:" + type);
+            value = data.toString();
         }
 
         return value;

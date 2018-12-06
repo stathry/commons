@@ -269,7 +269,7 @@ public class ExcelUtils {
 
             for (int cellIndex = 0; cellIndex < rowData.size(); cellIndex++) {
                 Cell cell = row.createCell(cellIndex + styleParam.getStartColumn(), CellType.STRING);
-                cell.setCellValue(DataFormatUtils.format(rowData.get(keyIndex[cellIndex])));
+                cell.setCellValue(DataFormatter.format(rowData.get(keyIndex[cellIndex])));
                 cell.setCellStyle(cellStyle);
             }
 
@@ -283,7 +283,7 @@ public class ExcelUtils {
         for (String key : keyIndex) {
             Cell headerCell = row.createCell(cellIndex++ + styleParam.getStartColumn(), CellType.STRING);
             headerCell.setCellStyle(cellStyle);
-            headerCell.setCellValue(DataFormatUtils.format(cellData.get(key)));
+            headerCell.setCellValue(DataFormatter.format(cellData.get(key)));
         }
     }
 

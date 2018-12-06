@@ -1,5 +1,8 @@
 package org.stathry.commons.dao;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +11,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * TODO
@@ -44,6 +49,45 @@ public class JdbcTemplateTest {
             }
 
             args.add(new Object[]{"o" + i / 10, "bc" + i / 5});
+        }
+    }
+
+/*    CREATE TABLE `data_data1` (
+            `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`fstr1` VARCHAR(50) NOT NULL,
+	`fint1` INT(11) NOT NULL,
+	`ffloat1` DECIMAL(10,4) NOT NULL,
+	`fdate1` DATETIME NOT NULL,
+            `fdate2` TIMESTAMP NOT NULL,
+            `fdate3` DATE NOT NULL,
+            `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+)
+    ENGINE=InnoDB
+    ;*/
+
+    @Test
+    public void testBatchSave1() throws InterruptedException {
+        Random random = new Random();
+        String s = "INSERT INTO data_data1(fstr1, fint1, ffloat1, fdate1, fdate2, fdate3) VALUES (?, ?, ?, ?, ?, ?)";
+        int limit = 20_0000;
+        Date now = new Date();
+        List<Object[]> args = new ArrayList<>(100);
+        for (int i = 0, last = limit - 1; i < limit; i++) {
+            if ((i != 0 && i % 100 == 0) || i == last) {
+                jdbcTemplate.batchUpdate(s, args);
+            }
+
+            if (i != 0 && i % 100 == 0) {
+                Thread.sleep(100);
+                args = new ArrayList<>(100);
+            }
+
+            now = DateUtils.addMilliseconds(now, i);
+            String d1 = DateFormatUtils.format(now, "yyyy-MM-dd HH:mm:ss");
+            String d3 = DateFormatUtils.format(now, "yyyy-MM-dd");
+            args.add(new Object[]{RandomStringUtils.randomAlphanumeric(6), random.nextInt(limit), random.nextInt(limit)/10000.0,
+                    d1, d1, d3});
         }
     }
 
