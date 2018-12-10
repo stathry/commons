@@ -33,6 +33,7 @@ import java.util.Map;
 public class ExcelUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelUtils.class);
+    private static final DataFormatter dataFormatter = new DataFormatter();
 
     public static Workbook export(String path, Map<String, Object> header, List<Map<String, Object>> data, ExcelParams params) {
         Workbook workbook = null;
@@ -269,7 +270,7 @@ public class ExcelUtils {
 
             for (int cellIndex = 0; cellIndex < rowData.size(); cellIndex++) {
                 Cell cell = row.createCell(cellIndex + styleParam.getStartColumn(), CellType.STRING);
-                cell.setCellValue(DataFormatter.format(rowData.get(keyIndex[cellIndex])));
+                cell.setCellValue(dataFormatter.format(rowData.get(keyIndex[cellIndex])));
                 cell.setCellStyle(cellStyle);
             }
 
@@ -283,7 +284,7 @@ public class ExcelUtils {
         for (String key : keyIndex) {
             Cell headerCell = row.createCell(cellIndex++ + styleParam.getStartColumn(), CellType.STRING);
             headerCell.setCellStyle(cellStyle);
-            headerCell.setCellValue(DataFormatter.format(cellData.get(key)));
+            headerCell.setCellValue(dataFormatter.format(cellData.get(key)));
         }
     }
 
