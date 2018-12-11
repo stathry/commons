@@ -27,7 +27,7 @@ public class XmlTest {
 
     @Test
     public void testParseCrifParams() throws Exception {
-        Document doc = new SAXReader().read(ResourceUtils.getFile("classpath:CrifParamsConfig.xml"));
+        Document doc = new SAXReader().read(ResourceUtils.getFile("classpath:ParamsConfig.xml"));
         Map<String, String> SERVICES_START_ACT = new HashMap<>();
         Map<String, Map<String, Map<String, Map<String, Map<String, String>>>>> CRIF_STRATEGY_PARAMS_MAPPING = new HashMap<>();
         Map<String, String> CRIF_BASIC_PARAMS_MAPPING = new HashMap<>();

@@ -13,7 +13,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -55,7 +54,11 @@ public class HttpUtils {
      * @return
      */
     public static String postJSONString(String uri, String requestBody) {
-        return postJSONString(uri, requestBody, DEFAULT_SOCKET_TIMEOUT);
+        return postJSONString(uri, requestBody, null, DEFAULT_SOCKET_TIMEOUT);
+    }
+
+    public static String postJSONString(String uri, String requestBody, Map<String, String> headerMap) {
+        return postJSONString(uri, requestBody, headerMap, DEFAULT_SOCKET_TIMEOUT);
     }
 
     /**
@@ -66,11 +69,16 @@ public class HttpUtils {
      * @param timeout(millis)
      * @return
      */
-    public static String postJSONString(String uri, String requestBody, int timeout) {
+    public static String postJSONString(String uri, String requestBody, Map<String, String> headerMap, int timeout) {
         LOGGER.debug("invoke uri, params {}.", uri, requestBody);
         HttpPost httpPost = new HttpPost(uri);
         httpPost.addHeader("User-Agent", COMMON_USER_AGENT);
         httpPost.addHeader("Content-Type", ContentType.APPLICATION_JSON.getMimeType());
+        if(headerMap != null && !headerMap.isEmpty()) {
+            for (Map.Entry<String, String> e : headerMap.entrySet()) {
+                httpPost.addHeader(e.getKey(), e.getValue());
+            }
+        }
 
         httpPost.setConfig(RequestConfig.custom().setSocketTimeout(timeout).build());
         HttpResponse response = null;
@@ -81,49 +89,6 @@ public class HttpUtils {
             StatusLine statusLine = response.getStatusLine();
             int statusCode = statusLine.getStatusCode();
             LOGGER.info("invoke uri {}, response status {}, phrase {}.", uri, statusCode, statusLine.getReasonPhrase());
-            if (statusCode == HttpStatus.SC_OK) {
-                HttpEntity respEntity = response.getEntity();
-                String str = EntityUtils.toString(respEntity, DEFAULT_CHARSETS);
-                LOGGER.debug("invoke uri {}, response body: {}", uri, str);
-                return str;
-            }
-        } catch (Exception e) {
-            LOGGER.error("invoke uri " + uri + " error, with params " + requestBody, e);
-        } finally {
-            if (response != null) {
-                try {
-                    EntityUtils.consume(response.getEntity());
-                } catch (Exception e) {
-                    // ignore
-                }
-            }
-            httpPost.releaseConnection();
-        }
-        return null;
-    }
-
-    /**
-     * postJSONString
-     *
-     * @param uri
-     * @param requestBody
-     * @return
-     */
-    public static String postJSONString2(String uri, String requestBody) {
-        LOGGER.debug("invoke uri, params {}.", uri, requestBody);
-        HttpPost httpPost = new HttpPost(uri);
-        httpPost.addHeader("User-Agent", COMMON_USER_AGENT);
-        httpPost.addHeader("Content-Type", ContentType.APPLICATION_JSON.getMimeType());
-
-        httpPost.setConfig(RequestConfig.custom().setSocketTimeout(10000).build());
-        HttpResponse response = null;
-        try {
-            HttpEntity entity = new StringEntity(requestBody, DEFAULT_CHARSETS);
-            httpPost.setEntity(entity);
-            response = HttpClients.createDefault().execute(httpPost);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            LOGGER.debug("invoke uri {}, response status {}, phrase {}.", uri, statusCode, statusLine.getReasonPhrase());
             if (statusCode == HttpStatus.SC_OK) {
                 HttpEntity respEntity = response.getEntity();
                 String str = EntityUtils.toString(respEntity, DEFAULT_CHARSETS);

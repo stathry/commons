@@ -38,7 +38,7 @@ public class HttpUtilsTest {
         int limit = 20;
         long begin = System.currentTimeMillis();
         for (int i = 0; i < limit; i++) {
-            HttpUtils.postJSONString2("http://118.178.138.170/msg/HttpBatchSendSM", "hello");
+//            HttpUtils.postJSONString2("http://118.178.138.170/msg/HttpBatchSendSM", "hello");
         }
         long st = System.currentTimeMillis() - begin;
 

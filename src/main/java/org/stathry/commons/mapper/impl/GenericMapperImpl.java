@@ -5,6 +5,9 @@ package org.stathry.commons.mapper.impl;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.stathry.commons.mapper.GenericMapper;
 import org.stathry.commons.utils.ApplicationContextUtils;
 
@@ -25,6 +28,10 @@ public class GenericMapperImpl<T, ID extends Serializable> extends SqlSessionDao
 
     protected String namespace;
     protected GenericMapper<T, ID> mapper;
+    @Autowired
+    protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    @Autowired
+    protected JdbcTemplate jdbcTemplate;
 
     public GenericMapperImpl() {
         Class<?> interfaceClass = this.getClass().getInterfaces()[0];

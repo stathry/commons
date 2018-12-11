@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DataMapConfig>
+<DataMaps>
+
+	<DataMap dataDesc="数据1" dataGroup="ZZC_LOAN" queryType="all" fileType="txt" queryLastDaysOrMonths="1M"
+             perRequestMaxRecords="5000" encoding="utf-8" pageSize="1000" mainTableName="data_data1" keyColumn="id" dateColumn="" floatScale="2" datePattern="yyyy-MM-dd HH:mm:ss">
+		<DataSegments>
+		  <DataSegment no="0" segmentDesc="数据段1" tableName="data_data1" optional="R" keyColumn="id">
+              <DataItems>
+                  <DataItem no="0" fieldDesc="" field="f1" column="FIX_VALUE" type="1" optional="R" value="A1"/>
+                  <DataItem no="1" fieldDesc="" field="f2" column="FIX_VALUE" type="1" optional="R" value="ORG_CODE1"/>
+                  <DataItem no="2" fieldDesc="" field="fstr1" column="fstr1" type="1" optional="R" />
+                  <DataItem no="3" fieldDesc="" field="fint1" column="fint1" type="2" optional="R" />
+                  <DataItem no="3" fieldDesc="" field="fint2" column="fint2" type="2" optional="R" multiply="0.1"/>
+                  <DataItem no="4" fieldDesc="" field="ffloat1" column="ffloat1" type="3" optional="R" />
+                  <DataItem no="4" fieldDesc="" field="ffloat2" column="ffloat2" type="3" optional="R" multiply="10"/>
+                  <DataItem no="5" fieldDesc="" field="fdate1" column="fdate1" type="4" optional="R" format="yyyy-MM-dd HH:mm"/>
+                  <DataItem no="6" fieldDesc="" field="fdate2" column="fdate2" type="4" optional="R" format="yyyy/MM/dd HH:mm"/>
+                  <DataItem no="7" fieldDesc="" field="fdate3" column="fdate3" type="4" optional="R" format="yyyy_MM_dd HH:mm"/>
+                  <DataItem no="7" fieldDesc="" field="fdate4" column="fdate4" type="4" optional="R" format="yyyy-MM-dd" srcFormat="yyyyMMddHHmmss"/>
+              </DataItems>
+		  </DataSegment>
+		 </DataSegments>
+	</DataMap>
+
+</DataMaps>
+</DataMapConfig>

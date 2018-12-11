@@ -22,6 +22,7 @@ public final class DataFormatter {
     public static final int TYPE_INT = 2;
     public static final int TYPE_FLOAT = 3;
     public static final int TYPE_DATE = 4;
+    public static final int TYPE_BOOL = 5;
 
     private final DecimalFormat decimalFormatter;
     private final SimpleDateFormat dateFormat;
@@ -84,6 +85,9 @@ public final class DataFormatter {
     }
 
     public String format(Object data, DataFormat format, int type) {
+        if (data == null) {
+            return "";
+        }
         if (type == 0) {
             return format(data, format);
         }
@@ -95,6 +99,7 @@ public final class DataFormatter {
             double d = data instanceof Number ? ((Number)data).doubleValue() : Double.parseDouble(data.toString());
             BigDecimal dec = BigDecimal.valueOf(d);
             if (format == null || format.scale == -1) {
+                dec = format.getMultiply() == 1.0 ? dec : BigDecimal.valueOf(format.getMultiply()).multiply(dec);
                 value = decimalFormatter.format(dec);
             } else {
                 dec = BigDecimal.valueOf(format.getMultiply()).multiply(dec);
@@ -135,17 +140,25 @@ public final class DataFormatter {
         private String srcDatePattern = DEFAULT_DATETIME_PATTERN;
         private String destDatePattern = DEFAULT_DATETIME_PATTERN;
 
-        public DataFormat(int scale, RoundingMode mode) {
+        public DataFormat() {
+        }
+
+        public DataFormat(int scale) {
             this.scale = scale;
             this.mode = mode;
         }
 
-        public DataFormat(String destDatePattern) {
-            this.destDatePattern = destDatePattern;
-        }
-
         public DataFormat(double multiply) {
             this.multiply = multiply;
+        }
+
+        public DataFormat(int scale, double multiply) {
+            this.scale = scale;
+            this.multiply = multiply;
+        }
+
+        public DataFormat(String destDatePattern) {
+            this.destDatePattern = destDatePattern;
         }
 
         public DataFormat(String srcDatePattern, String destDatePattern) {

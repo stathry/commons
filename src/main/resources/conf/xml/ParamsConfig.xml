@@ -1,18 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<CrifParamsConfig>
-    <CrifServiceActionMap>
-        <ServiceAction service="ELoanFrontRisk" action="START1"></ServiceAction>
-        <ServiceAction service="ELoanSecondRisk" action="START2"></ServiceAction>
-    </CrifServiceActionMap>
+<ParamsConfig>
 
-    <CrifBasicParamsMap>
+    <BasicParamsMap>
         <BasicParam crifParam="AppId" reqParam="cardId"></BasicParam>
         <BasicParam crifParam="AppNm" reqParam="realname"></BasicParam>
-    </CrifBasicParamsMap>
+    </BasicParamsMap>
 
-    <CrifStragegyParamsMap>
-        <Stragegy code="ssinblack">
-            <DataSupplier code="SELF">
+    <StragegyParamsMap>
+        <Stragegy code="strategy1">
+            <DataSupplier code="SUP1">
                 <Product code="prod1">
                     <StragegyParam crifParam="p1" realParam="p11" defaultValue="0"></StragegyParam>
                     <StragegyParam crifParam="p2" realParam="p12" defaultValue=""></StragegyParam>
@@ -20,13 +16,13 @@
             </DataSupplier>
         </Stragegy>
 
-        <Stragegy code="ssdhbblack">
-            <DataSupplier code="DHB">
-                <Product code="prod2">
+        <Stragegy code="strategy2">
+            <DataSupplier code="SUP2">
+                <Product code="prod1">
                     <StragegyParam crifParam="pa1" realParam="pa11" defaultValue="0"></StragegyParam>
                     <StragegyParam crifParam="pa2" realParam="pa22" defaultValue=""></StragegyParam>
                 </Product>
             </DataSupplier>
         </Stragegy>
-    </CrifStragegyParamsMap>
-</CrifParamsConfig>
+    </StragegyParamsMap>
+</ParamsConfig>

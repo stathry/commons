@@ -21,7 +21,7 @@ public class SpringTest {
     public void testStart() {
         System.out.println("spring started.");
         System.out.println(System.getProperties());
-        Assert.assertEquals("conf/redis.properties", System.getProperty("redis.properties.filename"));
+        Assert.assertEquals("conf/prop/redis.properties", System.getProperty("redis.properties.filename"));
         Assert.assertTrue(!System.getProperties().isEmpty());
     }
 
