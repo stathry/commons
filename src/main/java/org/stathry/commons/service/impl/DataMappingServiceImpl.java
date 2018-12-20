@@ -9,7 +9,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.stathry.commons.dao.DataSharingDAO;
+import org.stathry.commons.dao.impl.DataSharingDAO;
 import org.stathry.commons.model.dto.DataItem;
 import org.stathry.commons.model.dto.DataMap;
 import org.stathry.commons.model.dto.DataMapConfig;
@@ -36,10 +36,10 @@ public class DataMappingServiceImpl implements DataMappingService, InitializingB
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataMappingServiceImpl.class);
     private DataMapConfig dataMapConfig;
-    private static final String CONFIG_FILENAME = "/DataMapConfig.xml";
+    private static final String CONFIG_FILENAME = "/conf/xml/DataMapConfig.xml";
     private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    @Autowired
+    @Autowired(required = false)
     private DataSharingDAO dataSharingDAO;
 
     @Override

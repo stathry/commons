@@ -1,4 +1,4 @@
-package org.stathry.commons.dao;
+package org.stathry.commons.dao.impl;
 
 import org.stathry.commons.mapper.impl.BatchDAOSkeleton;
 import org.stathry.commons.model.dto.DataRange;

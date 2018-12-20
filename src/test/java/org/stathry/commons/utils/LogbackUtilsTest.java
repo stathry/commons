@@ -1,6 +1,7 @@
 package org.stathry.commons.utils;
 
 import ch.qos.logback.classic.Logger;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,21 @@ import org.stathry.commons.log.LogbackUtils;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/spring-context.xml")
 public class LogbackUtilsTest {
+
+    @Test
+    public void testDebugExec() {
+        org.slf4j.Logger log = LoggerFactory.getLogger(LogbackUtilsTest.class);
+        log.info("info params1 is {}.", "p1");
+        Assert.assertFalse(log.isDebugEnabled());
+        // 用于获取记录debug参数的方法会执行
+        log.debug("debug params2 is {}.", debugParamsM());
+    }
+
+    private String debugParamsM() {
+        String params = "debugParamsM:" + System.currentTimeMillis();
+        System.out.println("running debugParamsM," + params);
+        return params;
+    }
 
     @Test
     public void testMain() {

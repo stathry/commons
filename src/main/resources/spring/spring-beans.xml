@@ -9,13 +9,6 @@
     </bean>
     <bean id="replaceableBean2" class="org.stathry.commons.bean.ReplaceableBean"/>
 
-    <bean id="poolingHttpClientBuilder" class="org.stathry.commons.http.PoolingHttpClientBuilder">
-        <property name="maxConnTotal" value="${http.maxConnTotal}"/>
-        <property name="maxConnPerRoute" value="${http.maxConnPerRoute}" />
-        <property name="connectionTimeout" value="${http.connectionTimeout}" />
-        <property name="socketTimeout" value="${http.socketTimeout}" />
-    </bean>
-
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="targetObject">
             <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

@@ -10,7 +10,6 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.stathry.commons.http.HttpUtils;
 
 import java.util.ArrayList;
@@ -25,8 +24,7 @@ import static org.junit.Assert.assertNotNull;
 public class HttpUtilsTest {
 
     @Test
-    public void testCreateHttpClient() {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
+    public void testGetSingleHttpClient() {
         HttpClient client = HttpUtils.getHttpClient();
         System.out.println(client);
         Assert.assertNotNull(client);
@@ -34,22 +32,38 @@ public class HttpUtilsTest {
     }
 
     @Test
-    public void testMultiClientVSSingleClient() {
-        int limit = 20;
-        long begin = System.currentTimeMillis();
-        for (int i = 0; i < limit; i++) {
-//            HttpUtils.postJSONString2("http://118.178.138.170/msg/HttpBatchSendSM", "hello");
-        }
-        long st = System.currentTimeMillis() - begin;
+    public void testGetDefaultHttpClient() {
+        HttpClient client1 = HttpClients.createDefault();
+        HttpClient client2 = HttpClients.createDefault();
+        Assert.assertNotNull(client1);
+        Assert.assertNotNull(client2);
+        Assert.assertNotEquals(client1, client2);
+    }
 
-        begin = System.currentTimeMillis();
-        for (int i = 0; i < limit; i++) {
-            HttpUtils.postJSONString("http://118.178.138.170/msg/HttpBatchSendSM", "hello");
-        }
+    @Test
+    public void testCreateSystemHttpClient() {
+        HttpClient client1 = HttpClients.createSystem();
+        HttpClient client2 = HttpClients.createSystem();
+        assertNotNull(client1);
+        assertNotNull(client2);
+        Assert.assertNotEquals(client1, client2);
+    }
 
-        long pt = System.currentTimeMillis() - begin;
-        System.out.println("sigle:" + st);
-        System.out.println("pool:" + pt);
+    @Test
+    public void testCreateCustomHttpClient() {
+        PoolingHttpClientConnectionManager httpManager = new PoolingHttpClientConnectionManager();
+        httpManager.setMaxTotal(300); // 连接池最大并发连接数
+        httpManager.setDefaultMaxPerRoute(50); // 单路由最大并发数
+        System.out.println("hp.getDefaultConnectionConfig:" + httpManager.getDefaultConnectionConfig());
+        System.out.println("hp.getDefaultSocketConfig:" + httpManager.getDefaultSocketConfig());
+        RequestConfig rc = RequestConfig.custom().setSocketTimeout(4000).setConnectTimeout(10000).setConnectionRequestTimeout(1000).build();
+        System.out.println("rc:" + rc);
+
+        HttpClientBuilder httpBuilder = HttpClients.custom().setConnectionManager(httpManager).setDefaultRequestConfig(rc);
+
+        CloseableHttpClient client = httpBuilder.build();
+        System.out.println(client);
+        assertNotNull(client);
     }
 
     @Test
@@ -96,47 +110,16 @@ public class HttpUtilsTest {
 
         String s30 = "hello";
         String s40 = "禁忌";
-        String s3 = HttpUtils.base64Encode(s30);
-        String s4 = HttpUtils.base64Encode(s40);
+        String s3 = HttpUtils.encodeBase64(s30);
+        String s4 = HttpUtils.encodeBase64(s40);
         System.out.println(s3);
         System.out.println(s4);
-        String s31 = HttpUtils.base64Decode(s3);
-        String s41 = HttpUtils.base64Decode(s4);
+        String s31 = HttpUtils.decodeBase64(s3);
+        String s41 = HttpUtils.decodeBase64(s4);
         System.out.println(s31);
         System.out.println(s41);
         Assert.assertEquals(s31, s30);
         Assert.assertEquals(s41, s40);
-    }
-
-    @Test
-    public void testCreateDefaultHttpClient() {
-        CloseableHttpClient client = HttpClients.createDefault();
-        System.out.println(client);
-        assertNotNull(client);
-    }
-
-    @Test
-    public void testCreateSystemHttpClient() {
-        CloseableHttpClient client = HttpClients.createSystem();
-        System.out.println(client);
-        assertNotNull(client);
-    }
-
-    @Test
-    public void testCreateCustomHttpClient() {
-        PoolingHttpClientConnectionManager httpManager = new PoolingHttpClientConnectionManager();
-        httpManager.setMaxTotal(300); // 连接池最大并发连接数
-        httpManager.setDefaultMaxPerRoute(50); // 单路由最大并发数
-        System.out.println("hp.getDefaultConnectionConfig:" + httpManager.getDefaultConnectionConfig());
-        System.out.println("hp.getDefaultSocketConfig:" + httpManager.getDefaultSocketConfig());
-        RequestConfig rc = RequestConfig.custom().setSocketTimeout(4000).setConnectTimeout(10000).setConnectionRequestTimeout(1000).build();
-        System.out.println("rc:" + rc);
-
-        HttpClientBuilder httpBuilder = HttpClients.custom().setConnectionManager(httpManager).setDefaultRequestConfig(rc);
-
-        CloseableHttpClient client = httpBuilder.build();
-        System.out.println(client);
-        assertNotNull(client);
     }
 
 }

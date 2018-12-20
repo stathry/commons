@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ConfigManager {
 
-    private static final String NAME_BASE = "conf";
+    private static final String NAME_BASE = "conf/prop";
     public static final String NAME_CONF = "config";
     public static final String NAME_SYS = "system";
     private static final ConcurrentHashMap<String, ConcurrentHashMap<String, String>> PROPS = new ConcurrentHashMap<>(4);

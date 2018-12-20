@@ -1,8 +1,11 @@
 package org.stathry.commons.utils;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
+import java.util.Map;
 
 /**
  * spring容器访问
@@ -19,6 +22,10 @@ public class ApplicationContextUtils implements ApplicationContextAware {
 
     public static <T> T getBean(Class<T> clazz) {
         return context.getBean(clazz);
+    }
+
+    public static <T> Map<String, T> getBeans(Class<T> clazz) {
+        return context.getBeansOfType(clazz);
     }
 
     public static Object getBean(String beanName) {

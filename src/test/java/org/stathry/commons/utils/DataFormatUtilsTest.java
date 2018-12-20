@@ -68,8 +68,8 @@ public class DataFormatUtilsTest {
         Assert.assertEquals("1.66", formatter.format("1.656", null, DataFormatter.TYPE_FLOAT));
         Assert.assertEquals("-1.66", formatter.format("-1.656", null, DataFormatter.TYPE_FLOAT));
 
-        Assert.assertEquals("2", formatter.format(1.656, new DataFormatter.DataFormat(0, RoundingMode.HALF_UP)));
-        Assert.assertEquals("-1.7", formatter.format("-1.656", new DataFormatter.DataFormat(1, RoundingMode.HALF_UP), DataFormatter.TYPE_FLOAT));
+        Assert.assertEquals("2", formatter.format(1.656, new DataFormatter.DataFormat(0)));
+        Assert.assertEquals("-1.7", formatter.format("-1.656", new DataFormatter.DataFormat(1), DataFormatter.TYPE_FLOAT));
     }
 
 }

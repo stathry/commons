@@ -40,5 +40,10 @@ public class StringUtilsTest {
         System.out.println(StringUtils.join("今天是", new Date()));
         Assert.assertEquals("今年是2018", StringUtils.join("今年是", "2018"));
         Assert.assertEquals("1,2,3", StringUtils.join(new int[]{1, 2, 3}, ','));
+
+        // abbreviate可用于避免打印超大日志
+        String snapshot = "A1|ORG_CODE1|pUGveG1|36769|66|1.79|88888.89|2018-12-06 18:17|2018/12/06 18:17|2018_12_06 00:00|2018-12-10";
+        System.out.println(StringUtils.abbreviate(snapshot, 20));
+        Assert.assertEquals("A1|ORG_CODE1|pUGv...", StringUtils.abbreviate(snapshot, 20));
     }
 }

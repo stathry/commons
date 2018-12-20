@@ -2,6 +2,7 @@ package org.stathry.commons.utils;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +16,19 @@ import java.util.TreeMap;
 public class MapSortUtils {
 
     private MapSortUtils() {
+    }
+
+    public static Map<String, String> toStringMap(Map<String, ?> map) {
+        if (map == null || map.isEmpty()) {
+            return new HashMap<>();
+        }
+        Map<String, String> strMap = new HashMap<>(map.size());
+        Object v;
+        for (Map.Entry<String, ?> e : map.entrySet()) {
+            v = e.getValue();
+            strMap.put(e.getKey(), v == null ? "" : v.toString());
+        }
+        return strMap;
     }
 
     /**

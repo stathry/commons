@@ -7,7 +7,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.stathry.commons.dao.DataSharingDAO;
 import org.stathry.commons.mapper.impl.BatchDAOSkeleton;
 import org.stathry.commons.model.dto.DataRange;
 
@@ -20,7 +19,7 @@ import java.util.Map;
  * 共享数据访问
  * @author dongdaiming
  */
-@Repository
+//@Repository
 public class DataSharingDAOImpl implements DataSharingDAO {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataSharingDAOImpl.class);

@@ -2,7 +2,6 @@ package org.stathry.commons.dao.impl;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
-import org.stathry.commons.dao.DataShareDocDAO;
 import org.stathry.commons.mapper.impl.GenericMapperImpl;
 import org.stathry.commons.model.DataShareDoc;
 
@@ -17,7 +16,7 @@ import java.util.Map;
  * @author dongdaiming
  * @date 2018/3/20
  */
-@Repository
+//@Repository
 public class DataShareDocDAOImpl extends GenericMapperImpl<DataShareDoc, Integer> implements DataShareDocDAO {
 
     private static final String COLUMNS = "SELECT id, doc_name, status, fail_count, doc_size, records, doc_path, add_time, update_time ";
