@@ -1,16 +1,20 @@
 package org.stathry.commons.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.stathry.commons.dao.impl.DataSharingDAO;
 import org.stathry.commons.model.dto.DataItem;
+import org.stathry.commons.model.dto.DataItemHandlers;
 import org.stathry.commons.model.dto.DataMap;
 import org.stathry.commons.model.dto.DataMapConfig;
 import org.stathry.commons.model.dto.DataRange;
@@ -36,10 +40,10 @@ public class DataMappingServiceImpl implements DataMappingService, InitializingB
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataMappingServiceImpl.class);
     private DataMapConfig dataMapConfig;
-    private static final String CONFIG_FILENAME = "/conf/xml/DataMapConfig.xml";
+    private static final String CONFIG_FILENAME = "/DataMapConfig.xml";
     private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    @Autowired(required = false)
+    @Autowired
     private DataSharingDAO dataSharingDAO;
 
     @Override
@@ -51,7 +55,7 @@ public class DataMappingServiceImpl implements DataMappingService, InitializingB
     }
 
     @Override
-    public DataRange<Long> keyRange(DataMap dataMap) {
+    public DataRange<Long> keyRange(NamedParameterJdbcTemplate namedParameterJdbcTemplate, DataMap dataMap) {
         String dataGroup = dataMap.getDataGroup();
         String queryType = dataMap.getQueryType();
         Assert.hasText(queryType, "dataGroup " + dataGroup + ", queryType is empty.");
@@ -59,7 +63,7 @@ public class DataMappingServiceImpl implements DataMappingService, InitializingB
 
         DataRange<Long> keyRange;
         if ("all".equalsIgnoreCase(queryType)) {
-            keyRange = dataSharingDAO.queryKeyRange(dataMap.getMainTableName(), dataMap.getKeyColumn());
+            keyRange = dataSharingDAO.queryKeyRange(namedParameterJdbcTemplate, dataMap.getMainTableName(), dataMap.getKeyColumn());
         } else if ("byDate".equalsIgnoreCase(queryType)) {
             String byDateStr = dataMap.getQueryLastDaysOrMonths();
             Assert.hasText(byDateStr, "dataGroup " + dataGroup + ", queryLastDaysOrMonths is empty.");
@@ -81,33 +85,28 @@ public class DataMappingServiceImpl implements DataMappingService, InitializingB
             } else {
                 throw new UnsupportedOperationException("dataGroup " + dataGroup + ", queryLastDaysOrMonths " + byDateStr);
             }
-            keyRange = keyRange(dataMap.getMainTableName(), dataMap.getKeyColumn(), dataMap.getDateColumn(), DateFormatUtils.format(beginDate, DATETIME_FORMAT), DateFormatUtils.format(endDate, DATETIME_FORMAT));
+            keyRange = keyRange(namedParameterJdbcTemplate, dataMap.getMainTableName(), dataMap.getKeyColumn(), dataMap.getDateColumn(), DateFormatUtils.format(beginDate, DATETIME_FORMAT), DateFormatUtils.format(endDate, DATETIME_FORMAT));
         } else {
             throw new UnsupportedOperationException("dataGroup " + dataGroup + ", queryType " + queryType);
         }
 
-        checkKeyRange(dataMap.getMainTableName(), keyRange);
+        Assert.notNull(keyRange, "keyRange is null, tableName " + dataMap.getMainTableName());
+        LOGGER.info("dataGroup {}, tableName {}, keyRange:{} - {}.", dataGroup, dataMap.getMainTableName(), keyRange.getMin(), keyRange.getMax());
         return keyRange;
     }
 
     @Override
-    public DataRange<Long> keyRange(String tableName, String keyColumn) {
-        DataRange<Long> keyRange = dataSharingDAO.queryKeyRange(tableName, keyColumn);
-        checkKeyRange(tableName, keyRange);
-        return keyRange;
-    }
-
-    @Override
-    public DataRange<Long> keyRange(String tableName, String keyColumn, String dateColumn, String beginDate, String endDate) {
-        DataRange<Long> keyRange = dataSharingDAO.queryKeyRange(tableName, keyColumn, dateColumn, beginDate, endDate);
-        checkKeyRange(tableName, keyRange);
-        return keyRange;
-    }
-
-    private void checkKeyRange(String tableName, DataRange<Long> keyRange) {
+    public DataRange<Long> keyRange(NamedParameterJdbcTemplate namedParameterJdbcTemplate, String tableName, String keyColumn) {
+        DataRange<Long> keyRange = dataSharingDAO.queryKeyRange(namedParameterJdbcTemplate, tableName, keyColumn);
         Assert.notNull(keyRange, "keyRange is null, tableName " + tableName);
-        Assert.isTrue(keyRange.getMin() != null && keyRange.getMax() != null && keyRange.getMax().compareTo(keyRange.getMin()) > 0,
-                "invalid keyRange [" + keyRange.getMin() + ", " + keyRange.getMax() + "], tableName " + tableName);
+        return keyRange;
+    }
+
+    @Override
+    public DataRange<Long> keyRange(NamedParameterJdbcTemplate namedParameterJdbcTemplate, String tableName, String keyColumn, String dateColumn, String beginDate, String endDate) {
+        DataRange<Long> keyRange = dataSharingDAO.queryKeyRange(namedParameterJdbcTemplate, tableName, keyColumn, dateColumn, beginDate, endDate);
+        Assert.notNull(keyRange, "keyRange is null, tableName " + tableName);
+        return keyRange;
     }
 
     @Override
@@ -162,6 +161,16 @@ public class DataMappingServiceImpl implements DataMappingService, InitializingB
                     default: format = null;
                 }
                 formatMap.put(item.getColumn(), format);
+
+                if(StringUtils.isNotBlank(item.getMapping())) {
+                    item.setValueMap(JSON.parseObject(item.getMapping(), Map.class));
+
+                }
+                if("mapValue".equalsIgnoreCase(item.getHandler())) {
+                    item.setDataItemHandler(new DataItemHandlers.DataItemMappingHandler());
+                } else if("overdueStatus".equalsIgnoreCase(item.getHandler())) {
+                    item.setDataItemHandler(new DataItemHandlers.SYOverdueStatusHandler());
+                }
             }
         }
         selectColumns.deleteCharAt(selectColumns.length() - 1);

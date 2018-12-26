@@ -1,5 +1,7 @@
 package org.stathry.commons.dao.impl;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.stathry.commons.mapper.impl.BatchDAOSkeleton;
 import org.stathry.commons.model.dto.DataRange;
 
@@ -13,12 +15,14 @@ import java.util.Map;
  */
 public interface DataSharingDAO {
 
-	List<Map<String, Object>> dynamicQueryDataList(String columns, String tableName, String keyColumn, Long id1, Long id2);
-	
-	DataRange<Long> queryKeyRange(String tableName, String keyColumn);
+	List<Map<String, Object>> dynamicQueryDataList(NamedParameterJdbcTemplate namedParameterJdbcTemplate, String columns, String tableName, String keyColumn, Long id1, Long id2);
 
-    DataRange<Long> queryKeyRange(String tableName, String keyColumn, String dateColumn, String beginDate, String endDate);
+	List<Map<String, Object>> queryDataListByOffset(NamedParameterJdbcTemplate namedParameterJdbcTemplate, String sql, long pageSize, long offset);
 
-    <T extends BatchDAOSkeleton.BatchInsertion> Integer jdbcBatchInsert(List<T> list, String sql, int batchSize);
+	DataRange<Long> queryKeyRange(NamedParameterJdbcTemplate namedParameterJdbcTemplate, String tableName, String keyColumn);
+
+    DataRange<Long> queryKeyRange(NamedParameterJdbcTemplate namedParameterJdbcTemplate, String tableName, String keyColumn, String dateColumn, String beginDate, String endDate);
+
+    <T extends BatchDAOSkeleton.BatchInsertion> Integer jdbcBatchInsert(JdbcTemplate jdbcTemplate, List<T> list, String sql, int batchSize);
 
 }

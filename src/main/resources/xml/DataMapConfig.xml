@@ -2,26 +2,48 @@
 <DataMapConfig>
 <DataMaps>
 
-	<DataMap dataDesc="数据1" dataGroup="ZZC_LOAN" queryType="all" fileType="txt" queryLastDaysOrMonths="1M"
-             perRequestMaxRecords="5000" encoding="utf-8" pageSize="1000" mainTableName="data_data1" keyColumn="id" dateColumn="" floatScale="2" datePattern="yyyy-MM-dd HH:mm:ss">
+	<DataMap dataDesc="中智诚-神月批核数据映射" dataGroup="SY_APV" queryType="all" fileType="json" queryLastDaysOrMonths="1D"
+             perRequestMaxRecords="5000" encoding="utf-8" pageSize="200" mainTableName="acct_loan" keyColumn="serialno" dateColumn="fdate1" floatScale="2" datePattern="yyyy-MM-dd HH:mm:ss">
 		<DataSegments>
-		  <DataSegment no="0" segmentDesc="数据段1" tableName="data_data1" optional="R" keyColumn="id">
+		  <DataSegment no="0" segmentDesc="神月批核数据段" tableName="acct_loan" optional="R" keyColumn="serialno">
               <DataItems>
-                  <DataItem no="0" fieldDesc="" field="f1" column="FIX_VALUE" type="1" optional="R" value="A1"/>
-                  <DataItem no="1" fieldDesc="" field="f2" column="FIX_VALUE" type="1" optional="R" value="ORG_CODE1"/>
-                  <DataItem no="2" fieldDesc="" field="fstr1" column="fstr1" type="1" optional="R" />
-                  <DataItem no="3" fieldDesc="" field="fint1" column="fint1" type="2" optional="R" />
-                  <DataItem no="3" fieldDesc="" field="fint2" column="fint2" type="2" optional="R" multiply="0.1"/>
-                  <DataItem no="4" fieldDesc="" field="ffloat1" column="ffloat1" type="3" optional="R" />
-                  <DataItem no="4" fieldDesc="" field="ffloat2" column="ffloat2" type="3" optional="R" multiply="10"/>
-                  <DataItem no="5" fieldDesc="" field="fdate1" column="fdate1" type="4" optional="R" format="yyyy-MM-dd HH:mm"/>
-                  <DataItem no="6" fieldDesc="" field="fdate2" column="fdate2" type="4" optional="R" format="yyyy/MM/dd HH:mm"/>
-                  <DataItem no="7" fieldDesc="" field="fdate3" column="fdate3" type="4" optional="R" format="yyyy_MM_dd HH:mm"/>
-                  <DataItem no="7" fieldDesc="" field="fdate4" column="fdate4" type="4" optional="R" format="yyyy-MM-dd" srcFormat="yyyyMMddHHmmss"/>
+                  <DataItem no="0" fieldDesc="姓名" field="name" column="FULLNAME" type="1" optional="true" />
+                  <DataItem no="1" fieldDesc="身份证号码" field="pid" column="CERTID" type="1" optional="true" />
+                  <DataItem no="2" fieldDesc="手机号码" field="mobile" column="PHONE" type="1" optional="true" />
+                  <DataItem no="3" fieldDesc="贷款编号" field="loanId" column="serialno" type="1" optional="true" />
+                  <DataItem no="4" fieldDesc="贷款类型标签" field="loanType" column="FIX_VALUE" type="1" optional="true" value="2"/>
+                  <DataItem no="5" fieldDesc="账户开户时间" field="accountOpenDate" column="inputdate" type="4" optional="true" srcFormat="yyyy/MM/dd" format="yyyy-MM-dd'T'HH:mm:ss"/>
+                  <DataItem no="6" fieldDesc="申请时间" field="applyDate" column="orderbegintime" type="4" optional="true" srcFormat="yyyy/MM/dd HH:mm:ss" format="yyyy-MM-dd'T'HH:mm:ss"/>
+                  <DataItem no="7" fieldDesc="放款时间" field="issueDate" column="putoutdate" type="4" optional="true" srcFormat="yyyy/MM/dd" format="yyyy-MM-dd'T'HH:mm:ss"/>
+                  <DataItem no="8" fieldDesc="贷款金额" field="loanAmount" column="amount" type="3" optional="true" />
+                  <DataItem no="9" fieldDesc="还款期数" field="totalTerm" column="termmonth" type="2" optional="true" />
+                  <DataItem no="10" fieldDesc="账单日类型" field="targetRepayDateType" column="FIX_VALUE" type="2" optional="false" value="1"/>
+                  <DataItem no="11" fieldDesc="每期贷款周期" field="termPeriod" column="FIX_VALUE" type="2" optional="true" value="30"/>
+                  <DataItem no="12" fieldDesc="首次还款日" field="firstRepaymentDate" column="nextduedate" type="4" optional="true" srcFormat="yyyy/MM/dd" format="yyyy-MM-dd"/>
               </DataItems>
 		  </DataSegment>
 		 </DataSegments>
 	</DataMap>
+
+    <DataMap dataDesc="中智诚-神月贷后数据映射" dataGroup="SY_LOAN" queryType="all" fileType="json" queryLastDaysOrMonths="1D"
+             perRequestMaxRecords="5000" encoding="utf-8" pageSize="200" mainTableName="acct_payment_schedule" keyColumn="id" dateColumn="fdate1" floatScale="2" datePattern="yyyy-MM-dd HH:mm:ss">
+        <DataSegments>
+            <DataSegment no="0" segmentDesc="神月贷后数据段" tableName="acct_payment_schedule" optional="R" keyColumn="id">
+                <DataItems>
+                    <DataItem no="0" fieldDesc="贷款编号" field="loanId" column="objectno" type="1" optional="true" />
+                    <DataItem no="1" fieldDesc="还款期数" field="termNo" column="periodno" type="2" optional="true" />
+                    <DataItem no="2" fieldDesc="本期还款状态" field="termStatus" column="status" type="1" optional="true" handler="mapValue" mapping="{'1':'normal', 'C':'normal', 'F':'normal', 'M1':'overdue', 'M2':'overdue', 'M3':'overdue', 'M3+':'overdue'}"/>
+                    <DataItem no="3" fieldDesc="本期应还款日" field="targetRepaymentDate" column="paydate" type="4" optional="true" srcFormat="yyyy/MM/dd" format="yyyy-MM-dd"/>
+                    <DataItem no="4" fieldDesc="实际还款时间" field="realRepaymentDate" column="finishdate" type="4" optional="false" srcFormat="yyyy/MM/dd" format="yyyy-MM-dd'T'HH:mm:ss"/>
+                    <DataItem no="5" fieldDesc="本期应还款额" field="targetRepayment" column="payprincipalamt" type="3" optional="true" />
+                    <DataItem no="6" fieldDesc="实际还款额" field="realRepayment" column="actualpayprincipalamt" type="3" optional="true" />
+                    <DataItem no="7" fieldDesc="逾期状态标签" field="overdueStatus" column="overdueStatus" type="1" optional="false" handler="overdueStatus"/>
+                    <DataItem no="8" fieldDesc="本期还款状态确认时间" field="statusConfirmAt" column="updatetimestamp" type="4" optional="true" format="yyyy-MM-dd'T'HH:mm:ss"/>
+                    <DataItem no="9" fieldDesc="本次贷款状态" field="loanStatus" column="loanstatus" type="1" optional="true" handler="mapValue" mapping="{'0':'open', '1':'open', '2':'closed', '3':'closed', '4':'closed'}"/>
+                </DataItems>
+            </DataSegment>
+        </DataSegments>
+    </DataMap>
 
 </DataMaps>
 </DataMapConfig>

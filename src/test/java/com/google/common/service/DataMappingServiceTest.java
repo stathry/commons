@@ -30,14 +30,14 @@ public class DataMappingServiceTest {
 
     @Test
     public void testAllIdRange() {
-        DataRange<Long> range = dataMappingService.keyRange("routing_option", "id");
+        DataRange<Long> range = dataMappingService.keyRange(null, "routing_option", "id");
         System.out.println(range);
         Assert.assertNotNull(range);
     }
 
     @Test
     public void testByDateIdRange() {
-        DataRange<Long> range = dataMappingService.keyRange("data_data1", "id", "fdate1", "2018-12-06 18:17:49", "2018-12-06 18:17:52");
+        DataRange<Long> range = dataMappingService.keyRange(null, "data_data1", "id", "fdate1", "2018-12-06 18:17:49", "2018-12-06 18:17:52");
         System.out.println(range);
         Assert.assertNotNull(range);
     }

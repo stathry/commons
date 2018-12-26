@@ -3,9 +3,6 @@ package org.stathry.commons.mapper.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.util.Assert;
-import org.stathry.commons.mapper.GenericMapper;
-import org.stathry.commons.utils.ApplicationContextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +15,10 @@ public class BatchDAOSkeleton {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BatchDAOSkeleton.class);
 
-    private static final JdbcTemplate jdbcTemplate;
-
-    static {
-        jdbcTemplate = ApplicationContextUtils.getBean("jdbcTemplate", JdbcTemplate.class);
-    }
-
-    public static <T extends BatchInsertion> Integer jdbcBatchInsert(List<T> list, String sql, int batchSize) {
-        Assert.notEmpty(list, "required list");
-        Assert.isTrue(batchSize > 0, "batchSize > 0");
+    public static <T extends BatchInsertion> Integer jdbcBatchInsert(JdbcTemplate jdbcTemplate, List<T> list, String sql, int batchSize) {
+        if(list == null || list.isEmpty()) {
+            return 0;
+        }
 
         int size = list.size();
         List<Object[]> args = new ArrayList<>(batchSize);
@@ -39,28 +31,11 @@ public class BatchDAOSkeleton {
                 jdbcTemplate.batchUpdate(sql, args);
                 LOGGER.info("insertList, index {}", i);
 
-                args = i == last ? args : new ArrayList<>(batchSize);
+                args = i == last ? args : new ArrayList<Object[]>(batchSize);
             }
 
         }
         return size;
-    }
-
-    public static <T, DAO extends GenericMapper> Integer mybatisBatchInsert(List<T> list, int batchSize, DAO dao) {
-        Assert.notEmpty(list, "required list");
-        Assert.isTrue(batchSize > 0, "batchSize > 0");
-
-        int batch = batchSize, size = list.size(), c = 0;
-        int to = size < batch ? size : batch;
-        String name = list.get(0).getClass().getSimpleName();
-        for (int from = 0; from < to && to <= size;) {
-            c += dao.insertAll(list.subList(from, to));
-            LOGGER.info("insert {}List, fromIndex {}, toIndex {}.", name, from, to);
-            from = to;
-            to += batch;
-            to = to > size ? size : to;
-        }
-        return c;
     }
 
     /**

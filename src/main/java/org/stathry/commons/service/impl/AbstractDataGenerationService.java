@@ -76,7 +76,7 @@ public abstract class AbstractDataGenerationService implements DataGenerationSer
 
     protected void mainGenerateDataFile() {
         DataMap dataMap0 = dataMap;
-        DataRange<Long> keyRange = dataMappingService.keyRange(dataMap);
+        DataRange<Long> keyRange = dataMappingService.keyRange(null, dataMap);
         RowDataWrapper dataWrapper = newDataWrapper(dataMap);
         DataFormatter formatter = newDataFormatter(dataMap);
 
@@ -96,7 +96,7 @@ public abstract class AbstractDataGenerationService implements DataGenerationSer
 
         for (; id1 <= max; ) {
             for (DataSegment segment : dataMap0.getDataSegments()) {
-                segmentDataList = dataSharingDAO.dynamicQueryDataList(segment.getSelectColumns(), segment.getTableName(), dataMap0.getKeyColumn(), id1, id2);
+                segmentDataList = dataSharingDAO.dynamicQueryDataList(null, segment.getSelectColumns(), segment.getTableName(), dataMap0.getKeyColumn(), id1, id2);
                 LOGGER.info("queryDataList, dataGroup {}, tableName {}, id between {} and {}.", dataGroup, segment.getTableName(), id1, id2);
 
                 if(segmentDataList == null || segmentDataList.isEmpty()) {

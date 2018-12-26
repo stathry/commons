@@ -45,62 +45,56 @@ public class GuavaTest {
     }
 
     @Test
-    public void testCacheByCacheLoader() throws ExecutionException {
-        int limit = 10000;
-        int capacity = 1_0000;
-        CacheLoader<Integer, String> loader = new CacheLoader<Integer, String>() {
-            @Override
-            public String load(Integer key) throws Exception {
-                return new StringBuilder("nv").append(key).toString();
-            }
-        };
-
-        LoadingCache<Integer, String> cache = CacheBuilder.newBuilder().concurrencyLevel(8).maximumSize(capacity)
-                .expireAfterWrite(10, TimeUnit.SECONDS).initialCapacity(capacity).recordStats().build(loader);
-
-        for (int i = 0; i < limit; i++) {
-            cache.put(i, "v" + i);
-        }
-        System.out.println("size1:" + cache.size());
-        System.out.println(cache.size());
-
-        int n;
-        Random random = new SecureRandom();
-        for (int i = 0; i < 1000; i++) {
-            n = random.nextInt(10000);
-            System.out.println("k:" + n + ", v=" + cache.get(n));
-        }
-        System.out.println("size2:" + cache.size());
-
-        System.out.println(cache.stats());
+    public void testCachePutGet() {
+        Cache<Integer, String> cache = CacheBuilder.newBuilder().initialCapacity(2).maximumSize(16).concurrencyLevel(2).build();
+        cache.put(1, "v1");
+        Assert.assertEquals("v1",cache.getIfPresent(1));
+        Assert.assertNull(cache.getIfPresent(2));
     }
 
     @Test
-    public void testCacheByCall() throws ExecutionException {
-        int limit = 10000;
+    public void testCachePutLoader() throws ExecutionException {
+        CacheLoader<Integer, String> loader = new CacheLoader<Integer, String>() {
+            @Override
+            public String load(Integer key) throws Exception {
+                return new StringBuilder("loader-").append(key).toString();
+            }
+        };
+
+        LoadingCache<Integer, String> cache = CacheBuilder.newBuilder().initialCapacity(2).maximumSize(16).concurrencyLevel(2).build(loader);
+
+        cache.put(1, "v1");
+        Assert.assertEquals("v1",cache.getIfPresent(1));
+        Assert.assertNull(cache.getIfPresent(2));
+        Assert.assertEquals("loader-3", cache.get(3));
+        System.out.println(cache.get(6));
+        System.out.println(cache.get(8));
+    }
+
+    @Test
+    public void testStatCacheQuery() {
+        int limit = 10_0000;
         int capacity = 1_0000;
 
-        Cache<Integer, String> cache = CacheBuilder.newBuilder().concurrencyLevel(8).maximumSize(capacity)
-                .expireAfterWrite(10, TimeUnit.SECONDS).initialCapacity(capacity).recordStats().build();
+        Cache<Integer, String> cache = CacheBuilder.newBuilder().concurrencyLevel(8).maximumSize(capacity).initialCapacity(capacity)
+                .expireAfterWrite(30, TimeUnit.SECONDS).recordStats().build();
 
         for (int i = 0; i < limit; i++) {
             cache.put(i, "v" + i);
         }
         System.out.println("size1:" + cache.size());
-        System.out.println(cache.size());
 
-        int n;
-        Random random = new SecureRandom();
-        for (int i = 0; i < 1000; i++) {
-            n = random.nextInt(10000);
-            final int fn = n;
-            System.out.println("k:" + n + ", v=" + cache.get(fn, () -> {
-                return "ncv" + fn;
-            }));
+        for (int i = 0; i < limit; i++) {
+            final int fn = i;
+            cache.getIfPresent(fn);
         }
-        System.out.println("size2:" + cache.size());
 
+        System.out.println("size2:" + cache.size());
         System.out.println(cache.stats());
+//        hitCount=10000, missCount=90000, loadSuccessCount=0, loadExceptionCount=0, totalLoadTime=0, evictionCount=90000
+//        hitCount-命中数, missCount-未命中数, evictionCount-淘汰数(驱逐数)
     }
+
+
 
 }

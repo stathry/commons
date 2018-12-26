@@ -49,7 +49,7 @@ public class BatchDAOTest {
             o.setOrderStatus(i % 4);
             list.add(o);
         }
-        int n = BatchDAOSkeleton.jdbcBatchInsert(list, sql, batchSize);
+        int n = BatchDAOSkeleton.jdbcBatchInsert(null, list, sql, batchSize);
         Assert.assertEquals(limit, n);
     }
 

@@ -2,7 +2,6 @@ package org.stathry.commons.dao.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -16,24 +15,20 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 共享数据访问
+ * 通用共享数据访问
  * @author dongdaiming
  */
-//@Repository
+@Repository
 public class DataSharingDAOImpl implements DataSharingDAO {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataSharingDAOImpl.class);
 	
-    @Autowired
-    protected NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    @Autowired
-    protected JdbcTemplate jdbcTemplate;
-    
     private static final String RANGE_SQL = " SELECT MIN(%s) minKey, MAX(%s) maxKey FROM %s";
     private static final String RANGE_SQL_DATE = " SELECT MIN(%s) minKey, MAX(%s) maxKey FROM %s WHERE %s >= '%s' and %s < '%s'";
 
+
 	@Override
-	public List<Map<String, Object>> dynamicQueryDataList(String columns, String tableName, String keyColumn, Long id1, Long id2) {
+	public List<Map<String, Object>> dynamicQueryDataList(NamedParameterJdbcTemplate namedParameterJdbcTemplate, String columns, String tableName,  String keyColumn, Long id1, Long id2) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT ").append(columns).append(" FROM ").append(tableName)
 			.append(" WHERE ").append(keyColumn).append(" BETWEEN :id1 AND :id2 ");
@@ -49,19 +44,34 @@ public class DataSharingDAOImpl implements DataSharingDAO {
 		list = list == null ? new ArrayList<Map<String, Object>>(0) : list;
 		return list;
 		}
-	
-	@Override
-	public DataRange<Long> queryKeyRange(String tableName, String keyColumn) {
+
+    @Override
+    public List<Map<String, Object>> queryDataListByOffset(NamedParameterJdbcTemplate namedParameterJdbcTemplate, String sql, long pageSize, long offset) {
+        Map<String, Object> paramMap = new HashMap<>(2);
+        paramMap.put("pageSize", pageSize);
+        paramMap.put("pageOffset", offset);
+        List<Map<String, Object>> list = null;
+        try {
+            list = namedParameterJdbcTemplate.queryForList(sql, paramMap);
+        } catch (DataAccessException e) {
+            LOGGER.error("queryDataListByOffset error.", e);
+        }
+        list = list == null ? new ArrayList<Map<String, Object>>(0) : list;
+        return list;
+    }
+
+    @Override
+	public DataRange<Long> queryKeyRange(NamedParameterJdbcTemplate namedParameterJdbcTemplate, String tableName, String keyColumn) {
         return parseKeyRange(namedParameterJdbcTemplate.queryForMap(String.format(RANGE_SQL, keyColumn, keyColumn, tableName), new HashMap<String, Object>(0)));
 	}
 
     @Override
-    public DataRange<Long> queryKeyRange(String tableName, String keyColumn, String dateColumn, String beginDate, String endDate) {
+    public DataRange<Long> queryKeyRange(NamedParameterJdbcTemplate namedParameterJdbcTemplate, String tableName, String keyColumn, String dateColumn, String beginDate, String endDate) {
         return parseKeyRange(namedParameterJdbcTemplate.queryForMap(String.format(RANGE_SQL_DATE, keyColumn, keyColumn, tableName, dateColumn, beginDate, dateColumn, endDate), new HashMap<String, Object>(0)));
     }
 
     private DataRange<Long> parseKeyRange(Map<String, Object> rangeMap) {
-        Long min = 1L, max = 2000L;
+        Long min = 1L, max = 0L;
         if (rangeMap != null) {
             Object minKey = rangeMap.get("minKey");
             Object maxKey = rangeMap.get("maxKey");
@@ -75,8 +85,8 @@ public class DataSharingDAOImpl implements DataSharingDAO {
     }
 
     @Override
-    public <T extends BatchDAOSkeleton.BatchInsertion> Integer jdbcBatchInsert(List<T> list, String sql, int batchSize) {
-        return BatchDAOSkeleton.jdbcBatchInsert(list, sql, batchSize);
+    public <T extends BatchDAOSkeleton.BatchInsertion> Integer jdbcBatchInsert(JdbcTemplate jdbcTemplate, List<T> list, String sql, int batchSize) {
+        return BatchDAOSkeleton.jdbcBatchInsert(jdbcTemplate, list, sql, batchSize);
     }
 
 }

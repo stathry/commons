@@ -1,5 +1,6 @@
 package org.stathry.commons.service;
 
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.stathry.commons.model.dto.DataMap;
 import org.stathry.commons.model.dto.DataRange;
 
@@ -11,10 +12,10 @@ public interface DataMappingService {
 
     DataMap dataMap(String dataGroup);
 
-    DataRange<Long> keyRange(DataMap dataMap);
+    DataRange<Long> keyRange(NamedParameterJdbcTemplate namedParameterJdbcTemplate, DataMap dataMap);
 
-    DataRange<Long> keyRange(String tableName, String keyColumn);
+    DataRange<Long> keyRange(NamedParameterJdbcTemplate namedParameterJdbcTemplate, String tableName, String keyColumn);
 
-    DataRange<Long> keyRange(String tableName, String keyColumn, String dateColumn, String beginDate, String endDate);
+    DataRange<Long> keyRange(NamedParameterJdbcTemplate namedParameterJdbcTemplate, String tableName, String keyColumn, String dateColumn, String beginDate, String endDate);
 
 }

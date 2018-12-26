@@ -3,6 +3,7 @@ package org.stathry.commons.model.dto;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import java.util.Map;
 
 /**
  * 数据项配置
@@ -34,7 +35,7 @@ public class DataItem {
 
 	/** 字段选项（M,O,C） */
 	@XmlAttribute(name = "optional")
-	private String optional;
+	private boolean optional;
 
 	/** 值(与column配合使用) */
 	@XmlAttribute(name = "value")
@@ -53,6 +54,13 @@ public class DataItem {
     /** 值(与column配合使用) */
     @XmlAttribute(name = "format")
     private String format;
+    @XmlAttribute(name = "mapping")
+    private String mapping;
+    @XmlAttribute(name = "handler")
+    private String handler;
+
+    private Map<Object, Object> valueMap = null;
+    private Object dataItemHandler = new DataItemHandlers.DefaultDataItemHandler();
 
     @Override
     public String toString() {
@@ -61,9 +69,13 @@ public class DataItem {
                 ", column='" + column + '\'' +
                 ", fieldDesc='" + fieldDesc + '\'' +
                 ", field='" + field + '\'' +
-                ", type='" + type + '\'' +
-                ", optional='" + optional + '\'' +
+                ", type=" + type +
+                ", optional=" + optional +
                 ", value='" + value + '\'' +
+                ", multiply=" + multiply +
+                ", floatScale=" + floatScale +
+                ", srcFormat='" + srcFormat + '\'' +
+                ", format='" + format + '\'' +
                 '}';
     }
 
@@ -107,11 +119,11 @@ public class DataItem {
         this.type = type;
     }
 
-    public String getOptional() {
+    public boolean isOptional() {
         return optional;
     }
 
-    public void setOptional(String optional) {
+    public void setOptional(boolean optional) {
         this.optional = optional;
     }
 
@@ -153,5 +165,36 @@ public class DataItem {
 
     public void setFormat(String format) {
         this.format = format;
+    }
+    public String getMapping() {
+        return mapping;
+    }
+
+    public void setMapping(String mapping) {
+        this.mapping = mapping;
+    }
+
+    public Map<Object, Object> getValueMap() {
+        return valueMap;
+    }
+
+    public void setValueMap(Map<Object, Object> valueMap) {
+        this.valueMap = valueMap;
+    }
+
+    public DataItemHandler getDataItemHandler() {
+        return (DataItemHandler) dataItemHandler;
+    }
+
+    public void setDataItemHandler(Object dataItemHandler) {
+        this.dataItemHandler = dataItemHandler;
+    }
+
+    public String getHandler() {
+        return handler;
+    }
+
+    public void setHandler(String handler) {
+        this.handler = handler;
     }
 }
