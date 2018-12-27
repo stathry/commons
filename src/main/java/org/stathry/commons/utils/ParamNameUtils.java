@@ -1,4 +1,4 @@
-package org.junit4;
+package org.stathry.commons.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,4 +1,4 @@
-package org.junit4;
+package org.test.junit4;
 
 import com.alibaba.fastjson.JSON;
 import org.junit.After;
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
- * BeforeAfterRunOrderTest
+ * TestNGRunOrderTest
  * Created by dongdaiming on 2018-12-26 17:00
  */
 public class BeforeAfterRunOrderTest {

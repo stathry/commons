@@ -1,4 +1,4 @@
-package org.junit4;
+package org.test.junit4;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -8,6 +8,6 @@ import org.junit.runners.Suite;
  * Created by dongdaiming on 2018-12-26 17:54
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({BeforeAfterRunOrderTest.class, AssertTest.class})
+@Suite.SuiteClasses({BeforeAfterRunOrderTest.class, AssertTest.class, ParameterizedTest.class, FeatureTest.class})
 public class SuiteTest {
 }

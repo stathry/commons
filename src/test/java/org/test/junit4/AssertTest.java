@@ -1,13 +1,14 @@
-package org.junit4;
+package org.test.junit4;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
+import org.stathry.commons.utils.ParamNameUtils;
 
 import java.util.Arrays;
 
 /**
- * AssertTest
+ * TestNGAssertTest
  * Created by dongdaiming on 2018-12-26 17:58
  */
 public class AssertTest {

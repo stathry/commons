@@ -3,10 +3,12 @@ package org.stathry.commons.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * TODO
@@ -14,6 +16,14 @@ import java.io.IOException;
  * @author dongdaiming
  */
 public class FileUtilsTest {
+
+    @Test
+    public void testReadCSV() throws IOException {
+        InputStream in = getClass().getResourceAsStream("/excel/testCase1.csv");
+        String str = IOUtils.toString(in, "utf-8");
+        IOUtils.closeQuietly(in);
+        System.out.println(str);
+    }
 
     @Test
     public void testReadJSONStr() throws IOException {

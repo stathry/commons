@@ -1,9 +1,10 @@
-package org.junit4;
+package org.test.junit4;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.stathry.commons.utils.ParamNameUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
