@@ -18,7 +18,7 @@ public class MapSortUtils {
     private MapSortUtils() {
     }
 
-    public static Map<String, String> toStringMap(Map<String, ?> map) {
+    public static Map<String, String> toNewStringMap(Map<String, ?> map) {
         if (map == null || map.isEmpty()) {
             return new HashMap<>();
         }
@@ -29,6 +29,23 @@ public class MapSortUtils {
             strMap.put(e.getKey(), v == null ? "" : v.toString());
         }
         return strMap;
+    }
+
+    public static Map<String, String> toStringMap(Map<String, ?> map) {
+        if (map == null || map.isEmpty()) {
+            return new HashMap<>();
+        }
+        Map<String, String> strMap = (Map) map;
+        Object v;
+        String str;
+        for (Map.Entry<String, ?> e : map.entrySet()) {
+            v = e.getValue();
+            if (v == null || !(v instanceof String)) {
+                str = v == null ? "" : v.toString();
+                strMap.put(e.getKey(), str);
+            }
+        }
+        return (Map<String, String>) map;
     }
 
     /**

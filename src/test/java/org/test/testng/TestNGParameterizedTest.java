@@ -32,8 +32,6 @@ public class TestNGParameterizedTest {
 
     @Test(dataProvider = "toUnderNameParams")
     public void testToUnderName(String result, String param) {
-        System.out.println("running " + Thread.currentThread().getStackTrace()[1].getMethodName()
-                + ", at " + DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
         Assert.assertEquals(result, ParamNameUtils.toUnderName(param));
         System.out.println("param:" + param + ", exp:" + result);
     }
@@ -74,9 +72,6 @@ public class TestNGParameterizedTest {
 
     @Test(dataProvider = "toUnderNameParams-csv")
     public void testToUnderName2(String result, String param) {
-        System.out.println("running " + Thread.currentThread().getStackTrace()[1].getMethodName()
-                + ", at " + DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-
         Assert.assertEquals(result, ParamNameUtils.toUnderName(param));
 
         System.out.println("param:" + param + ", exp:" + result);
@@ -96,10 +91,19 @@ public class TestNGParameterizedTest {
 
     @Test(dataProvider = "case2")
     public void testToUnderNameCase2(String result, String param) {
-//        System.out.println("running " + Thread.currentThread().getStackTrace()[1].getMethodName()
-//                + ", at " + DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss.SSS"));
-
         Assert.assertEquals(result, ParamNameUtils.toUnderName(param));
+
+        System.out.println("param:" + param + ", exp:" + result);
+    }
+
+    @DataProvider(name = "case3")
+    public Object[][] csvParamsCase3() throws IOException {
+        return FileUtils.readTextData("/excel/case2.csv", "case3");
+    }
+
+    @Test(dataProvider = "case3")
+    public void testToUnderNameCase3(String param, String result) {
+        Assert.assertEquals(Integer.parseInt(result), param.length());
 
         System.out.println("param:" + param + ", exp:" + result);
     }
