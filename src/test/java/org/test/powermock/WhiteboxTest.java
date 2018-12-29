@@ -37,4 +37,13 @@ public class WhiteboxTest {
         Whitebox.setInternalState(ArrayList.class, "EMPTY_ELEMENTDATA", objects);
         Assert.assertArrayEquals(objects, Whitebox.getInternalState(ArrayList.class, "EMPTY_ELEMENTDATA"));
     }
+
+    @Test
+    public void testInvokePrivateMethod() throws Exception {
+        Assert.assertEquals(2147483639, (int)Whitebox.invokeMethod(ArrayList.class, "hugeCapacity", (Integer)100));
+
+        ArrayList list = new ArrayList();
+        list.add(2019);
+        Assert.assertEquals(2019, (int)Whitebox.invokeMethod(list, "elementData", (Integer)0));
+    }
 }
