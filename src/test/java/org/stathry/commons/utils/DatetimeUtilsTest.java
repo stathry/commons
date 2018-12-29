@@ -1,6 +1,7 @@
 package org.stathry.commons.utils;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * TODO
+ * DatetimeUtilsTest
  *
  * @date 2018年1月30日
  */
@@ -20,6 +21,11 @@ public class DatetimeUtilsTest {
     private static final String FMT = "yyyy-MM-dd HH:mm:ss";
     private static final String FMT_MON = "yyyy-MM";
     private static final String FMT_YEAR = "yyyy";
+
+    @Test
+    public void testCalDays() throws ParseException {
+        System.out.println(timeInterval("2018-11-11", "2018-12-29", "yyyy-MM-dd", TimeUnit.DAYS));
+    }
 
     @Test
     public void testInterval() throws ParseException {

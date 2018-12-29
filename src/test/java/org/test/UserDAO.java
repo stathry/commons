@@ -1,4 +1,4 @@
-package org.test.mockito;
+package org.test;
 
 /**
  * UserDAO

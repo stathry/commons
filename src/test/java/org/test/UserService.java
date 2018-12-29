@@ -1,4 +1,4 @@
-package org.test.mockito;
+package org.test;
 
 /**
  * UserService
@@ -7,4 +7,6 @@ package org.test.mockito;
 public interface UserService {
 
     boolean login(String name, String pwd);
+
+    String reg(String name, String pwd);
 }

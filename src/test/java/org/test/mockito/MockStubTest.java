@@ -155,15 +155,35 @@ public class MockStubTest {
         Assert.assertEquals("Y", map.get(80));
     }
 
-    @Test(expected = Exception.class)
-    public void testSpy1() {
-        List<Integer> list = Mockito.mock(List.class);
-        Assert.assertNull(list.get(0));
-        //
-        Mockito.when(list.add(Matchers.anyInt())).thenCallRealMethod();
+    // spy可用于局部模拟(模拟指定参数时返回值，未指定参数时则执行真实的方法实现)
+    @Test
+    public void testPartMock() {
+        List<Integer> list0 = new ArrayList<>();
+        List<Integer> list = Mockito.spy(list0);
+        Mockito.when(list.size()).thenReturn(8);
 
-        List<Integer> spy = Mockito.spy(new ArrayList<>());
-        spy.get(0);
+        Assert.assertEquals(8, list.size());
+
+        Exception e = null;
+        try {
+            // when的时候就会调用真实的方法，所以会抛异常
+            Mockito.when(list.get(0)).thenReturn(8);
+        } catch (Exception e1) {
+            e = e1;
+        }
+        Assert.assertNotNull(e);
+        Assert.assertEquals(e.getClass(), IndexOutOfBoundsException.class);
+
+        list.add(666);
+        Assert.assertEquals(666, list.get(0).intValue());
+    }
+
+    @Test
+    public void testSpy() {
+        List<Integer> spyList = Mockito.spy(new ArrayList<>());
+        Mockito.when(spyList.get(0)).thenReturn(666);
+        Assert.assertEquals(666, spyList.get(0).intValue());
+        spyList.get(1);
     }
 
     @Test

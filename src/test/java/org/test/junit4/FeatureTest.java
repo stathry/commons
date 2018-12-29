@@ -20,15 +20,15 @@ public class FeatureTest {
         System.out.println("testIgnoreTest");
     }
 
-    @Test(timeout = 15_000)
+    @Test(timeout = 2_000)
     public void testNotTimeout() throws InterruptedException {
-        Thread.sleep(10_000);
+        Thread.sleep(1_000);
         System.out.println("testNotTimeout");
     }
 
-    @Test(timeout = 5_000)
+//    @Test(timeout = 1_000)
     public void testTimeout() throws InterruptedException {
-        Thread.sleep(10_000);
+        Thread.sleep(2_000);
         System.out.println("testTimeout");
     }
 }

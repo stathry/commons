@@ -1,4 +1,4 @@
-package org.test.mockito;
+package org.test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,15 @@ public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
     @Override
     public boolean login(String name, String pwd) {
-        System.out.println("userService.login, name " + name + ", pwd " + pwd);
+        System.out.println("userService.login, name " + name + ", pwd " + pwd + ", id " + IdUtils.id());
         return userDAO.login(name, pwd);
+    }
+
+    @Override
+    public String reg(String name, String pwd) {
+        String id = IdUtils.id();
+        System.out.println("userService.reg, name " + name + ", pwd " + pwd + ", id " + id);
+        return id;
     }
 
     public void setUserDAO(UserDAO userDAO) {
