@@ -22,9 +22,10 @@ public class LogbackUtilsTest {
     public void testDebugExec() {
         org.slf4j.Logger log = LoggerFactory.getLogger(LogbackUtilsTest.class);
         log.info("info params1 is {}.", "p1");
-        Assert.assertFalse(log.isDebugEnabled());
+//        Assert.assertFalse(log.isDebugEnabled());
         // 用于获取记录debug参数的方法会执行
         log.debug("debug params2 is {}.", debugParamsM());
+        log.debug("debug params3 is {}.", "rp3");
     }
 
     private String debugParamsM() {

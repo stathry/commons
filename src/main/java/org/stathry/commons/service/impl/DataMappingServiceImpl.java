@@ -111,6 +111,10 @@ public class DataMappingServiceImpl implements DataMappingService, InitializingB
 
     @Override
     public void afterPropertiesSet() throws Exception {
+//        init();
+    }
+
+    private void init() {
         InputStream in = DataMappingServiceImpl.class.getResourceAsStream(CONFIG_FILENAME);
         dataMapConfig = JAXBUtils.xmlFileToBean(DataMapConfig.class, in);
         IOUtils.closeQuietly(in);

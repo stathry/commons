@@ -24,7 +24,7 @@ public class DatetimeUtilsTest {
 
     @Test
     public void testCalDays() throws ParseException {
-        System.out.println(timeInterval("2018-11-11", "2018-12-29", "yyyy-MM-dd", TimeUnit.DAYS));
+        System.out.println(timeInterval("2018-11-18", "2019-01-10", "yyyy-MM-dd", TimeUnit.DAYS));
     }
 
     @Test

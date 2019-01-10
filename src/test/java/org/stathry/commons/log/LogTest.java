@@ -16,10 +16,10 @@ import java.util.concurrent.TimeUnit;
 public class LogTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogTest.class);
-    private static final Logger BIZ_LOG1 = LoggerFactory.getLogger("biz1Log");
 
     @Test
     public void testLogToCustFile() {
+        final Logger BIZ_LOG1 = LoggerFactory.getLogger("biz1Log");
         BIZ_LOG1.debug("hello, {}.", new MSG());// 无需输出时不会把参数转换成String,即不会执行toString
 
         BIZ_LOG1.info("hello, {}.", "flint");
@@ -30,9 +30,15 @@ public class LogTest {
     }
 
     @Test
-    public void test1() {
-        LOGGER.debug("hello, {}.", new MSG());// 无需输出时不会把参数转换成String,即不会执行toString
+    public void testParamsToString() {
+        // 无需输出时不会把参数转换成String,即不会执行toString
+//        LOGGER.debug("hello, {}.", new MSG());
 
+        LOGGER.info("hello2, {}.", new MSG());
+    }
+
+    @Test
+    public void testMultiParamsType() {
         LOGGER.info("hello, {}.", "flint");
         LOGGER.info("hello, {}, {}, {}.", "flint", 666, new Date());
 
@@ -43,13 +49,13 @@ public class LogTest {
     private static class MSG {
 
         public MSG() {
-            System.out.println("MSG:CONSTRUCTOR");
+            LOGGER.info("MSG:CONSTRUCTOR running.");
 
         }
 
         @Override
         public String toString() {
-            System.out.println("MGS:formatFraction");
+            System.out.println("MGS:toString running.");
             return super.toString();
         }
     }

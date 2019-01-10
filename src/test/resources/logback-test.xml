@@ -8,7 +8,7 @@
               value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%thread] [%logger{64}:%line] - %msg%n"/>
     <property name="CHARSET" value="UTF-8"/>
     <property name="LOG_HOME" value="logs"/>
-    <property name="LOG_NAME" value="app"/>
+    <property name="LOG_NAME" value="commons_normal_main"/>
 
     <appender name="C" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -22,7 +22,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <FileNamePattern>${LOG_HOME}/${LOG_NAME}-%d{yyyyMMdd}-%i.log</FileNamePattern>
             <maxFileSize>20MB</maxFileSize>
-            <maxHistory>30</maxHistory>
+            <maxHistory>3</maxHistory>
             <totalSizeCap>20GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
@@ -31,29 +31,18 @@
         </encoder>
     </appender>
 
-    <appender name="BIZ1" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${LOG_HOME}/biz1.log</File>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <FileNamePattern>${LOG_HOME}/biz1-%d{yyyyMMdd}-%i.log</FileNamePattern>
-            <maxFileSize>20MB</maxFileSize>
-            <maxHistory>30</maxHistory>
-            <totalSizeCap>20GB</totalSizeCap>
-        </rollingPolicy>
-        <encoder>
-            <pattern>${LOG_PATTERN_FILE}</pattern>
-            <charset>${CHARSET}</charset>
-        </encoder>
+    <appender name ="ARF" class= "ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold >0</discardingThreshold>
+        <queueSize>5120</queueSize>
+        <appender-ref ref ="RF"/>
     </appender>
 
-
-    <logger name="biz1Log" level="INFO" additivity="false">
-        <appender-ref ref="BIZ1"/>
-    </logger>
+    <logger name="org.stathry.commons" level="DEBUG" additivity="true"/>
+    <logger name="org.springframework.jdbc.core.JdbcTemplate" level="INFO" additivity="true"/>
 
     <root level="INFO">
         <appender-ref ref="C"/>
-        <appender-ref ref="RF"/>
-        <!--<appender-ref ref="ARF" />-->
+        <appender-ref ref="ARF" />
     </root>
 
 </configuration>
