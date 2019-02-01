@@ -13,7 +13,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Executors;
 
 /**
  * TODO
@@ -25,6 +27,38 @@ public class JdbcTemplateTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Test
+    public void testSelectForUpdate() {
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                selectForUpdate();
+            }
+        });
+        t1.start();
+
+        Thread t2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                selectForUpdate();
+            }
+        });
+        t2.start();
+
+        while (t1.isAlive() || t2.isAlive()) {
+        }
+    }
+
+    private void selectForUpdate() {
+        long startTime = System.currentTimeMillis();
+        String s = "select * from city where id = ? for update";
+        Map<String, Object> map = jdbcTemplate.queryForMap(s, 15491);
+        String th = Thread.currentThread().getName();
+        String time = DateFormatUtils.format(new Date(), "HH:mm:ss.SSS");
+        System.out.println(th + ", at " + time + ",cost time " + (System.currentTimeMillis() - startTime) + "--" + map);
+    }
+
 
     @Test
     public void testSave() {

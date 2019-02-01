@@ -70,6 +70,9 @@ public class DatetimeUtilsTest {
 
     @Test
     public void testParse() throws ParseException {
+        Date date0 = DatetimeUtils.parse("2019-01-01", "yyyy-MM-dd");
+        System.out.println(date0.getTime());
+
         Date date = DatetimeUtils.parse("2018-01-30", "yyyy-MM-dd");
         Assert.assertEquals("2018-01-30 00:00:00", DateFormatUtils.format(date, FMT));
 

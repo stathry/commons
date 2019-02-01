@@ -1,12 +1,10 @@
 package org.stathry.commons.utils;
 
 import com.google.common.math.IntMath;
+import com.google.common.math.LongMath;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.stathry.commons.bean.RedisManager;
 
 import java.util.Map;
@@ -15,12 +13,91 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring-context.xml")
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration("classpath:spring-context.xml")
 public class SnowflakeTest {
 
     @Autowired
     private RedisManager redisManager;
+
+    @Test
+    public void testLeftShiftRange() {
+        System.out.println(Long.MAX_VALUE);
+        long timestamp = DatetimeUtils.parseQuietly("2210-01-01", "yyyy-MM-dd").getTime();
+        long epoch = DatetimeUtils.parseQuietly("2010-01-01", "yyyy-MM-dd").getTime();
+        long interval = timestamp - epoch;
+        System.out.println("interval:" + interval);
+        System.out.println(3155673600000L << 20L);
+        System.out.println(3155673600000L << 20L);
+    }
+
+    @Test
+    public void testLeftShift() {
+        final long timestampBits = 41L;
+        final long datacenterIdBits = 4L;
+        final long workerIdBits = 4L;
+        final long sequenceBits = 12L;
+
+        final long timestampShift = sequenceBits + datacenterIdBits + workerIdBits;
+        final long datacenterIdShift = sequenceBits + workerIdBits;
+        final long workerIdShift = sequenceBits;
+
+        long timestamp = DatetimeUtils.parseQuietly("2110-01-01", "yyyy-MM-dd").getTime();
+//        long timestamp = DatetimeUtils.parseQuietly("2019-01-01", "yyyy-MM-dd").getTime();
+        long epoch = DatetimeUtils.parseQuietly("2010-01-01", "yyyy-MM-dd").getTime();
+        long datacenterId = 1L;
+        long workerId = 2L;
+        long sequence = 0;
+
+        long result = ((timestamp - epoch) << timestampShift) | //
+                (datacenterId << datacenterIdShift) | //
+                (workerId << workerIdShift) | // new line for nice looking
+                sequence;
+        System.out.println("timestamp - epoch=" + (timestamp - epoch));
+        System.out.println("timestampShift=" + timestampShift);
+        System.out.println("(timestamp - epoch) << timestampShift=" + ((timestamp - epoch) << timestampShift));
+        System.out.println(result);
+    }
+
+    @Test
+    public void testExtSnowflake() {
+        // 可调整各段所占比特位位数，或在尾端追加递增序列来进行扩展
+        final long sequenceBits = 20L;
+        final long maxSequence = -1L ^ (-1L << sequenceBits); // 2^12-1
+        System.out.println(maxSequence);
+
+        Snowflake snowflake1 = new Snowflake(1, 1);
+        Snowflake2 snowflake2 = new Snowflake2(1, 1);
+        System.out.println(snowflake1.nextId());
+        System.out.println();
+
+        for (int i = 0; i < 10; i++) {
+            System.out.println(snowflake2.nextId());
+        }
+    }
+
+    @Test
+    public void testMask() {
+        long seqMask1 = LongMath.pow(2, 12) - 1; //计算12位能耐存储的最大正整数，相当于：2^12-1 = 4095
+        System.out.println("seqMask1: "+seqMask1);
+
+        long seqMask = -1L ^ (-1L << 12L); //计算12位能耐存储的最大正整数，相当于：2^12-1 = 4095
+        System.out.println("seqMask: "+seqMask);
+        System.out.println(1L & seqMask);
+        System.out.println(2L & seqMask);
+        System.out.println(3L & seqMask);
+        System.out.println(4L & seqMask);
+        System.out.println(4095L & seqMask);
+        System.out.println(4096L & seqMask);
+        System.out.println(4097L & seqMask);
+        System.out.println(4098L & seqMask);
+    }
+
+    @Test
+    public void testMaxIntUseBits() {
+        System.out.println(IntMath.pow(2, 5) - 1);
+        System.out.println(IntMath.pow(2, 12) - 1);
+    }
 
     @Test
     public void testIncDataCenter() throws InterruptedException {
