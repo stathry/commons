@@ -1,13 +1,13 @@
-package org.test.junit4;
+package org.teststandard.testng;
 
 import com.alibaba.fastjson.JSON;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -18,9 +18,9 @@ import java.util.concurrent.atomic.LongAdder;
  * TestNGRunOrderTest
  * Created by dongdaiming on 2018-12-26 17:00
  */
-public class BeforeAfterRunOrderTest {
+public class TestNGRunOrderTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BeforeAfterRunOrderTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestNGRunOrderTest.class);
 
     private static Map<String, Date> data = new LinkedHashMap<>();
     private static LongAdder counter = new LongAdder();
@@ -31,12 +31,12 @@ public class BeforeAfterRunOrderTest {
     }
 
     @BeforeClass
-    public static void globalInit() {
+    public void globalInit() {
         LOGGER.info("run globalInit...");
         putData("globalInit");
     }
 
-    @Before
+    @BeforeMethod
     public void methodInit() {
         LOGGER.info("run methodInit...");
         putData("methodInit");
@@ -54,7 +54,7 @@ public class BeforeAfterRunOrderTest {
         putData("testMethod2");
     }
 
-    @After
+    @AfterMethod
     public void methodDestroy() {
         LOGGER.info("run methodDestroy...");
         putData("methodDestroy");

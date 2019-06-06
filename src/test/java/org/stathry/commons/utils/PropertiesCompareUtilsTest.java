@@ -46,16 +46,16 @@ public class PropertiesCompareUtilsTest {
 
     @Test
     public void testCompareProperties() throws IOException {
-//        boolean allSame = compareProperties("/temp/galaxyETL-conf-prod.properties", "/temp/galaxyETL-conf-test.properties");
+//        boolean allSame = compareProperties("/temp/galaxyETL-conf-prod.properties", "/temp/galaxyETL-conf-teststandard.properties");
 //        boolean allSame = compareProperties("/temp/510/galaxy-dev-conf.properties", "/temp/510/galaxy-prd-conf.properties");
-        boolean allSame = compareProperties("/temp/816/conf-test.properties", "/temp/816/conf-prod.properties");
+        boolean allSame = compareProperties("/temp/816/conf-teststandard.properties", "/temp/816/conf-prod.properties");
         System.out.println();
         System.out.println("allSame=" + allSame);
     }
 
     @Test
     public void testComparePropertiesKey() throws IOException {
-        Properties prop1 = PropertiesLoaderUtils.loadProperties(new FileSystemResource("/temp/816/conf-test.properties"));
+        Properties prop1 = PropertiesLoaderUtils.loadProperties(new FileSystemResource("/temp/816/conf-teststandard.properties"));
         Properties prop2 = PropertiesLoaderUtils.loadProperties(new FileSystemResource("/temp/816/conf-prod.properties"));
         MapDifference r = Maps.difference(prop1, prop2);
         System.out.println("only left:" + JSON.toJSONString(r.entriesOnlyOnLeft()));

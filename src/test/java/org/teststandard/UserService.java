@@ -1,4 +1,4 @@
-package org.test;
+package org.teststandard;
 
 /**
  * UserService

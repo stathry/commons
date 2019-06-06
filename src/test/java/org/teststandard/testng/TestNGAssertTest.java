@@ -1,4 +1,4 @@
-package org.test.testng;
+package org.teststandard.testng;
 
 import org.stathry.commons.utils.ParamNameUtils;
 import org.testng.Assert;

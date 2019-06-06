@@ -48,7 +48,8 @@ public class ExcelUtils {
         if (cell == null) {
             return "";
         }
-        CellType type = cell.getCellType();
+//        CellType type = cell.getCellType();
+        CellType type = null;
         String value = "";
         switch (type) {
             case STRING:

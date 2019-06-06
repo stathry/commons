@@ -1,4 +1,4 @@
-package org.test.mockito;
+package org.teststandard.mockito;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,9 +8,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.test.UserDAO;
-import org.test.UserService;
-import org.test.UserServiceImpl;
+import org.teststandard.UserDAO;
+import org.teststandard.UserService;
+import org.teststandard.UserServiceImpl;
 
 /**
  * MockServiceTest

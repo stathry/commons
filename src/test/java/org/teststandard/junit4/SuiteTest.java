@@ -1,4 +1,4 @@
-package org.test.junit4;
+package org.teststandard.junit4;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

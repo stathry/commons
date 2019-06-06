@@ -1,4 +1,4 @@
-package org.test.mockito;
+package org.teststandard.mockito;
 
 import org.junit.Assert;
 import org.junit.Test;

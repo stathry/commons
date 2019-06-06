@@ -1,4 +1,4 @@
-package org.test.powermock;
+package org.teststandard.powermock;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,9 +8,9 @@ import org.mockito.Spy;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.test.IdUtils;
-import org.test.UserService;
-import org.test.UserServiceImpl;
+import org.teststandard.IdUtils;
+import org.teststandard.UserService;
+import org.teststandard.UserServiceImpl;
 
 import java.util.Iterator;
 import java.util.List;
