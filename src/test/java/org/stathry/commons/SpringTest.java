@@ -3,25 +3,33 @@ package org.stathry.commons;
 import com.alibaba.druid.pool.DruidDataSource;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.stathry.commons.bean.ReplaceableBean;
 import org.stathry.commons.utils.ApplicationContextUtils;
 
+import javax.sql.DataSource;
+
 /**
- * TODO
+ * SpringTest
  * Created by dongdaiming on 2018-06-05 14:20
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring-context.xml")
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration("classpath:spring-context.xml")
 public class SpringTest {
+
+    @Test
+    public void test() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
+        DataSource bean = context.getBean(DataSource.class);
+        System.out.println(bean.getClass().getName());
+        Assert.assertNotNull(bean);
+    }
 
     @Test
     public void testStart() {
         System.out.println("spring started.");
         System.out.println(System.getProperties());
-        Assert.assertEquals("conf/prop/redis.properties", System.getProperty("redis.properties.filename"));
+        Assert.assertEquals("conf/redis.properties", System.getProperty("redis.properties.filename"));
         Assert.assertTrue(!System.getProperties().isEmpty());
     }
 

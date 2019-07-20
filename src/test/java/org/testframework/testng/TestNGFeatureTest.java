@@ -1,4 +1,4 @@
-package org.teststandard.testng;
+package org.testframework.testng;
 
 
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 import java.util.Date;
 
 /**
- * FeatureTest
+ * JunitFeatureTest
  * Created by dongdaiming on 2018-12-27 09:13
  */
 public class TestNGFeatureTest {

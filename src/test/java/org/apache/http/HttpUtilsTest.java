@@ -72,7 +72,7 @@ public class HttpUtilsTest {
         System.out.println(s);
         Assert.assertTrue(StringUtils.isNotBlank(s));
 
-        String s2 = HttpUtils.postJSONString("https://teststandard.xinyan.com/product/integrity/v1/loans", "hello");
+        String s2 = HttpUtils.postJSONString("https://testframework.xinyan.com/product/integrity/v1/loans", "hello");
         System.out.println(s2);
         Assert.assertTrue(StringUtils.isNotBlank(s2));
     }

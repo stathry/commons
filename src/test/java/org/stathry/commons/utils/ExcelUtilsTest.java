@@ -37,7 +37,7 @@ public class ExcelUtilsTest {
         titleStyleParam.setStartColumn(3);
         params.setTitleStyle(titleStyleParam);
 
-        ExcelUtils.export("d:/temp/excel/teststandard.xlsx", header, data, params);
+        ExcelUtils.export("d:/temp/excel/testframework.xlsx", header, data, params);
     }
 
     @Test

@@ -1,4 +1,4 @@
-package org.teststandard.junit4;
+package org.testframework.junit4;
 
 import org.junit.Assert;
 import org.junit.Test;

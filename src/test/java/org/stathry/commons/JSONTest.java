@@ -13,14 +13,25 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TODO
  * Created by dongdaiming on 2018-07-23 16:59
  */
 public class JSONTest {
+
+    @Test
+    public void testJsonLocalDatetime() {
+        Map<Integer, Object> map = new HashMap<>();
+        map.put(1, LocalDateTime.now());
+        map.put(2, "222");
+        System.out.println(JSON.toJSONString(map));
+    }
 
     @Test
     public void testToStr() {

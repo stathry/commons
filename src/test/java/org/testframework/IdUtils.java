@@ -1,4 +1,4 @@
-package org.teststandard;
+package org.testframework;
 
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package org.teststandard.testng;
+package org.testframework.testng;
 
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;

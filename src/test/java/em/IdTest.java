@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -38,7 +39,7 @@ public class IdTest {
 
     @Test
     public void testIdsToList() throws IOException {
-        List<Long> list = readIdList("classpath:ids.txt");
+        List<Long > list = readIdList("classpath:ids.txt");
         System.out.println(list.size());
 //        System.out.println("" + StringUtils.join(list, '\n') + "");
         System.out.println("(" + StringUtils.join(list, ',') + ")");
@@ -52,7 +53,9 @@ public class IdTest {
         System.out.println("当天id:" + DistributeIdUtils.getMinOrderId(td));
         System.out.println("最近10天id范围:" + DistributeIdUtils.getMinOrderId(td.minusDays(10)) + ", " + nowMaxId);
         System.out.println("最近30天id范围:" + DistributeIdUtils.getMinOrderId(td.minusDays(30)) + ", " + nowMaxId);
-        System.out.println("指定日期id;" + DistributeIdUtils.getMinOrderId(LocalDateTime.parse("20190201_000000", DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"))));
+        System.out.println("指定日期id;" + DistributeIdUtils.getMinOrderId(LocalDateTime.parse("20190629_000000", DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"))));
+        System.out.println("指定日期id;" + DistributeIdUtils.getMinOrderId(LocalDateTime.parse("20190630_000000", DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"))));
+        System.out.println("指定日期id;" + DistributeIdUtils.getMinOrderId(LocalDateTime.parse("20190701_000000", DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"))));
 
         long oid = 253908959101262L;
         System.out.println(DistributeIdUtils.getTime(oid));
@@ -68,7 +71,8 @@ public class IdTest {
     public void testFindId() throws Exception {
         File file = ResourceUtils.getFile("classpath:input.txt");
         String input = FileUtils.readFileToString(file, "utf-8");
-        Pattern pattern = Pattern.compile("\"orderId\":\"(\\d+)\"");
+//        Pattern pattern = Pattern.compile("\"orderId\":\"(\\d+)\"");
+        Pattern pattern = Pattern.compile("\"orderId\":(\\d+)");
         Matcher m = pattern.matcher(input);
         Set<Long> orders = new HashSet<>(100);
         while (m.find()) {
@@ -87,13 +91,17 @@ public class IdTest {
         File file = ResourceUtils.getFile(resourceLocation);
         System.out.println(file);
         List<String> list = FileUtils.readLines(file, "utf-8");
-        List<Long> ids = new ArrayList<>(list.size());
+        System.out.println(list.size());
+        Set<Long> ids = new TreeSet<>();
         for (String id : list) {
+            if(id.contains(",")) {
+                id.split(",");
+            }
             id = id.trim().replaceAll("\\D+", "");
             if(StringUtils.isNotBlank(id)) {
                 ids.add(Long.parseLong(id));
             }
         }
-        return ids;
+        return new ArrayList<>(ids);
     }
 }

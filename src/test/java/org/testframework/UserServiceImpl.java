@@ -1,4 +1,4 @@
-package org.teststandard;
+package org.testframework;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

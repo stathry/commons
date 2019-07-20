@@ -1,4 +1,4 @@
-package org.teststandard.powermock;
+package org.testframework.powermock;
 
 import org.junit.Assert;
 import org.junit.Test;

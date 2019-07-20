@@ -1,4 +1,4 @@
-package org.teststandard.junit4;
+package org.testframework.junit4;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
@@ -8,10 +8,12 @@ import org.stathry.commons.utils.ParamNameUtils;
 import java.util.Arrays;
 
 /**
- * TestNGAssertTest
- * Created by dongdaiming on 2018-12-26 17:58
+ * JunitAssertAndHamcrestTest
+ *
+ * @author dongdaiming(董代明)
+ * @date 2019-06-13 13:53
  */
-public class AssertTest {
+public class JunitAssertAndHamcrestTest {
 
     @Test
     public void testAssert() {
