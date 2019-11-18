@@ -16,19 +16,22 @@ import java.util.Date;
 @Data
 public class PayNotifyResult {
 
-    @Excel(name = "payment_no")
-    private String payment_no;
+    @Excel(name = "paymentNo")
+    private String paymentNo;
 
-    @Excel(name = "order_collection_no")
-    private String order_collection_no;
+    @Excel(name = "orderCollectionNo")
+    private String orderCollectionNo;
 
-    @Excel(name = "order_no")
-    private Long order_no;
+    @Excel(name = "orderId")
+    private Long orderId;
 
-    @Excel(name = "pay_amount")
-    private BigDecimal pay_amount;
+    @Excel(name = "payAmount")
+    private BigDecimal payAmount;
 
-    @Excel(name = "gmt_modify")
-    private Date gmt_modify;
+    @Excel(name = "acutalPayAmount")
+    private BigDecimal acutalPayAmount;
+
+    @Excel(name = "payTimeEnd")
+    private Date payTimeEnd;
 
 }

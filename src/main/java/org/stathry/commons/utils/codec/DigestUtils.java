@@ -3,6 +3,8 @@
  */
 package org.stathry.commons.utils.codec;
 
+import java.util.UUID;
+
 /**
  * @author dongdaiming@free.com
  * <p>
@@ -11,7 +13,7 @@ package org.stathry.commons.utils.codec;
 public final class DigestUtils {
 
     public static void main(String[] args) {
-        System.out.println(md5("a"));
+        System.out.println(md5("12345678901") + "," + UUID.randomUUID().toString().replace("-", ""));
         System.out.println(System.currentTimeMillis());
         System.out.println(System.nanoTime());
     }
